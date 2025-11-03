@@ -50,13 +50,12 @@
             <!-- دیدگاه ۱ -->
             <div class="w-full h-[185px] bg-[#F5F6F4] rounded-[60px] shadow-[0_7px_15px_-6px_rgba(92,99,105,0.25),0_-4px_15px_-6px_rgba(92,99,105,0.25)] flex items-center justify-between">
               <div class="flex flex-col justify-start mx-auto gap-5 mt-2">
-                <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="none" stroke="#E57373" stroke-width="1.5">
-                  <path d="M9 9L15 15M15 9L9 15"/>
-                </svg>
-                <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="none" stroke="#7FB77E" stroke-width="1.5">
-                  <circle cx="12" cy="12" r="9"/>
-                  <path d="M8 12l2.5 2.5L16 9"/>
-                </svg>
+                <button type="button">
+                  <icons-trash-can class="w-5 h-5"/>
+                </button>
+                <button type="button">
+                  <icons-confirmation class="w-5 h-5"/>
+                </button>
               </div>
 
               <div class="w-[90%] h-full bg-white rounded-[60px] shadow-[-5px_0px_9.7px_rgba(209,209,209,0.25)] px-6 py-4 flex flex-col justify-between">
@@ -74,13 +73,12 @@
             <!-- دیدگاه ۲ -->
             <div class="w-full h-[185px] bg-[#F5F6F4] rounded-[60px] shadow-[0_7px_15px_-6px_rgba(92,99,105,0.25),0_-4px_15px_-6px_rgba(92,99,105,0.25)] flex items-center justify-between">
             <div class="flex flex-col justify-start mx-auto gap-5 mt-2">
-              <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="none" stroke="#E57373" stroke-width="1.5">
-                <path d="M9 9L15 15M15 9L9 15"/>
-              </svg>
-              <svg class="w-[22px] h-[22px]" viewBox="0 0 24 24" fill="none" stroke="#7FB77E" stroke-width="1.5">
-                <circle cx="12" cy="12" r="9"/>
-                <path d="M8 12l2.5 2.5L16 9"/>
-              </svg>
+              <button type="button">
+                <icons-trash-can class="w-5 h-5"/>
+              </button>
+              <button type="button">
+                <icons-confirmation class="w-5 h-5"/>
+              </button>
             </div>
 
             <div class="w-[90%] h-full bg-white rounded-[60px] shadow-[-5px_0px_9.7px_rgba(209,209,209,0.25)] px-6 py-4 flex flex-col justify-between">

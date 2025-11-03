@@ -6,9 +6,7 @@
       <span class="text-[#2B2B2B] w-[80%] text-right text-xl leading-[39px] py-[30px]">دیکشنری‌ها</span>
       <div class="w-full border-t border-[#DADDD8]"></div>
       <div class="w-[80%] flex flex-row items-center gap-[10px] py-[30px]">
-        <svg class="w-[20px] h-[20px]" viewBox="0 0 24 24" fill="none" stroke="#2B2B2B" stroke-width="1.5">
-          <path d="M6 9l6 6 6-6" />
-        </svg>
+        <icons-pop-up-flash class="w-[20px] h-[20px]"/>
         <span class="text-[#2B2B2B] text-right text-xl leading-[39px]">درخواست‌ها</span>
       </div>
       <div class="w-full border-t border-[#DADDD8]"></div>
@@ -25,11 +23,7 @@
 
           <button type="button" class="flex flex-row justify-center items-center gap-[5px] px-[20px] py-[13px] bg-[#7FB77E] rounded-[1000px] shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)]">
             <span class="text-white font-bold text-sm leading-[28px]">اضافه کردن لغت</span>
-            <div class="w-5 h-5">
-              <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-              </svg>
-            </div>
+            <icons-add-or-create class="w-5 h-5"/>
           </button>
 
           <div class="flex items-center justify-center gap-4">
@@ -49,10 +43,7 @@
             </div> -->
 
             <div class="flex flex-row justify-between items-center px-[14px] py-[15px] gap-[41px] w-[411px] h-[54px] bg-[#F5F6F4] rounded-[1000px] shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)]">
-              <svg class="w-[24px] h-[24px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8" stroke-width="2"/>
-                <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"/>
-              </svg>
+              <icons-search class="w-[24px] h-[24px]"/>
               <span class="text-[#DADDD8] font-normal text-sm text-right leading-[22px]">لغت مورد نظر را وارد کنید</span>
             </div>
           </div>
@@ -207,10 +198,7 @@
         <span class="text-lg leading-[28px] text-[#2B2B2B]">:لطفا دیکشنری مورد نظر را انتخاب کنید</span>
         <div class="flex flex-row-reverse justify-between items-center w-[328px] h-[58px] px-[20px] py-[18px] bg-[rgba(127,183,126,0.2)] rounded-[15px]">
           <span class="text-sm leading-[22px] text-[rgba(92,99,105,0.25)]">انتخاب یا سرچ میان دیکشنری‌ها</span>
-          <div class="relative w-[15px] h-[15px]">
-            <span class="absolute left-[17%] right-[33%] top-[37%] bottom-[33%] border border-[rgba(92,99,105,0.25)]"></span>
-            <span class="absolute left-[79%] right-[17%] top-[37%] bottom-[58%] border border-[rgba(92,99,105,0.25)]"></span>
-          </div>
+          <icons-down-arrow class="w-[15px] h-[15px]"/>
         </div>
       </div>
 
@@ -265,10 +253,7 @@
       <div class="w-full h-[1px] bg-[#DADDD8]"></div>
 
       <button type="button" class="absolute top-1/2 -translate-y-1/2 flex justify-center items-center gap-[10px] px-[26px] py-[9px] bg-[#7FB77E] rounded-full">
-        <div class="relative w-[15px] h-[15px] flex justify-center items-center">
-          <span class="absolute w-[2px] h-[9px] bg-white"></span>
-          <span class="absolute h-[2px] w-[9px] bg-white"></span>
-        </div>
+        <icons-down-arrow class="w-[15px] h-[15px] text-[#FFFFFF]"/>
         <span class="text-white text-[16px] leading-[34px]">موارد بیشتر</span>
       </button>
     </div>
