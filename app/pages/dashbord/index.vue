@@ -62,7 +62,7 @@
               <div class="w-[90%] h-full bg-white rounded-[60px] shadow-[-5px_0px_9.7px_rgba(209,209,209,0.25)] px-6 py-4 flex flex-col justify-between">
                 <div class="flex items-center justify-end gap-2">
                   <span class="text-[#2B2B2B] text-sm font-[700] leading-[22px] font-zain">سعید علوی</span>
-                  <img src="/home/hamyar/Downloads/edd4b661b231cb76d474e6223e74a43f88aab978.png" class="w-[50px] h-[50px] rounded-full object-cover" alt="user" />
+                  <img src="~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png" class="w-[50px] h-[50px] rounded-full object-cover" alt="user" />
                 </div>
 
                 <p class="text-[#2B2B2B] text-[14px] leading-[22px] font-[400] font-zain text-right">
@@ -86,7 +86,7 @@
             <div class="w-[90%] h-full bg-white rounded-[60px] shadow-[-5px_0px_9.7px_rgba(209,209,209,0.25)] px-6 py-4 flex flex-col justify-between">
               <div class="flex items-center justify-end gap-2">
                 <span class="text-[#2B2B2B] text-sm font-[700] leading-[22px] font-zain">سعید علوی</span>
-                <img src="/home/hamyar/Downloads/edd4b661b231cb76d474e6223e74a43f88aab978.png" class="w-[50px] h-[50px] rounded-full object-cover" alt="user" />
+                <img src="~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png" class="w-[50px] h-[50px] rounded-full object-cover" alt="user" />
               </div>
 
               <p class="text-[#2B2B2B] text-[14px] leading-[22px] font-[400] font-zain text-right">
