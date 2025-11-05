@@ -6,16 +6,16 @@
       <div class="flex flex-row items-center gap-4">
         <button
           type="button"
-          class="w-[110px] h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl"
+          class="w-[110px] h-[50px] flex justify-center items-center px-5 bg-[#F5F6F4] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl"
         >
-          <span class="font-zain font-normal text-lg text-[#FFFFFF]">حمایت</span>
+          <span class="font-zain font-normal text-lg text-[#7FB77E]">حمایت</span>
         </button>
 
         <button
           type="button"
-          class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl"
+          class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-[#F5F6F4] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl"
         >
-          <span class="font-zain font-normal text-lg text-[#FFFFFF]">ورود</span>
+          <span class="font-zain font-normal text-lg text-[#7FB77E]">ورود</span>
         </button>
       </div>
 
