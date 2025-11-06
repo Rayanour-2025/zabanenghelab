@@ -279,7 +279,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useToast } from 'vue-toastification';
+import pkg from 'vue-toastification';
+
+// با این کار useToast به درستی استخراج می‌شود
+const { useToast } = pkg;
 
 // توکن احراز هویت - **حتماً این مقدار را با توکن واقعی کاربر جایگزین کنید.**
 const AUTH_TOKEN = "11|VYO9WhoeovtDEWa1rizPYMeeIIw9hPHTympAmXZ3dcc0df85"; 
