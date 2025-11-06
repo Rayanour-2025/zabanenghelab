@@ -13,4 +13,12 @@
   html {
     font-family: 'Zain-Regular', sans-serif;
   }
+  .Toastify__toast-container {
+    padding: 0 !important; /* حذف padding پیش‌فرض کانتینر */
+  }
+
+  .Toastify__toast--rtl.Toastify__toast-container--top-left {
+    right: 10px !important; /* فاصله از راست */
+    left: auto !important;   /* override فاصله از چپ */
+  }
 }

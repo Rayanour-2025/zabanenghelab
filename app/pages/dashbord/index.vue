@@ -5,7 +5,7 @@
 
   <div class="min-h-screen flex items-stretch justify-center py-10">
     <div class="max-w-screen-xl w-full mx-auto flex flex-row-reverse items-stretch justify-center gap-10">
-      
+
       <div class="w-full flex flex-col items-center justify-start gap-10">
         <section class="w-full flex flex-row items-center justify-between">
           <div
@@ -142,6 +142,12 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  middleware: 'auth' 
+})
+
+// استفاده از داده‌های کاربر در کامپوننت
+const { user } = useUserSession()
 </script>
 
 <style>

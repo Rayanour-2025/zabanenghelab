@@ -4,4 +4,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
   css: ['~/assets/css/tailwind.css'],
+  app: {
+    head: {
+      title: 'My Nuxt App',
+      // meta: [
+      //   { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      //   { name: 'csrf-token', content: 'YOUR_CSRF_TOKEN_HERE' }
+      // ]
+    }
+  }
 })
