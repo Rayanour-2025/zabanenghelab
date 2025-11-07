@@ -319,6 +319,7 @@ const fetchDictionariesList = async () => {
              return;
         }
 
+        console.log(AUTH_TOKEN.value)
         await fetchDictionaries(AUTH_TOKEN.value);
         
         const data = dictionariesResponse.value?.data;
