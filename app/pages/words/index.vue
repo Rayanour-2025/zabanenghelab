@@ -265,7 +265,7 @@
 <script setup>
 // /home/hamyar/Desktop/My_Folder/zaban-enghelab/app/pages/words/index.vue
 import { ref, onMounted, computed } from 'vue';
-import { useToast } from 'vue-toastification/dist/index.mjs' // فقط client-side
+import { useToast } from 'vue-toastification/dist/index.mjs';
 import { useAuthToken } from '@/composables/useAuthCrypto';
 
 const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
@@ -319,7 +319,7 @@ const fetchDictionariesList = async () => {
              return;
         }
 
-        console.log(AUTH_TOKEN.value)
+        // console.log(AUTH_TOKEN.value)
         await fetchDictionaries(AUTH_TOKEN.value);
         
         const data = dictionariesResponse.value?.data;

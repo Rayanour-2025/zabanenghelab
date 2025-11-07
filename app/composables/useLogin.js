@@ -13,7 +13,7 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
   const errMessage = ref("");    
   const success = ref(false);      
   const responseData = ref(null); 
-  // استفاده از authStore باید در کانتکس Vue/Nuxt باشد که در اینجا صحیح است.
+
   const authStore = useAuthStore();
   
   const login = async () => {
@@ -49,12 +49,10 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
       responseData.value = response.data;
       success.value = true;
       
-      // ۳. ذخیره توکن و اطلاعات کاربر در Pinia
       if (responseData.value.status_response === 'SUCCESS' && responseData.value.token) {
           authStore.setLoginData(responseData.value); 
           toast.success("ورود موفقیت‌آمیز بود. در حال هدایت...");
           
-          // ۴. هدایت به صفحه اصلی پس از ورود موفق
           await navigateTo('/'); 
       } else {
           toast.error("ورود موفق بود، اما ساختار پاسخ سرور صحیح نیست.");
@@ -81,7 +79,6 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
       captchaInput.value = "";
       generateNewCaptcha();
 
-      // از پرت کردن خطای عمومی خود Axios به جای خطای CSRF/Message استفاده کنید
       throw new Error(message); 
     } finally {
       loading.value = false;

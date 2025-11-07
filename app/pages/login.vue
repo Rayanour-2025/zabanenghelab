@@ -144,9 +144,8 @@
 definePageMeta({ layout: false })
 
 import { ref, onMounted } from 'vue'
-// import useToast از vue-toastification به شکل Named import نکن!
-import { useToast } from 'vue-toastification/dist/index.mjs' // فقط client-side
-const toast = useToast() // حالا معتبر است
+import { useToast } from 'vue-toastification/dist/index.mjs';
+const toast = useToast()
 
 const captchaCanvasRef = ref(null)
 const { captchaText, generateCaptcha } = useCaptcha()

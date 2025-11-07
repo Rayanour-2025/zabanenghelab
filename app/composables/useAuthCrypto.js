@@ -4,9 +4,7 @@ import { computed } from 'vue';
 
 let SECRET_KEY = null;
 
-// تابع کمکی برای اطمینان از مقداردهی اولیه کلید سری در زمان فراخوانی (Lazy Initialization)
 function getSecretKey() {
-    // اگر کلید قبلاً مقداردهی نشده باشد، آن را با استفاده از کانتکس Nuxt می‌خواند.
     if (SECRET_KEY === null) {
         const config = useRuntimeConfig(); 
         SECRET_KEY = config.public.authSecretKey || "u8F#9vQ!rT2wXs7z@L4pB&kD$eJ1mN^cR0yG+H*oZqS5fA6tU";
@@ -18,11 +16,6 @@ function getSecretKey() {
     return SECRET_KEY;
 }
 
-/**
- * تابع رمزنگاری توکن با استفاده از کلید سری (AES)
- * @param {string} token توکن خام از سرور
- * @returns {string | null} توکن رمزنگاری شده
- */
 export function encryptToken(token) {
     const key = getSecretKey();
     if (!token || !key) return null;
@@ -34,11 +27,6 @@ export function encryptToken(token) {
     }
 }
 
-/**
- * تابع رمزگشایی توکن با استفاده از کلید سری (AES)
- * @param {string} encryptedToken توکن رمزنگاری شده از کوکی
- * @returns {string | null} توکن رمزگشایی شده (خام)
- */
 export function decryptToken(encryptedToken) {
     const key = getSecretKey();
     if (!encryptedToken || !key) return null;
@@ -48,15 +36,11 @@ export function decryptToken(encryptedToken) {
         
         return decrypted || null;
     } catch (e) {
-        // این خطا معمولاً نشان‌دهنده دستکاری توکن یا استفاده از کلید اشتباه است
         console.error("Decryption failed. Token might be invalid or tampered.", e);
         return null;
     }
 }
 
-/**
- * کامپوسبل برای دسترسی آسان به توکن و وضعیت احراز هویت
- */
 export function useAuthToken() {
     const store = useAuthStore();
     return { 
