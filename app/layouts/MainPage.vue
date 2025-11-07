@@ -12,6 +12,17 @@
         </button>
 
         <button
+          v-if="isLoggedIn"
+          @click="handleLogout"
+          type="button"
+          class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-red-500 border border-red-500 shadow-[0_4px_8px_-5px_rgba(239,68,68,0.25)] rounded-2xl"
+        >
+          <span class="font-zain font-normal text-lg text-[#FFFFFF]">خروج</span>
+        </button>
+
+        <button
+          v-else
+          @click="handleLogin"
           type="button"
           class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-[#F5F6F4] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl"
         >
@@ -72,9 +83,26 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
+import { useAuthToken } from '@/composables/useAuthCrypto';
+import { useAuthStore } from '@/stores/auth';
+import { useRoute } from 'vue-router'; 
 
+const { isLoggedIn } = useAuthToken();
+const authStore = useAuthStore();
+const route = useRoute();
+
+const handleLogout = () => {
+  authStore.logout();
+
+  navigateTo(route.fullPath, { replace: true });
+};
+
+const handleLogin = () => {
+  navigateTo('/login');
+};
 </script>
+
 
 <style>
 
