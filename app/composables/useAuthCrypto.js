@@ -9,7 +9,7 @@ function getSecretKey() {
     // اگر کلید قبلاً مقداردهی نشده باشد، آن را با استفاده از کانتکس Nuxt می‌خواند.
     if (SECRET_KEY === null) {
         const config = useRuntimeConfig(); 
-        SECRET_KEY = config.public.authSecretKey;
+        SECRET_KEY = config.public.authSecretKey || "u8F#9vQ!rT2wXs7z@L4pB&kD$eJ1mN^cR0yG+H*oZqS5fA6tU";
 
         if (!SECRET_KEY) {
             console.error("AUTH_SECRET_KEY in runtimeConfig is missing!");
