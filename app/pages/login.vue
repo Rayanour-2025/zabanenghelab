@@ -141,15 +141,13 @@
 </template>
 
 <script setup>
-// /home/hamyar/Desktop/My_Folder/zaban-enghelab/app/pages/login.vue
 definePageMeta({ layout: false })
-import { useToast } from 'vue-toastification'
-// import { useCaptcha } from '@/composables/useCaptcha' 
-// import { useLogin } from '@/composables/useLogin' 
 
-const captchaCanvasRef = ref(null) 
+import { useToast } from 'vue-toastification'
 const toast = useToast()
 
+
+const captchaCanvasRef = ref(null)
 const { captchaText, generateCaptcha } = useCaptcha()
 
 const generateNewCaptcha = () => {
@@ -162,13 +160,10 @@ const { username, password, captchaInput, loading, login: onLoginClick } = useLo
   captchaText, 
 })
 
-// ۵. تولید کپچا هنگام بارگذاری کامپوننت (فقط در کلاینت)
 onMounted(() => {
-    // مطمئن می‌شویم که این تابع فقط پس از Mount شدن اجرا می‌شود
     generateNewCaptcha() 
 })
 
-// متغیرهای ثابت (اختیاری)
 const twColors = {
   primary: 'green-600',
   'bgc-body': 'gray-50',

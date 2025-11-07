@@ -2,7 +2,6 @@ import axios from "axios";
 import { ref } from "vue";
 import { navigateTo } from "#app";
 import { useAuthStore } from "@/stores/auth"; 
-import api from "@/composables/useAxios";
 
 export function useLogin({ toast, generateNewCaptcha, captchaText }) {
   const username = ref("");
@@ -37,10 +36,15 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
     responseData.value = null;
 
     try {
-      const response = await api.post("/login", {
-        username: username.value,
-        password: password.value,
-      })
+      const response = await axios.post(`/api/login`,
+        {
+          username: username.value,
+          password: password.value,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       responseData.value = response.data;
       success.value = true;

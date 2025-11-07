@@ -1,11 +1,12 @@
+// plugins/vue-toast.client.ts
 import { defineNuxtPlugin } from '#app'
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const options = {
-    position: 'top-left',       // موقعیت نمایش Toast
-    timeout: 3000,               // مدت زمان نمایش
+    position: 'top-left',
+    timeout: 3000,
     closeOnClick: true,
     pauseOnFocusLoss: true,
     pauseOnHover: true,
@@ -15,8 +16,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     hideProgressBar: false,
     closeButton: 'button',
     icon: true,
-    rtl: false,                    // چون زبان فارسی داری
-    theme: 'light',               // حالت لایت، میتونی 'dark' هم بزاری
+    rtl: true, // چون فارسی هست
+    theme: 'light',
   }
 
   nuxtApp.vueApp.use(Toast, options)
