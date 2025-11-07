@@ -263,132 +263,146 @@
 </template>
 
 <script setup>
-definePageMeta({ layout: false })
+// /home/hamyar/Desktop/My_Folder/zaban-enghelab/app/pages/words/index.vue
+import { ref, onMounted, computed } from 'vue';
+import { useToast } from 'vue-toastification/dist/index.mjs' // فقط client-side
+import { useAuthToken } from '@/composables/useAuthCrypto';
 
-import { ref, onMounted, computed } from 'vue'
-import { useAuthToken } from '@/composables/useAuthCrypto'
-import { useFetchDictionaries } from '@/composables/useFetchDictionaries'
-import { useCreateWord } from '@/composables/useCreateWord'
+const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
 
-// 🔹 استفاده از Toast فقط در کلاینت، از plugin vue-toast.client.ts
-const toast = useToast()
+const toast = useToast(); 
+const isExpanded = ref(false);
 
-const { token: AUTH_TOKEN, user: currentUser } = useAuthToken()
-const isExpanded = ref(false)
-const OpenModalStudentList = ref(false) 
+const OpenModalStudentList = ref(false); 
 
-const selectedDictionary = ref(null)
-const wordName = ref("")
-const definition = ref("") 
-const synonym = ref("")    
-const opposite = ref("")   
-const relatedWords = ref("") 
-const examples = ref("")   
+const selectedDictionary = ref(null);
+const wordName = ref("");
+const definition = ref(""); 
+const synonym = ref("");    
+const opposite = ref("");   
+const relatedWords = ref(""); 
+const examples = ref("");   
 
-const searchQuery = ref("")
+const searchQuery = ref("");
 const suggestions = ref([
   "کتاب", "مدرسه", "کامپیوتر", "لغت", "یادگیری", "برنامه‌نویسی",
-])
+]);
 
 const filteredSuggestions = computed(() => {
-  const currentSuggestions = suggestions.value || [] 
-  const query = searchQuery.value?.toLowerCase() || ""
-  if (!query) return []
-  return currentSuggestions.filter(item => item.toLowerCase().includes(query))
-})
+  const currentSuggestions = suggestions.value || []; 
+  const query = searchQuery.value?.toLowerCase() || "";
+  
+  if (!query) return []; 
+  
+  return currentSuggestions.filter((item) =>
+    item.toLowerCase().includes(query)
+  )
+});
 
 function selectSuggestion(item) {
-  searchQuery.value = item
+  searchQuery.value = item;
+  // suggestions.value = []; 
 }
 
-const { fetchDictionaries, responseData: dictionariesResponse, loading: loadingDictionaries, errMessage: dictionariesErrorMsg } = useFetchDictionaries()
-const dictionaries = ref([])
+const { 
+  fetchDictionaries, 
+  responseData: dictionariesResponse, 
+  loading: loadingDictionaries, 
+  errMessage: dictionariesErrorMsg 
+} = useFetchDictionaries(); 
 
+const dictionaries = ref([]); 
 const fetchDictionariesList = async () => {
-  try {
-    if (!AUTH_TOKEN.value) {
-      toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.")
-      return
+    try {
+        if (!AUTH_TOKEN.value) {
+             toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
+             return;
+        }
+
+        await fetchDictionaries(AUTH_TOKEN.value);
+        
+        const data = dictionariesResponse.value?.data;
+
+        if (Array.isArray(data)) {
+            dictionaries.value = data;
+            if (dictionaries.value.length > 0) {
+                selectedDictionary.value = dictionaries.value[0].id;
+            }
+        } else {
+            console.warn("ساختار پاسخ API برای دیکشنری‌ها صحیح نیست:", dictionariesResponse.value);
+        }
+    } catch (error) {
+        console.error("خطا در واکشی دیکشنری‌ها:", error);
+        toast.error(`خطا در بارگذاری دیکشنری‌ها: ${dictionariesErrorMsg.value || 'خطای شبکه'}`);
     }
+};
 
-    await fetchDictionaries(AUTH_TOKEN.value)
+onMounted(fetchDictionariesList);
 
-    const data = dictionariesResponse.value?.data
-    if (Array.isArray(data)) {
-      dictionaries.value = data
-      if (dictionaries.value.length > 0) {
-        selectedDictionary.value = dictionaries.value[0].id
-      }
-    } else {
-      console.warn("ساختار پاسخ API برای دیکشنری‌ها صحیح نیست:", dictionariesResponse.value)
-    }
-  } catch (error) {
-    console.error("خطا در واکشی دیکشنری‌ها:", error)
-    toast.error(`خطا در بارگذاری دیکشنری‌ها: ${dictionariesErrorMsg.value || 'خطای شبکه'}`)
-  }
-}
-
-onMounted(fetchDictionariesList)
-
-const { createWord, loading: creatingWord, errMessage: createWordErrorMsg } = useCreateWord()
+const {
+  createWord,
+  loading: creatingWord,
+  errMessage: createWordErrorMsg,
+} = useCreateWord();
 
 const toggleExpansion = () => {
-  isExpanded.value = !isExpanded.value
-}
+  isExpanded.value = !isExpanded.value;
+};
 
 const parseToArray = (text) => {
-  if (!text) return []
-  return text.split(/[\n,]/)
-             .map(s => s.trim())
-             .filter(s => s.length > 0)
-}
+    if (!text) return [];
+    return text.split(/[\n,]/)
+               .map(s => s.trim())
+               .filter(s => s.length > 0);
+};
 
 const createWordHandler = async () => {
-  if (!selectedDictionary.value) {
-    toast.error("لطفاً یک دیکشنری انتخاب کنید.")
-    return
-  }
-  if (!wordName.value.trim() || !definition.value.trim()) {
-    toast.error("فیلدهای نام لغت و تعریف اجباری هستند.")
-    return
-  }
-  if (creatingWord.value) return
-
-  const payload = {
-    dictionary_id: selectedDictionary.value,
-    word: wordName.value.trim(),
-    meaning: definition.value.trim(),
-    synonyms: parseToArray(synonym.value),
-    antonyms: parseToArray(opposite.value),
-    related_words: parseToArray(relatedWords.value),
-    description: examples.value.trim(),
-  }
-
-  try {
-    if (!AUTH_TOKEN.value) {
-      toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.")
-      return
+    if (!selectedDictionary.value) {
+        toast.error("لطفاً یک دیکشنری انتخاب کنید.");
+        return;
     }
+    if (!wordName.value.trim() || !definition.value.trim()) {
+        toast.error("فیلدهای نام لغت و تعریف اجباری هستند.");
+        return;
+    }
+    
+    if (creatingWord.value) return;
 
-    await createWord(AUTH_TOKEN.value, payload)
-    toast.success("لغت جدید با موفقیت ایجاد شد.")
+    const payload = {
+        dictionary_id: selectedDictionary.value,
+        word: wordName.value.trim(),
+        meaning: definition.value.trim(), // (تعریف)
+        synonyms: parseToArray(synonym.value), // (مترادف)
+        antonyms: parseToArray(opposite.value), // (متضاد)
+        related_words: parseToArray(relatedWords.value), // (هم‌خانواده)
+        description: examples.value.trim(), 
+    };
 
-    // ریست کردن فیلدها
-    wordName.value = ""
-    definition.value = ""
-    synonym.value = ""
-    opposite.value = ""
-    relatedWords.value = ""
-    examples.value = ""
+    try {
+        if (!AUTH_TOKEN.value) {
+             toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
+             return;
+        }
 
-  } catch (error) {
-    console.error("خطا در ایجاد لغت:", error)
-    const displayMessage = createWordErrorMsg.value || "خطای ناشناخته در ساخت لغت"
-    toast.error(`خطا در ایجاد لغت: ${displayMessage}`)
-  }
-}
+        await createWord(AUTH_TOKEN.value, payload);
+        
+        toast.success("لغت جدید با موفقیت ایجاد شد.");
+
+        wordName.value = "";
+        definition.value = "";
+        synonym.value = "";
+        opposite.value = "";
+        relatedWords.value = "";
+        examples.value = "";
+        // OpenModalStudentList.value = false;
+        
+    } catch (error) {
+        console.error("خطا در ایجاد لغت:", error);
+        const displayMessage = createWordErrorMsg.value || "خطای ناشناخته در ساخت لغت";
+        toast.error(`خطا در ایجاد لغت: ${displayMessage}`);
+    }
+};
 </script>
-
 
 <style scoped>
 textarea {
