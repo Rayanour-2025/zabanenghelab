@@ -22,6 +22,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         // ۱. ذخیره اطلاعات پس از ورود موفق
         setLoginData(loginResponse) {
+          console.log(loginResponse);
             this.user = loginResponse.user;
             this.token = loginResponse.token; // توکن خام
             this.isLoggedIn = true;
