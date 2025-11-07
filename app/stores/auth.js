@@ -53,7 +53,11 @@ export const useAuthStore = defineStore('auth', {
                 if (decryptedToken) {
                     this.token = decryptedToken;
                     this.isLoggedIn = true;
-                    // TODO: در محیط واقعی، اینجا باید اطلاعات user را با توکن واکشی و در this.user ذخیره کنید.
+                    
+                    if (!this.user) {
+                        this.user = { id: 0, username: 'Authenticated' };
+                    }
+                    
                     return true;
                 } else {
                     // رمزگشایی ناموفق: توکن منقضی یا دستکاری شده است
