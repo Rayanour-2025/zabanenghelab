@@ -36,7 +36,7 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
     responseData.value = null;
 
     try {
-      const response = await axios.post(`/api/login`,
+      const response = await axios.post(`https://ip3.ir/dictionary/api/v1/login`,
         {
           username: username.value,
           password: password.value,
