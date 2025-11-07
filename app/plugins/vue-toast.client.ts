@@ -1,4 +1,3 @@
-// plugins/vue-toast.client.ts
 import { defineNuxtPlugin } from '#app'
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
@@ -16,7 +15,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     hideProgressBar: false,
     closeButton: 'button',
     icon: true,
-    rtl: true, // چون فارسی هست
+    rtl: true,
     theme: 'light',
   }
 

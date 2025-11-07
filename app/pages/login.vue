@@ -143,9 +143,10 @@
 <script setup>
 definePageMeta({ layout: false })
 
-import { useToast } from 'vue-toastification'
-const toast = useToast()
-
+import { ref, onMounted } from 'vue'
+// import useToast از vue-toastification به شکل Named import نکن!
+import { useToast } from 'vue-toastification/dist/index.mjs' // فقط client-side
+const toast = useToast() // حالا معتبر است
 
 const captchaCanvasRef = ref(null)
 const { captchaText, generateCaptcha } = useCaptcha()
@@ -161,7 +162,7 @@ const { username, password, captchaInput, loading, login: onLoginClick } = useLo
 })
 
 onMounted(() => {
-    generateNewCaptcha() 
+  generateNewCaptcha()
 })
 
 const twColors = {
