@@ -3,15 +3,12 @@
     <div class="w-[195px] font-zain flex flex-col items-end pr-6">
       <h2 class="text-[#7FB77E] w-[80%] text-right text-lg leading-[38px] font-normal py-[25px]">لغات</h2>
       <div class="w-full border-t border-[#DADDD8]"></div>
-
       <span class="text-[#2B2B2B] w-[80%] text-right text-base leading-[32px] py-[25px]">دیکشنری‌ها</span>
       <div class="w-full border-t border-[#DADDD8]"></div>
-
       <div class="w-full flex flex-row items-center justify-end gap-[10px] py-[25px]">
         <icons-pop-up-flash class="w-[18px] h-[18px]" />
         <span class="text-[#2B2B2B] text-right text-base leading-[30px]">درخواست‌ها</span>
       </div>
-
       <div class="w-full border-t border-[#DADDD8]"></div>
       <div class="text-[#2B2B2B] w-[80%] text-right text-base leading-[30px] py-[25px]">کاربران</div>
       <div class="w-full border-t border-[#DADDD8]"></div>
@@ -24,80 +21,74 @@
     <div class="w-full flex flex-col justify-center items-end gap-[30px] px-[40px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
       <div class="w-full font-zain flex flex-col items-end gap-8">
         <div class="flex flex-row justify-between items-center w-full h-[50px]">
-          <button  @click="OpenModalStudentList = true" type="button" class="flex flex-row justify-center items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)]">
+          <button @click="OpenModalStudentList = true" type="button" class="flex flex-row justify-center items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)]">
             <span class="text-white font-bold text-[13px] leading-[24px]">اضافه کردن لغت</span>
             <icons-add-or-create class="w-5 h-5" />
           </button>
 
-<div class="flex items-center justify-center gap-4">
-    <div class="relative w-[400px]">
-      <!-- فیلد واقعی -->
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="لغت مورد نظر را وارد کنید"
-        class="w-full h-[50px] pl-[14px] pr-[50px] text-right text-[13px] leading-[22px] text-[#2B2B2B] font-normal placeholder:text-[#DADDD8] bg-[#F5F6F4] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] focus:outline-none"
-      />
+          <div class="flex items-center justify-center gap-4">
+              <div class="relative w-[400px]">
+                <input
+                  v-model="searchQuery"
+                  type="text"
+                  placeholder="لغت مورد نظر را وارد کنید"
+                  class="w-full h-[50px] pl-[14px] pr-[50px] text-right text-[13px] leading-[22px] text-[#2B2B2B] font-normal placeholder:text-[#DADDD8] bg-[#F5F6F4] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] focus:outline-none"
+                />
 
-      <!-- آیکون جستجو -->
-      <icons-search
-        class="absolute right-[14px] top-1/2 -translate-y-1/2 w-[22px] h-[22px] text-[#2B2B2B] pointer-events-none"
-      />
+                <icons-search
+                  class="absolute right-[14px] top-1/2 -translate-y-1/2 w-[22px] h-[22px] text-[#2B2B2B] pointer-events-none"
+                />
 
-      <!-- لیست پیشنهادات (اختیاری) -->
-      <ul
-        v-if="filteredSuggestions.length"
-        class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg max-h-40 overflow-auto z-10"
-      >
-        <li
-          v-for="(item, index) in filteredSuggestions"
-          :key="index"
-          @click="selectSuggestion(item)"
-          class="px-4 py-2 cursor-pointer hover:bg-gray-100 text-right text-sm"
-        >
-          {{ item }}
-        </li>
-      </ul>
-    </div>
-  </div>
-        </div>
-
-        <div class="w-full h-px border border-[#DADDD8]"></div>
-
-        <div class="w-full flex flex-col items-start justify-center gap-10">
-          <div class="w-full flex flex-col items-end gap-[12px]">
-            <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:فارسی</span>
-
-            <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
-              <DictionaryTag title="فرهنگ موضوعی فارسی" />
-              <DictionaryTag title="فرهنگ جامع زبان فارسی" />
-              <DictionaryTag title="عمید" />
-              <DictionaryTag title="معین" />
-              <DictionaryTag title="دهخدا" />
-              <DictionaryTag title="فرهنگ اصطلاحات مالی و سرمایه‌گذاری" />
-              <DictionaryTag title="فرهنگ زبان‌آموز فارسی" />
-              <DictionaryTag title="لغت‌نامه بزرگ فارسی" />
-              <DictionaryTag title="فرهنگ سخن" />
+                <ul
+                  v-if="filteredSuggestions && filteredSuggestions.length"
+                  class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg max-h-40 overflow-auto z-10"
+                >
+                  <li
+                    v-for="(item, index) in filteredSuggestions"
+                    :key="index"
+                    @click="selectSuggestion(item)"
+                    class="px-4 py-2 cursor-pointer hover:bg-gray-100 text-right text-sm"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
-          <div class="w-full flex flex-col items-end gap-[12px]">
-            <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:انگلیسی</span>
+          <div class="w-full h-px border border-[#DADDD8]"></div>
 
-            <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
-              <DictionaryTag title="مک میلن" />
-              <DictionaryTag title="آکسفورد" />
-              <DictionaryTag title="لانگمن" />
-              <DictionaryTag title="کمبریج" />
-              <DictionaryTag title="کالینز" />
-              <DictionaryTag title="گوگل ترنسلیت" />
-              <DictionaryTag title="مریام-وبستر" />
+          <div class="w-full flex flex-col items-start justify-center gap-10">
+            <div class="w-full flex flex-col items-end gap-[12px]">
+              <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:فارسی</span>
+              <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
+                <DictionaryTag title="فرهنگ موضوعی فارسی" />
+                <DictionaryTag title="فرهنگ جامع زبان فارسی" />
+                <DictionaryTag title="عمید" />
+                <DictionaryTag title="معین" />
+                <DictionaryTag title="دهخدا" />
+                <DictionaryTag title="فرهنگ اصطلاحات مالی و سرمایه‌گذاری" />
+                <DictionaryTag title="فرهنگ زبان‌آموز فارسی" />
+                <DictionaryTag title="لغت‌نامه بزرگ فارسی" />
+                <DictionaryTag title="فرهنگ سخن" />
+              </div>
+            </div>
+            <div class="w-full flex flex-col items-end gap-[12px]">
+              <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:انگلیسی</span>
+              <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
+                <DictionaryTag title="مک میلن" />
+                <DictionaryTag title="آکسفورد" />
+                <DictionaryTag title="لانگمن" />
+                <DictionaryTag title="کمبریج" />
+                <DictionaryTag title="کالینز" />
+                <DictionaryTag title="گوگل ترنسلیت" />
+                <DictionaryTag title="مریام-وبستر" />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
   <transition name="modal-slide" appear>
     <div
@@ -147,9 +138,7 @@
             </div>
           </div>
 
-          <div
-            class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12"
-          >
+          <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
             <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
               <label class="text-lg leading-[28px] text-[#2B2B2B]">:تعریف</label>
               <textarea
@@ -172,9 +161,7 @@
             </div>
           </div>
 
-          <div
-            class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12"
-          >
+          <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
             <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
               <label class="text-lg leading-[28px] text-[#2B2B2B]">:متضاد</label>
               <textarea
@@ -196,9 +183,7 @@
             </div>
           </div>
 
-          <div
-            class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12"
-          >
+          <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
             <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
               <label class="text-lg leading-[28px] text-[#2B2B2B]">:مثال‌ها</label>
               <textarea
@@ -278,22 +263,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import pkg from 'vue-toastification';
+// /home/hamyar/Desktop/My_Folder/zaban-enghelab/app/pages/words/index.vue
+import { ref, onMounted, computed } from 'vue';
+import { useToast } from 'vue-toastification';
+import { useAuthToken } from '@/composables/useAuthCrypto';
 
-// با این کار useToast به درستی استخراج می‌شود
-const { useToast } = pkg;
+const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
 
-// توکن احراز هویت - **حتماً این مقدار را با توکن واقعی کاربر جایگزین کنید.**
-const AUTH_TOKEN = "11|VYO9WhoeovtDEWa1rizPYMeeIIw9hPHTympAmXZ3dcc0df85"; 
-
-const toast = useToast();
+const toast = useToast(); 
 const isExpanded = ref(false);
 
-// این متغیر باید از بیرون (کامپوننت والد) به عنوان prop دریافت شود یا در همین‌جا تعریف گردد
 const OpenModalStudentList = ref(false); 
 
-// --- وضعیت فرم ---
 const selectedDictionary = ref(null);
 const wordName = ref("");
 const definition = ref(""); 
@@ -302,34 +283,62 @@ const opposite = ref("");
 const relatedWords = ref(""); 
 const examples = ref("");   
 
-// --- منطق واکشی دیکشنری‌ها ---
+const searchQuery = ref("");
+const suggestions = ref([
+  "کتاب", "مدرسه", "کامپیوتر", "لغت", "یادگیری", "برنامه‌نویسی",
+]);
+
+const filteredSuggestions = computed(() => {
+  const currentSuggestions = suggestions.value || []; 
+  const query = searchQuery.value?.toLowerCase() || "";
+  
+  if (!query) return []; 
+  
+  return currentSuggestions.filter((item) =>
+    item.toLowerCase().includes(query)
+  )
+});
+
+function selectSuggestion(item) {
+  searchQuery.value = item;
+  // suggestions.value = []; 
+}
+
 const { 
-  fetchDictionaries,
+  fetchDictionaries, 
   responseData: dictionariesResponse, 
   loading: loadingDictionaries, 
   errMessage: dictionariesErrorMsg 
-} = useFetchDictionaries();
+} = useFetchDictionaries(); 
 
-const dictionaries = ref([]);
+const dictionaries = ref([]); 
 const fetchDictionariesList = async () => {
     try {
-        await fetchDictionaries(AUTH_TOKEN);
-        if (dictionariesResponse.value && Array.isArray(dictionariesResponse.value.data)) {
-            dictionaries.value = dictionariesResponse.value.data;
-            // انتخاب اولین دیکشنری به عنوان پیش‌فرض در صورت وجود
+        if (!AUTH_TOKEN.value) {
+             toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
+             return;
+        }
+
+        await fetchDictionaries(AUTH_TOKEN.value);
+        
+        const data = dictionariesResponse.value?.data;
+
+        if (Array.isArray(data)) {
+            dictionaries.value = data;
             if (dictionaries.value.length > 0) {
                 selectedDictionary.value = dictionaries.value[0].id;
             }
+        } else {
+            console.warn("ساختار پاسخ API برای دیکشنری‌ها صحیح نیست:", dictionariesResponse.value);
         }
     } catch (error) {
-        console.error("خطا در واکشی دیکشنری‌ها:", dictionariesErrorMsg.value);
-        toast.error(`خطا در بارگذاری دیکشنری‌ها: ${dictionariesErrorMsg.value}`);
+        console.error("خطا در واکشی دیکشنری‌ها:", error);
+        toast.error(`خطا در بارگذاری دیکشنری‌ها: ${dictionariesErrorMsg.value || 'خطای شبکه'}`);
     }
 };
 
 onMounted(fetchDictionariesList);
 
-// --- منطق ایجاد لغت ---
 const {
   createWord,
   loading: creatingWord,
@@ -340,89 +349,64 @@ const toggleExpansion = () => {
   isExpanded.value = !isExpanded.value;
 };
 
-/**
- * تابع کمکی برای تبدیل ورودی‌های متنی جدا شده با کاما یا خط جدید به آرایه
- * @param {string} text - متن ورودی از فیلدهای textarea
- * @returns {string[]} آرایه‌ای از رشته‌های تمیز شده
- */
 const parseToArray = (text) => {
     if (!text) return [];
-    // تقسیم بر اساس کاما یا خط جدید، حذف فضاهای خالی اطراف و فیلتر کردن رشته‌های خالی
     return text.split(/[\n,]/)
                .map(s => s.trim())
                .filter(s => s.length > 0);
 };
 
 const createWordHandler = async () => {
-    // 1. اعتبارسنجی
     if (!selectedDictionary.value) {
         toast.error("لطفاً یک دیکشنری انتخاب کنید.");
         return;
     }
-    if (!wordName.value || !definition.value) {
+    if (!wordName.value.trim() || !definition.value.trim()) {
         toast.error("فیلدهای نام لغت و تعریف اجباری هستند.");
         return;
     }
+    
+    if (creatingWord.value) return;
 
-    // 2. ساخت Payload مطابق با API
     const payload = {
         dictionary_id: selectedDictionary.value,
-        word: wordName.value,
-        meaning: definition.value, // (تعریف)
+        word: wordName.value.trim(),
+        meaning: definition.value.trim(), // (تعریف)
         synonyms: parseToArray(synonym.value), // (مترادف)
         antonyms: parseToArray(opposite.value), // (متضاد)
         related_words: parseToArray(relatedWords.value), // (هم‌خانواده)
-        description: examples.value, // (مثال‌ها به عنوان توضیحات/Description ارسال می‌شود)
+        description: examples.value.trim(), 
     };
 
     try {
-        // 3. فراخوانی API
-        await createWord(AUTH_TOKEN, payload);
+        if (!AUTH_TOKEN.value) {
+             toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
+             return;
+        }
+
+        await createWord(AUTH_TOKEN.value, payload);
         
-        // 4. نمایش پیام موفقیت
         toast.success("لغت جدید با موفقیت ایجاد شد.");
 
-        // 5. پاک کردن فرم
         wordName.value = "";
         definition.value = "";
         synonym.value = "";
         opposite.value = "";
         relatedWords.value = "";
         examples.value = "";
+        // OpenModalStudentList.value = false;
         
     } catch (error) {
-        // 6. نمایش پیام خطا از کامپوسیبل
-        console.error("خطا در ایجاد لغت:", error.message);
-        toast.error(`خطا در ایجاد لغت: ${createWordErrorMsg.value}`);
+        console.error("خطا در ایجاد لغت:", error);
+        const displayMessage = createWordErrorMsg.value || "خطای ناشناخته در ساخت لغت";
+        toast.error(`خطا در ایجاد لغت: ${displayMessage}`);
     }
 };
-
-const searchQuery = ref("");
-const suggestions = ref([
-  "کتاب",
-  "مدرسه",
-  "کامپیوتر",
-  "لغت",
-  "یادگیری",
-  "برنامه‌نویسی",
-]);
-
-// فیلتر کردن پیشنهادها بر اساس ورودی
-const filteredSuggestions = computed(() =>
-  suggestions.value.filter((item) =>
-    item.includes(searchQuery.value)
-  )
-);
-
-function selectSuggestion(item) {
-  searchQuery.value = item;
-}
 </script>
 
 <style scoped>
 textarea {
-  height: auto; /* ارتفاع اولیه صفر */
-  /* min-height: 48px;  */
+  height: auto; 
   max-height: 150px;
   overflow: hidden;
 }
@@ -442,33 +426,27 @@ textarea {
   transform: scale(0.95);
 }
 
-/* ==== انیمیشن نمایش مودال ==== */
-/* شروع ورود از پایین */
 .modal-slide-enter-from .modal-box {
   transform: translateY(100px);
   opacity: 0;
 }
 
-/* هنگام ورود کامل */
 .modal-slide-enter-to .modal-box {
   transform: translateY(0);
   opacity: 1;
 }
 
-/* شروع خروج به پایین (از بالا بیاد پایین) */
 .modal-slide-leave-to .modal-box {
   transform: translateY(-100px);
   opacity: 0;
 }
 
-/* انیمیشن نرم */
 .modal-slide-enter-active .modal-box,
 .modal-slide-leave-active .modal-box {
   transition: transform 0.5s cubic-bezier(0.22, 0.9, 0.33, 1),
               opacity 0.4s ease;
 }
 
-/* ==== افکت پس‌زمینه تاریک ==== */
 .modal-slide-enter-from {
   opacity: 0;
 }
@@ -485,5 +463,4 @@ textarea {
 .modal-slide-leave-active {
   transition: opacity 0.4s ease;
 }
-
 </style>

@@ -1,36 +1,28 @@
-// composables/useLogin.js
 import axios from "axios";
 import { ref } from "vue";
+import { navigateTo } from "#app";
+import { useAuthStore } from "@/stores/auth"; 
+import api from "@/composables/useAxios";
 
-/**
- * کامپوسیبل مدیریت لاگین با API واقعی
- * @param {Object} params
- * @param {Function} params.toast - برای نمایش پیام‌ها
- * @param {Function} params.generateNewCaptcha - برای تولید کپچای جدید
- * @param {Ref} params.captchaText - متن کپچا
- */
 export function useLogin({ toast, generateNewCaptcha, captchaText }) {
   const username = ref("");
   const password = ref("");
   const captchaInput = ref("");
 
-  const loading = ref(false);      // وضعیت بارگذاری
-  const err = ref(false);          // آیا خطا رخ داده؟
-  const errMessage = ref("");      // پیام خطا
-  const success = ref(false);      // آیا عملیات موفق بود؟
-  const responseData = ref(null);  // پاسخ کامل سرور
-
-  /**
-   * متد اصلی لاگین
-   */
+  const loading = ref(false);    
+  const err = ref(false);
+  const errMessage = ref("");    
+  const success = ref(false);      
+  const responseData = ref(null); 
+  // استفاده از authStore باید در کانتکس Vue/Nuxt باشد که در اینجا صحیح است.
+  const authStore = useAuthStore();
+  
   const login = async () => {
-    // بررسی کامل فیلدها
     if (!username.value || !password.value || !captchaInput.value) {
       toast.error("لطفاً تمام فیلدها را پر کنید.");
       return;
     }
 
-    // اعتبارسنجی کپچا
     if (captchaInput.value.trim() !== captchaText.value.trim()) {
       toast.error("کد امنیتی اشتباه است. لطفاً دوباره تلاش کنید.");
       captchaInput.value = "";
@@ -45,25 +37,28 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
     responseData.value = null;
 
     try {
-      // ارسال درخواست POST با query params
-      const response = await axios.post(
-        "https://ip3.ir/dictionary/api/v1/login",
-        null, // body خالی
-        {
-          params: {
-            username: username.value,
-            password: password.value,
-          },
-          timeout: 10000, // ۱۰ ثانیه تایم‌اوت اختیاری
-        }
-      );
+      const response = await api.post("/login", {
+        username: username.value,
+        password: password.value,
+      })
 
       responseData.value = response.data;
       success.value = true;
-      toast.success("ورود موفقیت‌آمیز بود 🎉");
-
+      
+      // ۳. ذخیره توکن و اطلاعات کاربر در Pinia
+      if (responseData.value.status_response === 'SUCCESS' && responseData.value.token) {
+          authStore.setLoginData(responseData.value); 
+          toast.success("ورود موفقیت‌آمیز بود. در حال هدایت...");
+          
+          // ۴. هدایت به صفحه اصلی پس از ورود موفق
+          await navigateTo('/'); 
+      } else {
+          toast.error("ورود موفق بود، اما ساختار پاسخ سرور صحیح نیست.");
+          generateNewCaptcha();
+      }
+      
       return response.data;
-    } catch (error: any) {
+    } catch (error) {
       err.value = true;
 
       let message =
@@ -82,7 +77,8 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
       captchaInput.value = "";
       generateNewCaptcha();
 
-      throw new Error(message);
+      // از پرت کردن خطای عمومی خود Axios به جای خطای CSRF/Message استفاده کنید
+      throw new Error(message); 
     } finally {
       loading.value = false;
     }
@@ -97,6 +93,6 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
     errMessage,
     success,
     responseData,
-    login,
+    login, 
   };
 }

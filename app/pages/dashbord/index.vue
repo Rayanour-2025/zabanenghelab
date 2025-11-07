@@ -141,13 +141,8 @@
 
 </template>
 
-<script setup lang="ts">
-definePageMeta({
-  middleware: 'auth' 
-})
+<script setup>
 
-// استفاده از داده‌های کاربر در کامپوننت
-const { user } = useUserSession()
 </script>
 
 <style>

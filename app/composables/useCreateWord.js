@@ -17,7 +17,7 @@ const useCreateWord = () => {
     responseData.value = null;
 
     console.log(payload)
-    const apiUrl = 'https://ip3.ir/dictionary/api/v1/words';
+    const apiUrl = '/api/words';
 
     try {
       const response = await axios.post(

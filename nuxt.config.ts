@@ -1,16 +1,34 @@
+// /home/hamyar/Desktop/My_Folder/zaban-enghelab/nuxt.config.ts
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
+
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss'],
+
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'], 
+
   css: ['~/assets/css/tailwind.css'],
+
   app: {
     head: {
-      title: 'My Nuxt App',
-      // meta: [
-      //   { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      //   { name: 'csrf-token', content: 'YOUR_CSRF_TOKEN_HERE' }
-      // ]
+      title: 'زبان انقلاب',
+    },
+  },
+
+  runtimeConfig: {
+    public: {
+      authSecretKey: process.env.AUTH_SECRET_KEY, 
     }
-  }
+  },
+
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'https://ip3.ir/dictionary/api/v1', 
+        changeOrigin: true,
+        prependPath: true,
+      },
+    },
+  },
 })
+

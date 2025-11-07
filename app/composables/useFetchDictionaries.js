@@ -2,21 +2,13 @@
 import axios from "axios";
 import { ref } from "vue";
 
-/**
- * واکشی فهرست لغت‌نامه‌ها
- * @returns {Object} reactive states & methods
- */
 const useFetchDictionaries = () => {
-  const responseData = ref(null);  // پاسخ کامل سرور
-  const loading = ref(false);      // وضعیت بارگذاری
-  const err = ref(false);          // آیا خطا رخ داده؟
-  const errMessage = ref("");      // پیام خطا
-  const success = ref(false);      // آیا عملیات موفق بود؟
+  const responseData = ref(null);
+  const loading = ref(false);    
+  const err = ref(false);        
+  const errMessage = ref("");     
+  const success = ref(false);   
 
-  /**
-   * واکشی فهرست لغت‌نامه‌ها
-   * @param {string} token - توکن احراز هویت کاربر (اختیاری)
-   */
   const fetchDictionaries = async (token = null) => {
     loading.value = true;
     err.value = false;
@@ -24,7 +16,6 @@ const useFetchDictionaries = () => {
     errMessage.value = "";
     responseData.value = null;
 
-    // تنظیم هدرها، توکن در صورت وجود اضافه می‌شود
     const headers = {};
     if (token) {
       headers.Authorization = `Bearer ${token}`;
@@ -52,7 +43,6 @@ const useFetchDictionaries = () => {
       }
 
       errMessage.value = message;
-      // پرتاب یک خطا برای مدیریت آن توسط کامپوننت فراخواننده
       throw new Error(message);
     } finally {
       loading.value = false;
