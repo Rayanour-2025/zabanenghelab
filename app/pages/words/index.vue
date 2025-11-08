@@ -130,7 +130,6 @@
                 ></textarea>
               </div>
             </div>
-
             <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
               <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
                 <label class="text-lg leading-[28px] text-[#2B2B2B]">:مثال‌ها</label>
@@ -149,18 +148,18 @@
                 ></textarea>
               </div>
             </div>
-
-
-            <div class="w-full flex flex-col items-end gap-[10px]">
-              <label class="text-lg leading-[28px] text-[#2B2B2B]">:بارگذاری صوت (اختیاری)</label>
-              <input
-                type="file"
-                @change="handleAudioUpload"
-                accept="audio/*"
-                class="w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-[#7FB77E] hover:file:bg-green-200 cursor-pointer bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] focus:outline-none p-3"
-              />
-              <span v-if="audioFile" class="text-sm text-[#7FB77E] text-right">فایل انتخاب شده: {{ audioFile.name }}</span>
-              <span v-else class="text-sm text-gray-500 text-right">فایلی انتخاب نشده است.</span>
+            <div class="w-full flex flex-col items-end gap-[10px] mt-4">
+                <label class="text-lg leading-[28px] text-[#2B2B2B] flex items-center gap-2">
+                    <span v-if="voiceFile">فایل صوت انتخاب شده: **{{ voiceFile.name }}**</span>
+                    <span v-else>:بارگذاری فایل صوت (اختیاری)</span>
+                    <icons-upload class="w-5 h-5" />
+                </label>
+                <input
+                    type="file"
+                    @change="handleVoiceFileUpload"
+                    accept="audio/*"
+                    class="w-full text-right file:hidden p-0 bg-transparent rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] focus:outline-none cursor-pointer border border-[#7FB77E] px-[16px] py-[14px]"
+                />
             </div>
           </div>
 
@@ -208,10 +207,6 @@ import { ref, onMounted, computed, watch } from 'vue'; // 💡 watch اضافه 
 import { useToast } from 'vue-toastification/dist/index.mjs';
 import { useAuthToken } from '@/composables/useAuthCrypto';
 
-// فرض بر این است که useFetchDictionaries و useCreateWord تعریف شده‌اند
-// import { useFetchDictionaries } from '@/composables/useFetchDictionaries';
-// import { useCreateWord } from '@/composables/useCreateWord'; 
-
 const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
 
 const toast = useToast(); 
@@ -225,10 +220,22 @@ const definition = ref("");
 const synonym = ref("");    
 const opposite = ref("");   
 const relatedWords = ref(""); 
-const examples = ref("");  
-const audioFile = ref(null); 
-
+const examples = ref("");   
+const voiceFile = ref(null);
 // ... بقیه کد (search, fetchDictionaries, onMounted) ...
+
+const handleVoiceFileUpload = (event) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    if (file && file.type.startsWith('audio/')) {
+        voiceFile.value = file;
+    } else if (file) {
+        toast.error("لطفا یک فایل صوتی معتبر انتخاب کنید.");
+        event.target.value = ''; // پاک کردن فایل نامعتبر
+        voiceFile.value = null;
+    } else {
+        voiceFile.value = null;
+    }
+};
 
 // **تابع parseToArray اصلاح شده برای پشتیبانی از "-"**
 const parseToArray = (text) => {
@@ -268,18 +275,6 @@ onMounted(() => {
   fetchDictionariesList();
   setupWordFormatWatchers();
 });
-
-const handleAudioUpload = (event) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (file && file.type.startsWith('audio/')) {
-        audioFile.value = file;
-    } else {
-        audioFile.value = null;
-        toast.error("لطفاً یک فایل صوتی معتبر انتخاب کنید.");
-        // 💡 برای پاک کردن نمایش فایل اشتباه از ورودی
-        event.target.value = null; 
-    }
-};
 
 
 // ... بقیه کد (filteredSuggestions, selectSuggestion, fetchDictionariesList) ...
@@ -356,37 +351,34 @@ const createWordHandler = async () => {
         toast.error("فیلدهای نام لغت و تعریف اجباری هستند.");
         return;
     }
-
+    
     if (creatingWord.value) return;
 
-    // 💡 استفاده از FormData برای ارسال فایل
-    const payload = new FormData();
-    payload.append('dictionary_id', selectedDictionary.value);
-    payload.append('word', wordName.value.trim());
-    payload.append('meaning', definition.value.trim());
-    payload.append('description', examples.value.trim());
+    if (!AUTH_TOKEN.value) {
+        toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
+        return;
+    }
+    
+    // 💡 استفاده از FormData برای ارسال داده‌های متنی و فایل
+    const formData = new FormData();
+    formData.append('dictionary_id', selectedDictionary.value);
+    formData.append('word', wordName.value.trim());
+    formData.append('meaning', definition.value.trim());
+    formData.append('description', examples.value.trim()); 
 
-    // 💡 ارسال فیلدهای آرایه‌ای به صورت رشته‌های جدا شده با کاما یا خط فاصله (بسته به نیاز API)
-    // اغلب APIها برای فایل، داده‌ها را به شکل متنی دریافت می‌کنند
-    payload.append('synonyms', parseToArray(synonym.value).join(',')); 
-    payload.append('antonyms', parseToArray(opposite.value).join(',')); 
-    payload.append('related_words', parseToArray(relatedWords.value).join(',')); 
-
-    // 💡 اضافه کردن فایل صوتی اگر وجود داشته باشد
-    if (audioFile.value) {
-        // نام فیلد در FormData (مثلاً 'voice') باید مطابق با نام مورد انتظار در API باشد
-        payload.append('voice', audioFile.value); 
+    // اضافه کردن آرایه‌های متنی با فرمت صحیح (API نیاز به[] دارد)
+    parseToArray(synonym.value).forEach(s => formData.append('synonyms[]', s));
+    parseToArray(opposite.value).forEach(a => formData.append('antonyms[]', a));
+    parseToArray(relatedWords.value).forEach(r => formData.append('related_words[]', r));
+    
+    // 💡 اضافه کردن فایل صوتی در صورت وجود
+    if (voiceFile.value) {
+        formData.append('voice', voiceFile.value); // voice نام فیلد در API است
     }
 
     try {
-        if (!AUTH_TOKEN.value) {
-             toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
-             return;
-        }
-
-        // 💡 اکنون createWord باید FormData را قبول کند
-        await createWord(AUTH_TOKEN.value, payload); 
-
+        await createWord(AUTH_TOKEN.value, formData); // ارسال FormData
+        
         toast.success("لغت جدید با موفقیت ایجاد شد.");
 
         wordName.value = "";
@@ -395,7 +387,8 @@ const createWordHandler = async () => {
         opposite.value = "";
         relatedWords.value = "";
         examples.value = "";
-        audioFile.value = null; // 💡 ریست کردن فایل صوتی
+        // 💡 ریست کردن فیلد صوت
+        voiceFile.value = null; 
         // OpenModalStudentList.value = false;
         
     } catch (error) {
