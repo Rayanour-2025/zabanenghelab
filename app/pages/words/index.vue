@@ -149,21 +149,6 @@
                 ></textarea>
               </div>
             </div>
-
-            <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
-              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-                <label class="text-lg leading-[28px] text-[#2B2B2B]">:فایل صوتی</label>
-                <input
-                  type="file"
-                  accept="audio/*"
-                  @change="handleVoiceUpload"
-                  class="w-full px-[16px] py-[12px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] text-right focus:outline-none cursor-pointer"
-                />
-                <span v-if="voiceFile" class="text-xs text-green-600 mt-1">
-                  فایل انتخاب شده: {{ voiceFile.name }}
-                </span>
-              </div>
-            </div>
           </div>
 
           <div class="relative w-full flex flex-col items-center">
@@ -224,14 +209,6 @@ const synonym = ref("");
 const opposite = ref("");   
 const relatedWords = ref(""); 
 const examples = ref("");   
-const voiceFile = ref(null);
-
-const handleVoiceUpload = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    voiceFile.value = file;
-  }
-};
 
 // ... بقیه کد (search, fetchDictionaries, onMounted) ...
 
@@ -341,70 +318,51 @@ const toggleExpansion = () => {
 };
 
 const createWordHandler = async () => {
-  if (!selectedDictionary.value) {
-    toast.error("لطفاً یک دیکشنری انتخاب کنید.");
-    return;
-  }
-  if (!wordName.value.trim() || !definition.value.trim()) {
-    toast.error("فیلدهای نام لغت و تعریف اجباری هستند.");
-    return;
-  }
-  if (creatingWord.value) return;
-
-  // 💡 از FormData برای ارسال فایل استفاده می‌کنیم
-  const formData = new FormData();
-  formData.append("dictionary_id", selectedDictionary.value);
-  formData.append("word", wordName.value.trim());
-  formData.append("meaning", definition.value.trim());
-  formData.append("description", examples.value.trim());
-
-  // مترادف‌ها
-  parseToArray(synonym.value).forEach((item) => {
-    formData.append("synonyms[]", item);
-  });
-
-  // متضادها
-  parseToArray(opposite.value).forEach((item) => {
-    formData.append("antonyms[]", item);
-  });
-
-  // هم‌خانواده
-  parseToArray(relatedWords.value).forEach((item) => {
-    formData.append("related_words[]", item);
-  });
-
-  // 💡 اگر فایل صوتی انتخاب شده بود
-  if (voiceFile.value) {
-    formData.append("voice", voiceFile.value);
-  }
-
-  try {
-    if (!AUTH_TOKEN.value) {
-      toast.error("خطا: توکن احراز هویت یافت نشد. لطفاً دوباره وارد شوید.");
-      return;
+    if (!selectedDictionary.value) {
+        toast.error("لطفاً یک دیکشنری انتخاب کنید.");
+        return;
     }
+    if (!wordName.value.trim() || !definition.value.trim()) {
+        toast.error("فیلدهای نام لغت و تعریف اجباری هستند.");
+        return;
+    }
+    
+    if (creatingWord.value) return;
 
-    await createWord(AUTH_TOKEN.value, formData);
+    const payload = {
+        dictionary_id: selectedDictionary.value,
+        word: wordName.value.trim(),
+        meaning: definition.value.trim(), // (تعریف)
+        synonyms: parseToArray(synonym.value), // (مترادف)
+        antonyms: parseToArray(opposite.value), // (متضاد)
+        related_words: parseToArray(relatedWords.value), // (هم‌خانواده)
+        description: examples.value.trim(), 
+    };
 
-    toast.success("لغت جدید با موفقیت ایجاد شد.");
+    try {
+        if (!AUTH_TOKEN.value) {
+             toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
+             return;
+        }
 
-    // ریست فیلدها
-    wordName.value = "";
-    definition.value = "";
-    synonym.value = "";
-    opposite.value = "";
-    relatedWords.value = "";
-    examples.value = "";
-    voiceFile.value = null;
+        await createWord(AUTH_TOKEN.value, payload);
+        
+        toast.success("لغت جدید با موفقیت ایجاد شد.");
 
-  } catch (error) {
-    console.error("خطا در ایجاد لغت:", error);
-    const displayMessage =
-      createWordErrorMsg.value || "خطای ناشناخته در ساخت لغت";
-    toast.error(`خطا در ایجاد لغت: ${displayMessage}`);
-  }
+        wordName.value = "";
+        definition.value = "";
+        synonym.value = "";
+        opposite.value = "";
+        relatedWords.value = "";
+        examples.value = "";
+        // OpenModalStudentList.value = false;
+        
+    } catch (error) {
+        console.error("خطا در ایجاد لغت:", error);
+        const displayMessage = createWordErrorMsg.value || "خطای ناشناخته در ساخت لغت";
+        toast.error(`خطا در ایجاد لغت: ${displayMessage}`);
+    }
 };
-
 </script>
 
 <style scoped>

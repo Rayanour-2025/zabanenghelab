@@ -3,11 +3,11 @@ import axios from "axios";
 import { ref } from "vue";
 
 const useCreateWord = () => {
-  const responseData = ref(null);
-  const loading = ref(false);
-  const err = ref(false);
-  const errMessage = ref("");
-  const success = ref(false);
+  const responseData = ref(null); 
+  const loading = ref(false);    
+  const err = ref(false);         
+  const errMessage = ref("");    
+  const success = ref(false);    
 
   const createWord = async (token, payload) => {
     loading.value = true;
@@ -16,24 +16,28 @@ const useCreateWord = () => {
     errMessage.value = "";
     responseData.value = null;
 
-    const apiUrl = "https://ip3.ir/dictionary/api/v1/words";
+    // console.log(payload)
+    const apiUrl = 'https://ip3.ir/dictionary/api/v1/words';
 
     try {
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+      const response = await axios.post(
+        apiUrl,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      // 💡 اگر payload از نوع FormData نیست، نوع JSON را تعیین می‌کنیم
-      if (!(payload instanceof FormData)) {
-        headers["Content-Type"] = "application/json";
-      }
+      axios.defaults.withCredentials = false ;
 
-      const response = await axios.post(apiUrl, payload, { headers });
       responseData.value = response.data;
       success.value = true;
       return response.data;
     } catch (error) {
-      console.log(error);
+      console.log(error)
       err.value = true;
       let message =
         error.response?.data?.message ||
