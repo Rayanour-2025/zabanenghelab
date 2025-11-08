@@ -16,7 +16,7 @@ const useCreateWord = () => {
     errMessage.value = "";
     responseData.value = null;
 
-    // console.log(payload)
+    console.log(payload)
     const apiUrl = 'https://ip3.ir/dictionary/api/v1/words';
 
     try {
