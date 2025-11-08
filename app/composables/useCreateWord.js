@@ -9,6 +9,7 @@ const useCreateWord = () => {
   const errMessage = ref("");    
   const success = ref(false);    
 
+  // 💡 payload اکنون می تواند FormData یا آبجکت JSON باشد
   const createWord = async (token, payload) => {
     loading.value = true;
     err.value = false;
@@ -26,7 +27,6 @@ const useCreateWord = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
           },
         }
       );
