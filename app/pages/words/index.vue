@@ -83,11 +83,7 @@
     </div>
 
     <transition name="modal-slide" appear>
-      <div
-        v-if="OpenModalStudentList"
-        @click="OpenModalStudentList = false"
-        class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50"
-      >
+      <div v-if="OpenModalStudentList" @click="OpenModalStudentList = false" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50" >
         <div
           @click.stop
           class="absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-xl bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[45px] flex flex-col items-center px-[28px] py-[35px] gap-[32px] font-zain"
@@ -132,6 +128,15 @@
 
             <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
               <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:تعریف</label>
+                <textarea
+                  v-model="definition"
+                  placeholder="تعریف مورد نظر را وارد کنید"
+                  dir="rtl"
+                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
+                ></textarea>
+              </div>
+              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
                 <label class="text-lg leading-[28px] text-[#2B2B2B]">:نام لغت</label>
                 <input
                   type="text"
@@ -141,27 +146,9 @@
                   class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] text-right truncate focus:outline-none"
                 />
               </div>
-              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-                <label class="text-lg leading-[28px] text-[#2B2B2B]">:تعریف</label>
-                <textarea
-                  v-model="definition"
-                  placeholder="تعریف مورد نظر را وارد کنید"
-                  dir="rtl"
-                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
-                ></textarea>
-              </div>
             </div>
 
             <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
-              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-                <label class="text-lg leading-[28px] text-[#2B2B2B]">:مترادف</label>
-                <textarea
-                  v-model="synonym"
-                  placeholder="مترادف‌ها را با کاما یا خط جدید جدا کنید"
-                  dir="rtl"
-                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
-                ></textarea>
-              </div>
               <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
                 <label class="text-lg leading-[28px] text-[#2B2B2B]">:متضاد</label>
                 <textarea
@@ -171,23 +158,32 @@
                   class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
                 ></textarea>
               </div>
-            </div>
-
-            <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
               <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-                <label class="text-lg leading-[28px] text-[#2B2B2B]">:هم‌خانواده</label>
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:مترادف</label>
                 <textarea
-                  v-model="relatedWords"
-                  placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
+                  v-model="synonym"
+                  placeholder="مترادف‌ها را با کاما یا خط جدید جدا کنید"
                   dir="rtl"
                   class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
                 ></textarea>
               </div>
+            </div>
+
+            <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
               <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
                 <label class="text-lg leading-[28px] text-[#2B2B2B]">:مثال‌ها</label>
                 <textarea
                   v-model="examples"
                   placeholder="مثال‌های مرتبط را بنویسید (به عنوان توضیحات/Description ارسال می‌شود)"
+                  dir="rtl"
+                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
+                ></textarea>
+              </div>
+              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:هم‌خانواده</label>
+                <textarea
+                  v-model="relatedWords"
+                  placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
                   dir="rtl"
                   class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
                 ></textarea>
