@@ -205,7 +205,7 @@ const definition = ref("");
 const synonym = ref("");    
 const opposite = ref("");   
 const relatedWords = ref(""); 
-const voiceFile = ref(null);
+const voiceFile = ref(null); // متغیر برای نگهداری فایل صوتی
 const examples = ref("");   
 
 const isEditMode = ref(false); 
@@ -222,12 +222,22 @@ const handleAuthError = () => {
 const handleVoiceUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
+        // اطمینان از اینکه فایل صوتی است
         if (!file.type.startsWith('audio/')) {
             toast.error("فقط فایل‌های صوتی مجاز هستند.");
             voiceFile.value = null;
             event.target.value = ''; 
             return;
         }
+        // محدودیت سایز (اختیاری)
+        // اگر سرور شما محدودیت سایز دارد، اینجا کنترل کنید.
+        // if (file.size > 5 * 1024 * 1024) { // 5MB
+        //     toast.error("حجم فایل صوتی نباید بیشتر از 5 مگابایت باشد.");
+        //     voiceFile.value = null;
+        //     event.target.value = ''; 
+        //     return;
+        // }
+        
         voiceFile.value = file;
     } else {
         voiceFile.value = null;
@@ -265,7 +275,6 @@ const fetchDictionariesList = async () => {
     try {
         if (!AUTH_TOKEN.value) {
             handleAuthError();
-            //  toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
             return;
         }
 
@@ -297,7 +306,12 @@ const clearWordFields = () => {
     opposite.value = "";
     relatedWords.value = "";
     examples.value = "";
-    voiceFile.value = null;
+    voiceFile.value = null; // پاکسازی فایل صوتی
+    
+    // اگر از یک <input type="file"> استفاده می‌کنید که به‌طور مستقیم به <template> متصل است،
+    // باید آن را به صورت دستی با استفاده از ref یا DOM دستکاری کنید تا فایل انتخاب شده حذف شود.
+    // در این مثال، فرض شده که فایل به صورت مستقیم در متغیر voiceFile.value نگهداری می‌شود.
+
     isExpanded.value = false; 
     if (dictionaries.value.length > 0) {
         selectedDictionary.value = dictionaries.value[0].id; 
@@ -328,6 +342,10 @@ const editWord = (word) => {
     relatedWords.value = arrayToFormattedString(word.related_words);
     examples.value = word.description || "";
     
+    // نکته: در حالت ویرایش، نمی‌توانیم فایل صوتی را مستقیماً بارگذاری کنیم، 
+    // چون URL صوتی موجود را نمی‌توانیم به آبجکت File تبدیل کنیم.
+    // اگر کاربر بخواهد فایل صوتی را تغییر دهد، باید فایل جدیدی آپلود کند که voiceFile.value را پر می‌کند.
+    
     OpenModalStudentList.value = true; 
     searchQuery.value = "";
 }
@@ -342,15 +360,11 @@ watch(searchQuery, (newQuery) => {
     
     searchResults.value = []; 
     
-    // if (newQuery.length < 2) {
-    //     return; 
-    // }
-
+    // ... منطق جستجو
     searchTimer = setTimeout(async () => {
         try {
             if (!AUTH_TOKEN.value) {
                 handleAuthError();
-                // toast.error("خطا: توکن احراز هویت یافت نشد.");
                 return;
             }
             
@@ -359,7 +373,6 @@ watch(searchQuery, (newQuery) => {
             searchResults.value = response.data || [];
         } catch (error) {
             console.error("خطا در جستجوی لغت:", error);
-            // toast.error(`خطا در جستجو: ${searchErrorMsg.value || 'خطای شبکه'}`); // اختیاری
             searchResults.value = []; 
         }
     }, 500); 
@@ -374,6 +387,7 @@ const parseToArray = (text) => {
 };
 
 const setupWordFormatWatchers = () => {
+  // ... منطق watcherها (بدون تغییر)
   watch(synonym, (newValue) => {
     if (newValue.includes(' ')) {
       synonym.value = newValue.replace(/\s+/g, '-');
@@ -410,40 +424,43 @@ const saveWordHandler = async () => {
         return;
     }
     
-    // --- ساخت Payload: استفاده از FormData در صورت وجود فایل صوتی ---
     let payload;
     let contentType;
     
-    // اگر فایل صوتی وجود داشت یا حالت ویرایش بود، از FormData استفاده می‌کنیم
+    // **حالت 1: ارسال فایل صوتی یا حالت ویرایش (استفاده از FormData)**
     if (voiceFile.value || isEditMode.value) {
         payload = new FormData();
         contentType = 'multipart/form-data';
         
-        // افزودن فیلدهای ساده
+        // --- افزودن فیلدهای ساده ---
         payload.append('word', wordName.value.trim());
         payload.append('meaning', definition.value.trim()); 
+        // description معمولاً اختیاری است، اما اگر خالی بود، رشته خالی می‌فرستیم (null در FormData قابل اطمینان نیست)
         payload.append('description', examples.value.trim() || ''); 
 
-        // اگر حالت ویرایش نبود، dictionary_id را اضافه کنید
+        // --- افزودن شناسه دیکشنری ---
         if (!isEditMode.value) {
+            // فقط در حالت ایجاد
             payload.append('dictionary_id', selectedDictionary.value);
         } else {
-             // برای متد PATCH/PUT در لاراول (اگر استفاده می‌شود)، متد را باید در فرم دیتا بفرستیم
+             // برای ویرایش (در لاراول یا فریمورک‌های مشابه)
              payload.append('_method', 'PATCH'); 
         }
 
-        // افزودن آرایه‌ها (Synonyms, Antonyms, RelatedWords) به صورت جداگانه
+        // --- افزودن آرایه‌ها ---
         parseToArray(synonym.value).forEach(item => payload.append('synonyms[]', item));
         parseToArray(opposite.value).forEach(item => payload.append('antonyms[]', item));
         parseToArray(relatedWords.value).forEach(item => payload.append('related_words[]', item));
 
-        // افزودن فایل صوتی
+        // --- افزودن فایل صوتی (اصلاح شده برای دقت بیشتر) ---
         if (voiceFile.value) {
-            payload.append('voice', voiceFile.value);
+             // نام فیلد voice است، خود فایل voiceFile.value است، و نام آن voiceFile.value.name است.
+            payload.append('voice', voiceFile.value, voiceFile.value.name);
         }
         
-    } else {
-        // در صورت عدم وجود فایل صوتی و حالت ایجاد، از JSON استفاده می‌کنیم
+    } 
+    // **حالت 2: عدم وجود فایل صوتی و حالت ایجاد (استفاده از JSON)**
+    else {
         payload = {
             dictionary_id: selectedDictionary.value,
             word: wordName.value.trim(),
@@ -459,11 +476,11 @@ const saveWordHandler = async () => {
 
     try {
         if (isEditMode.value && currentWordId.value) {
-            // توجه: تابع updateWord باید برای پذیرش FormData بهینه شود
+            // ارسال به useUpdateWord
             await updateWord(AUTH_TOKEN.value, currentWordId.value, payload, contentType);
             toast.success("لغت با موفقیت ویرایش شد.");
         } else {
-            // توجه: تابع createWord باید برای پذیرش FormData بهینه شود
+            // ارسال به useCreateWord
             await createWord(AUTH_TOKEN.value, payload, contentType);
             toast.success("لغت جدید با موفقیت ایجاد شد.");
         }
@@ -473,8 +490,11 @@ const saveWordHandler = async () => {
         
     } catch (error) {
         console.error(`خطا در ${isEditMode.value ? 'ویرایش' : 'ایجاد'} لغت:`, error);
-        const errorMsg = isEditMode.value ? updateWordErrorMsg.value : createWordErrorMsg.value;
-        const displayMessage = errorMsg || "خطای ناشناخته در پردازش لغت";
+        
+        // استخراج پیام خطای سمت سرور
+        const serverError = error.response?.data?.message || JSON.stringify(error.response?.data?.errors);
+        
+        const displayMessage = serverError || (isEditMode.value ? updateWordErrorMsg.value : createWordErrorMsg.value) || "خطای ناشناخته در پردازش لغت";
         toast.error(`خطا: ${displayMessage}`);
     }
 };
