@@ -37,7 +37,7 @@
                             <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
                         </svg>
                     </button>
-                    <div class="flex flex-col items-start justify-start flex-grow min-w-0 pr-2">
+                    <div class="flex flex-col items-start justify-end flex-grow min-w-0 pr-2">
                         <span class="font-bold text-sm text-[#2B2B2B] truncate w-full">{{ word.word }}</span>
                         <span class="text-gray-500 text-xs mt-1 truncate w-full inline-block">{{ word.meaning }}</span>
                     </div>
