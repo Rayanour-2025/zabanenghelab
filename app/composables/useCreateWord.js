@@ -9,33 +9,36 @@ const useCreateWord = () => {
   const errMessage = ref("");    
   const success = ref(false);    
 
-  const createWord = async (token, payload) => {
+  const createWord = async (token, payload, contentType = "application/json") => { // پذیرش contentType
     loading.value = true;
     err.value = false;
     success.value = false;
     errMessage.value = "";
     responseData.value = null;
-
-    // console.log(payload)
     const apiUrl = 'https://ip3.ir/dictionary/api/v1/words';
-
     try {
-      const response = await axios.post(
-        apiUrl,
-        payload,
-        {
-          headers: {
+        
+        let headers = {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+        };
+        // اگر contentType برابر با multipart/form-data بود، نباید Content-Type را تنظیم کنیم.
+        // Axios خودش با توجه به FormData، Content-Type مناسب را با boundary تنظیم می‌کند.
+        if (contentType === "application/json") {
+            headers["Content-Type"] = "application/json";
+        } else {
+            // اگر FormData باشد، Content-Type را حذف می‌کنیم تا مرورگر آن را مدیریت کند.
+            // در Axios تنظیم Content-Type: multipart/form-data برای FormData مشکل ایجاد می‌کند.
+            // لذا فقط Authorization را می‌فرستیم.
         }
-      );
-
-      axios.defaults.withCredentials = false ;
-
-      responseData.value = response.data;
-      success.value = true;
-      return response.data;
+        const response = await axios.post(
+            apiUrl,
+            payload,
+            {
+                headers: headers,
+            }
+        );
+        // ... (بقیه منطق)
+        return response.data;
     } catch (error) {
       console.log(error)
       err.value = true;

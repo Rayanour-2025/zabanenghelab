@@ -78,92 +78,107 @@
       </div>
     </div>
 
-<transition name="modal-slide" appear>
-  <div v-if="OpenModalStudentList" @click="OpenModalStudentList = false" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50" >
-    <div @click.stop class="absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[45px] flex flex-col items-center px-[28px] py-[35px] gap-[32px] font-zain" >
-      
-      <!-- <h2 class="text-xl font-bold text-[#7FB77E] mb-4">{{ isEditMode ? 'ویرایش لغت' : 'اضافه کردن لغت جدید' }}</h2> -->
-      
-      <div :class="['w-full','overflow-hidden','flex','flex-col','items-end','gap-5','mb-3','transition-all','duration-500','ease-in-out',isExpanded ? 'max-h-[2000px]' : 'max-h-52',]" >
-        <div class="flex flex-col items-end gap-[10px] w-full">
-          <span class="text-base leading-[24px] text-[#2B2B2B]">:لطفا دیکشنری مورد نظر را انتخاب کنید</span>
-          <div class="relative w-full sm:w-[300px]">
-            <div v-if="loadingDictionaries" class="p-3 text-xs text-gray-500">در حال بارگذاری دیکشنری‌ها...</div>
-            <select v-else v-model="selectedDictionary" :disabled="isEditMode" class="appearance-none w-full h-[50px] px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-right text-xs text-[#2B2B2B] focus:outline-none cursor-pointer truncate" >
-              <option :value="null" disabled>انتخاب یا سرچ میان دیکشنری‌ها</option>
-              <option v-for="dict in dictionaries" :key="dict.id" :value="dict.id">{{ dict.name }}</option>
-            </select>
-            <icons-down-arrow v-if="!loadingDictionaries" class="absolute left-[16px] top-1/2 -translate-y-1/2 w-[13px] h-[13px] pointer-events-none" />
-            <p v-if="isEditMode" class="text-xs text-red-500 mt-1">دیکشنری لغت ویرایشی قابل تغییر نیست.</p>
-          </div>
-        </div>
+    <transition name="modal-slide" appear>
+      <div v-if="OpenModalStudentList" @click="OpenModalStudentList = false" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50" >
+        <div @click.stop class="absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[45px] flex flex-col items-center px-[28px] py-[35px] gap-[32px] font-zain" >
+          
+          <!-- <h2 class="text-xl font-bold text-[#7FB77E] mb-4">{{ isEditMode ? 'ویرایش لغت' : 'اضافه کردن لغت جدید' }}</h2> -->
+          
+          <div :class="['w-full','overflow-hidden','flex','flex-col','items-end','gap-5','mb-3','transition-all','duration-500','ease-in-out',isExpanded ? 'max-h-[2000px]' : 'max-h-52',]" >
+            <div class="flex flex-col items-end gap-[10px] w-full">
+              <span class="text-base leading-[24px] text-[#2B2B2B]">:لطفا دیکشنری مورد نظر را انتخاب کنید</span>
+              <div class="relative w-full sm:w-[300px]">
+                <div v-if="loadingDictionaries" class="p-3 text-xs text-gray-500">در حال بارگذاری دیکشنری‌ها...</div>
+                <select v-else v-model="selectedDictionary" :disabled="isEditMode" class="appearance-none w-full h-[50px] px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-right text-xs text-[#2B2B2B] focus:outline-none cursor-pointer truncate" >
+                  <option :value="null" disabled>انتخاب یا سرچ میان دیکشنری‌ها</option>
+                  <option v-for="dict in dictionaries" :key="dict.id" :value="dict.id">{{ dict.name }}</option>
+                </select>
+                <icons-down-arrow v-if="!loadingDictionaries" class="absolute left-[16px] top-1/2 -translate-y-1/2 w-[13px] h-[13px] pointer-events-none" />
+                <p v-if="isEditMode" class="text-xs text-red-500 mt-1">دیکشنری لغت ویرایشی قابل تغییر نیست.</p>
+              </div>
+            </div>
 
-        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-            <label class="text-lg leading-[28px] text-[#2B2B2B]">:تعریف</label>
-            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none" ></textarea>
-          </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-            <label class="text-lg leading-[28px] text-[#2B2B2B]">:نام لغت</label>
-            <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] text-right truncate focus:outline-none" />
-          </div>
-        </div>
+            <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
+              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:تعریف</label>
+                <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none" ></textarea>
+              </div>
+              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:نام لغت</label>
+                <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] text-right truncate focus:outline-none" />
+              </div>
+            </div>
 
-        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-            <label class="text-lg leading-[28px] text-[#2B2B2B]">:متضاد</label>
-            <textarea
-              v-model="opposite"
-              placeholder="متضادها را با کاما یا خط جدید جدا کنید"
-              class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
-            ></textarea>
-          </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-            <label class="text-lg leading-[28px] text-[#2B2B2B]">:مترادف</label>
-            <textarea
-              v-model="synonym"
-              placeholder="مترادف‌ها را با کاما یا خط جدید جدا کنید"
-              class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
-            ></textarea>
-          </div>
-        </div>
+            <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
+              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:متضاد</label>
+                <textarea
+                  v-model="opposite"
+                  placeholder="متضادها را با کاما یا خط جدید جدا کنید"
+                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
+                ></textarea>
+              </div>
+              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:مترادف</label>
+                <textarea
+                  v-model="synonym"
+                  placeholder="مترادف‌ها را با کاما یا خط جدید جدا کنید"
+                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
+                ></textarea>
+              </div>
+            </div>
 
-        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-            <label class="text-lg leading-[28px] text-[#2B2B2B]">:مثال‌ها</label>
-            <textarea
-              v-model="examples"
-              placeholder="مثال‌های مرتبط را بنویسید (به عنوان توضیحات/Description ارسال می‌شود)"
-              class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
-            ></textarea>
+            <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
+              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:مثال‌ها</label>
+                <textarea
+                  v-model="examples"
+                  placeholder="مثال‌های مرتبط را بنویسید (به عنوان توضیحات/Description ارسال می‌شود)"
+                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
+                ></textarea>
+              </div>
+              <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:هم‌خانواده</label>
+                <textarea
+                  v-model="relatedWords"
+                  placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
+                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
+              <div class="w-full sm:w-full flex flex-col items-end gap-[10px]">
+                <label class="text-lg leading-[28px] text-[#2B2B2B]">:بارگذاری صوت لغت (اختیاری)</label>
+                <input 
+                  type="file" 
+                  @change="handleVoiceUpload"
+                  accept="audio/mpeg, audio/mp3, audio/wav" 
+                  class="w-full file:px-[16px] file:py-[14px] file:bg-[rgba(127,183,126,0.2)] file:rounded-[12px] file:text-xs file:text-[#2B2B2B] file:leading-[20px] file:border-0 file:cursor-pointer file:ml-4 text-xs text-[#2B2B2B] bg-[rgba(127,183,126,0.2)] rounded-[12px] p-3 focus:outline-none"
+                />
+                <p v-if="voiceFile" class="text-xs text-[#7FB77E] mt-1">
+                    فایل انتخاب شده: {{ voiceFile.name }}
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
-            <label class="text-lg leading-[28px] text-[#2B2B2B]">:هم‌خانواده</label>
-            <textarea
-              v-model="relatedWords"
-              placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
-              class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
-            ></textarea>
+
+          <div class="relative w-full flex flex-col items-center">
+            <div class="w-full h-[1px] bg-[#DADDD8]"></div>
+            <button type="button" @click="toggleExpansion" class="absolute top-1/2 -translate-y-1/2 flex justify-center items-center gap-[8px] px-[22px] py-[6px] bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-300 shadow-md" >
+              <icons-down-arrow :class="['w-[13px]','h-[13px]','text-white','transition-transform','duration-500',isExpanded ? 'rotate-180' : 'rotate-0',]" />
+              <span class="text-white text-sm leading-[28px]">{{isExpanded ? 'موارد کمتر' : 'موارد بیشتر'}}</span>
+            </button>
           </div>
+
+          <button type="button" @click="saveWordHandler" :disabled="creatingWord || updatingWord" class="w-full flex justify-center items-start mt-3" >
+            <div :class="['w-full','flex','justify-center','items-center','gap-[8px]','px-12','py-[14px]','bg-[#7FB77E]','rounded-[1000px]','transition-colors','duration-300','shadow-lg', (creatingWord || updatingWord) ? 'opacity-60 cursor-not-allowed' : 'hover:bg-green-700',]" >
+              <span class="text-white font-bold text-xl text-center leading-[38px]">{{ (creatingWord || updatingWord) ? 'در حال پردازش...' : (isEditMode ? 'ذخیره ویرایش' : 'ساخت لغت') }}</span>
+            </div>
+          </button>
         </div>
       </div>
-
-      <div class="relative w-full flex flex-col items-center">
-        <div class="w-full h-[1px] bg-[#DADDD8]"></div>
-        <button type="button" @click="toggleExpansion" class="absolute top-1/2 -translate-y-1/2 flex justify-center items-center gap-[8px] px-[22px] py-[6px] bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-300 shadow-md" >
-          <icons-down-arrow :class="['w-[13px]','h-[13px]','text-white','transition-transform','duration-500',isExpanded ? 'rotate-180' : 'rotate-0',]" />
-          <span class="text-white text-sm leading-[28px]">{{isExpanded ? 'موارد کمتر' : 'موارد بیشتر'}}</span>
-        </button>
-      </div>
-
-      <button type="button" @click="saveWordHandler" :disabled="creatingWord || updatingWord" class="w-full flex justify-center items-start mt-3" >
-        <div :class="['w-full','flex','justify-center','items-center','gap-[8px]','px-12','py-[14px]','bg-[#7FB77E]','rounded-[1000px]','transition-colors','duration-300','shadow-lg', (creatingWord || updatingWord) ? 'opacity-60 cursor-not-allowed' : 'hover:bg-green-700',]" >
-          <span class="text-white font-bold text-xl text-center leading-[38px]">{{ (creatingWord || updatingWord) ? 'در حال پردازش...' : (isEditMode ? 'ذخیره ویرایش' : 'ساخت لغت') }}</span>
-        </div>
-      </button>
-    </div>
-  </div>
-</transition>
+    </transition>
   </div>
 </template>
 
@@ -190,6 +205,7 @@ const definition = ref("");
 const synonym = ref("");    
 const opposite = ref("");   
 const relatedWords = ref(""); 
+const voiceFile = ref(null);
 const examples = ref("");   
 
 const isEditMode = ref(false); 
@@ -201,6 +217,21 @@ const dictionaryIdForSearch = 1;
 const handleAuthError = () => {
     toast.error("مشکلی در شناسایی شما پیش آمده. لطفاً دوباره وارد شوید.");
     router.push('/login');
+};
+
+const handleVoiceUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        if (!file.type.startsWith('audio/')) {
+            toast.error("فقط فایل‌های صوتی مجاز هستند.");
+            voiceFile.value = null;
+            event.target.value = ''; 
+            return;
+        }
+        voiceFile.value = file;
+    } else {
+        voiceFile.value = null;
+    }
 };
 
 const { 
@@ -266,6 +297,7 @@ const clearWordFields = () => {
     opposite.value = "";
     relatedWords.value = "";
     examples.value = "";
+    voiceFile.value = null;
     isExpanded.value = false; 
     if (dictionaries.value.length > 0) {
         selectedDictionary.value = dictionaries.value[0].id; 
@@ -373,31 +405,66 @@ const saveWordHandler = async () => {
     
     if (creatingWord.value || updatingWord.value) return;
 
-    const payload = {
-        word: wordName.value.trim(),
-        meaning: definition.value.trim(), 
-        synonyms: parseToArray(synonym.value), 
-        antonyms: parseToArray(opposite.value), 
-        related_words: parseToArray(relatedWords.value), 
-        description: examples.value.trim() || null, 
-    };
-    
-    if (!isEditMode.value) {
-      payload.dictionary_id = selectedDictionary.value;
+    if (!AUTH_TOKEN.value) {
+        handleAuthError();
+        return;
     }
+    
+    // --- ساخت Payload: استفاده از FormData در صورت وجود فایل صوتی ---
+    let payload;
+    let contentType;
+    
+    // اگر فایل صوتی وجود داشت یا حالت ویرایش بود، از FormData استفاده می‌کنیم
+    if (voiceFile.value || isEditMode.value) {
+        payload = new FormData();
+        contentType = 'multipart/form-data';
+        
+        // افزودن فیلدهای ساده
+        payload.append('word', wordName.value.trim());
+        payload.append('meaning', definition.value.trim()); 
+        payload.append('description', examples.value.trim() || ''); 
 
-    try {
-        if (!AUTH_TOKEN.value) {
-            handleAuthError();
-            //  toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
-            return;
+        // اگر حالت ویرایش نبود، dictionary_id را اضافه کنید
+        if (!isEditMode.value) {
+            payload.append('dictionary_id', selectedDictionary.value);
+        } else {
+             // برای متد PATCH/PUT در لاراول (اگر استفاده می‌شود)، متد را باید در فرم دیتا بفرستیم
+             payload.append('_method', 'PATCH'); 
         }
 
+        // افزودن آرایه‌ها (Synonyms, Antonyms, RelatedWords) به صورت جداگانه
+        parseToArray(synonym.value).forEach(item => payload.append('synonyms[]', item));
+        parseToArray(opposite.value).forEach(item => payload.append('antonyms[]', item));
+        parseToArray(relatedWords.value).forEach(item => payload.append('related_words[]', item));
+
+        // افزودن فایل صوتی
+        if (voiceFile.value) {
+            payload.append('voice', voiceFile.value);
+        }
+        
+    } else {
+        // در صورت عدم وجود فایل صوتی و حالت ایجاد، از JSON استفاده می‌کنیم
+        payload = {
+            dictionary_id: selectedDictionary.value,
+            word: wordName.value.trim(),
+            meaning: definition.value.trim(), 
+            synonyms: parseToArray(synonym.value), 
+            antonyms: parseToArray(opposite.value), 
+            related_words: parseToArray(relatedWords.value), 
+            description: examples.value.trim() || null,
+        };
+        contentType = 'application/json';
+    }
+
+
+    try {
         if (isEditMode.value && currentWordId.value) {
-            await updateWord(AUTH_TOKEN.value, currentWordId.value, payload);
+            // توجه: تابع updateWord باید برای پذیرش FormData بهینه شود
+            await updateWord(AUTH_TOKEN.value, currentWordId.value, payload, contentType);
             toast.success("لغت با موفقیت ویرایش شد.");
         } else {
-            await createWord(AUTH_TOKEN.value, payload);
+            // توجه: تابع createWord باید برای پذیرش FormData بهینه شود
+            await createWord(AUTH_TOKEN.value, payload, contentType);
             toast.success("لغت جدید با موفقیت ایجاد شد.");
         }
 
