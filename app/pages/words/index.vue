@@ -88,7 +88,7 @@
       
       
       <div :class="['w-full','overflow-hidden','flex','flex-col','items-end','gap-5','mb-3','transition-all','duration-500','ease-in-out',isExpanded ? 'max-h-[2000px]' : 'max-h-52',]" >
-        <div class="flex flex-col items-end gap-3 w-full">
+        <div class="flex flex-col items-start gap-3 w-full">
           <span class="text-sm leading-6 text-[#2B2B2B]">:لطفا دیکشنری مورد نظر را انتخاب کنید</span>
           <div class="relative w-full md:w-[50%]">
             <div v-if="loadingDictionaries" class="p-3 text-xs text-gray-500">در حال بارگذاری دیکشنری‌ها...</div>
@@ -102,18 +102,22 @@
         </div>
 
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
-          <div class="w-full flex flex-col items-end gap-3">
-            <label class="text-base leading-6 text-[#2B2B2B]">:تلفظ</label>
-            <input type="text" v-model="pronunciation" placeholder="تلفظ یا آوانگاری لغت" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
-          </div>
-          <div class="w-full flex flex-col items-end gap-3">
+          <div class="w-full flex flex-col items-start gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:نام لغت</label>
             <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
+          </div>
+          <div class="w-full flex flex-col items-start gap-3">
+            <label class="text-base leading-6 text-[#2B2B2B]">:تلفظ</label>
+            <input type="text" v-model="pronunciation" placeholder="تلفظ یا آوانگاری لغت" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
           </div>
         </div>
 
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
+          <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
+            <label class="text-base leading-6 text-[#2B2B2B]">:تعریف</label>
+            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36" ></textarea>
+          </div>
+          <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:مترادف</label>
             <textarea
               v-model="synonym"
@@ -121,22 +125,10 @@
               class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
             ></textarea>
           </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
-            <label class="text-base leading-6 text-[#2B2B2B]">:تعریف</label>
-            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36" ></textarea>
-          </div>
         </div>
 
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
-            <label class="text-base leading-6 text-[#2B2B2B]">:هم‌خانواده</label>
-            <textarea
-              v-model="relatedWords"
-              placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
-            ></textarea>
-          </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
+          <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:متضاد</label>
             <textarea
               v-model="opposite"
@@ -144,10 +136,18 @@
               class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
             ></textarea>
           </div>
+          <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
+            <label class="text-base leading-6 text-[#2B2B2B]">:هم‌خانواده</label>
+            <textarea
+              v-model="relatedWords"
+              placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
+            ></textarea>
+          </div>
         </div>
 
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
+          <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:توضیحات</label>
             <textarea
               v-model="examples"
@@ -155,7 +155,7 @@
               class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
             ></textarea>
           </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
+          <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
           </div>
         </div>
       </div>
