@@ -48,45 +48,34 @@
               <div v-if="searchingWord" class="absolute top-full mt-2 w-full bg-white border border-gray-200 shadow-xl rounded-xl px-4 py-3 text-center text-sm text-[#7FB77E] z-10">
                 <div class="flex items-center justify-center gap-2">
                    <svg class="animate-spin h-4 w-4 text-[#7FB77E]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                   <span>درحال جستجو...</span>
+                   <span>...درحال جستجو</span>
                 </div>
               </div>
 
               <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length === 0" class="absolute top-full mt-2 w-full bg-white border border-gray-200 shadow-xl rounded-xl px-4 py-3 text-center text-sm text-gray-500 z-10">
-                نتیجه‌ای برای "{{ searchQuery }}" یافت نشد.
+                نتیجه‌ای برای "{{ searchQuery }}" یافت نشد
               </div>
             </div>
           </div>
         </div>
         <div class="w-full h-px border border-[#DADDD8]"></div>
         <div class="w-full flex flex-col items-start justify-center gap-10">
-          <div class="w-full flex flex-col items-end gap-[12px]">
-            <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:فارسی</span>
+          
+          <div v-for="group in groupedDictionaries" :key="group.groupName" class="w-full flex flex-col items-end gap-[12px]">
+            <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:{{ group.groupName }}</span>
+            
             <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
-              <DictionaryTag title="فرهنگ موضوعی فارسی" />
-              <DictionaryTag title="فرهنگ جامع زبان فارسی" />
-              <DictionaryTag title="عمید" />
-              <DictionaryTag title="معین" />
-              <DictionaryTag title="دهخدا" />
-              <DictionaryTag title="زبان انقلاب" />
-              <DictionaryTag title="فرهنگ اصطلاحات مالی و سرمایه‌گذاری" />
-              <DictionaryTag title="فرهنگ زبان‌آموز فارسی" />
-              <DictionaryTag title="لغت‌نامه بزرگ فارسی" />
-              <DictionaryTag title="فرهنگ سخن" />
+              <DictionaryTag 
+                v-for="dict in group.dictionaries"
+                :key="dict.id"
+                :title="dict.title" 
+                :dictionary-id="dict.id"
+                :is-selected="selectedDictionaryTags.includes(dict.id)"
+                @toggle="toggleDictionaryTag(dict.id)"
+              />
             </div>
           </div>
-          <div class="w-full flex flex-col items-end gap-[12px]">
-            <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:انگلیسی</span>
-            <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
-              <DictionaryTag title="مک میلن" />
-              <DictionaryTag title="آکسفورد" />
-              <DictionaryTag title="لانگمن" />
-              <DictionaryTag title="کمبریج" />
-              <DictionaryTag title="کالینز" />
-              <DictionaryTag title="گوگل ترنسلیت" />
-              <DictionaryTag title="مریام-وبستر" />
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
@@ -200,7 +189,6 @@ import { useRouter } from 'vue-router';
 // import useCreateWord from '@/composables/useCreateWord'; 
 // import useFetchDictionaries from '@/composables/useFetchDictionaries'; 
 
-// فرض بر این است که کامپوزبل‌ها در دسترس هستند
 const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
 const toast = useToast(); 
 const router = useRouter();
@@ -220,13 +208,45 @@ const isEditMode = ref(false);
 const currentWordId = ref(null); 
 
 const searchResults = ref([]); 
-const dictionaryIdForSearch = 1; // این مقدار به تناسب نیاز شما تنظیم شده است
+const dictionaryIdForSearch = 1; 
 
-// فرض بر این است که این توابع از کامپوزبل‌ها می‌آیند
+const selectedDictionaryTags = ref([]); 
+
+const mockDictionariesData = [
+    { id: 1, title: "فرهنگ موضوعی فارسی", group: "فارسی" },
+    { id: 2, title: "فرهنگ جامع زبان فارسی", group: "فارسی" },
+    // ... بقیه دیکشنری‌های فارسی
+    { id: 11, title: "مک میلن", group: "انگلیسی" },
+    // ... بقیه دیکشنری‌های انگلیسی
+];
+
+const groupedDictionaries = computed(() => {
+    return mockDictionariesData.reduce((acc, dict) => {
+        const group = acc.find(g => g.groupName === dict.group);
+        if (!group) {
+            acc.push({ groupName: dict.group, dictionaries: [dict] });
+        } else {
+            group.dictionaries.push(dict);
+        }
+        return acc;
+    }, []);
+});
+
+
 const handleAuthError = () => {
     toast.error("مشکلی در شناسایی شما پیش آمده. لطفاً دوباره وارد شوید.");
     router.push('/login');
 };
+
+const toggleDictionaryTag = (id) => {
+  const index = selectedDictionaryTags.value.indexOf(id);
+  if (index > -1) {
+    selectedDictionaryTags.value.splice(index, 1); 
+  } else {
+    selectedDictionaryTags.value.push(id);
+  }
+};
+
 
 const { 
   fetchDictionaries, 
