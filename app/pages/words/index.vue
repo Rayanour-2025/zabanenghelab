@@ -165,8 +165,8 @@
           <div class="relative w-full flex flex-col items-center">
             <div class="w-full h-[1px] bg-[#DADDD8]"></div>
             <button type="button" @click="toggleExpansion" class="absolute top-1/2 -translate-y-1/2 flex justify-center items-center gap-2 px-5 py-2 bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-300 shadow-md" >
-              <icons-down-arrow :class="['w-[13px]','h-[13px]','text-white','transition-transform','duration-500',isExpanded ? 'rotate-180' : 'rotate-0',]" />
               <span class="text-white text-sm leading-6">{{isExpanded ? 'موارد کمتر' : 'موارد بیشتر'}}</span>
+              <icons-down-arrow :class="['w-[13px]','h-[13px]','text-white','transition-transform','duration-500',isExpanded ? 'rotate-180' : 'rotate-0',]" />
             </button>
           </div>
 
@@ -440,7 +440,7 @@ const toggleExpansion = () => {
 <style scoped>
 textarea {
   height: auto; 
-  max-height: 150px;
+  max-height: 130px;
   overflow: hidden;
 }
 
