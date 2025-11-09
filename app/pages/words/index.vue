@@ -34,7 +34,10 @@
                   <button @click="editWord(word)" class="text-white bg-[#7FB77E] px-2 py-1 rounded-md text-xs hover:bg-green-700 transition-colors duration-200">
                     ویرایش
                   </button>
-                  <span class="text-[#2B2B2B]">{{ word.word }}<span class="text-gray-500 text-xs truncate max-w-[200px] inline-block">{{ word.meaning }}</span></span>
+                  <div class="flex flex-row items-center justify-center gap-2">
+                    <span class="text-[#2B2B2B]">{{ word.word }}</span>
+                    <span class="text-gray-500 text-xs truncate max-w-[200px] inline-block">{{ word.meaning }}</span>
+                  </div>
                 </li>
               </ul>
                <div v-if="searchingWord" class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg px-4 py-2 text-center text-sm text-gray-500">
@@ -177,6 +180,7 @@ import { useRouter } from 'vue-router';
 // import useCreateWord from '@/composables/useCreateWord'; 
 // import useFetchDictionaries from '@/composables/useFetchDictionaries'; 
 
+// فرض بر این است که کامپوزبل‌ها در دسترس هستند
 const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
 const toast = useToast(); 
 const router = useRouter();
@@ -196,8 +200,9 @@ const isEditMode = ref(false);
 const currentWordId = ref(null); 
 
 const searchResults = ref([]); 
-const dictionaryIdForSearch = 1;
+const dictionaryIdForSearch = 1; // این مقدار به تناسب نیاز شما تنظیم شده است
 
+// فرض بر این است که این توابع از کامپوزبل‌ها می‌آیند
 const handleAuthError = () => {
     toast.error("مشکلی در شناسایی شما پیش آمده. لطفاً دوباره وارد شوید.");
     router.push('/login');
@@ -234,7 +239,6 @@ const fetchDictionariesList = async () => {
     try {
         if (!AUTH_TOKEN.value) {
             handleAuthError();
-            //  toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
             return;
         }
 
@@ -279,9 +283,10 @@ const openCreateWordModal = () => {
   OpenModalStudentList.value = true;
 }
 
+// تغییر در اینجا: برای نمایش در فیلدها، عناصر آرایه را با کاما و یک فاصله جدا می‌کند
 const arrayToFormattedString = (arr) => {
     if (!arr || arr.length === 0) return "";
-    return arr.join('-');
+    return arr.join(', '); // کلمات با کاما و فاصله جدا شوند
 };
 
 const editWord = (word) => {
@@ -291,9 +296,10 @@ const editWord = (word) => {
     selectedDictionary.value = word.dictionary_id; 
     wordName.value = word.word || "";
     definition.value = word.meaning || "";
-    synonym.value = arrayToFormattedString(word.synonyms);
-    opposite.value = arrayToFormattedString(word.antonyms);
-    relatedWords.value = arrayToFormattedString(word.related_words);
+    // از تابع اصلاح شده استفاده می‌شود
+    synonym.value = arrayToFormattedString(word.synonyms); 
+    opposite.value = arrayToFormattedString(word.antonyms); 
+    relatedWords.value = arrayToFormattedString(word.related_words); 
     examples.value = word.description || "";
     
     OpenModalStudentList.value = true; 
@@ -310,56 +316,53 @@ watch(searchQuery, (newQuery) => {
     
     searchResults.value = []; 
     
-    // if (newQuery.length < 2) {
-    //     return; 
-    // }
+    // اگر طول کوئری کمتر از 2 باشد، جستجو انجام نشود
+    if (newQuery.length < 2) {
+        return; 
+    }
 
     searchTimer = setTimeout(async () => {
         try {
             if (!AUTH_TOKEN.value) {
                 handleAuthError();
-                // toast.error("خطا: توکن احراز هویت یافت نشد.");
                 return;
             }
             
+            // اینجا dictionaryIdForSearch باید بر اساس نیاز شما تنظیم شود
             const response = await searchWords(AUTH_TOKEN.value, dictionaryIdForSearch, newQuery.trim());
             
             searchResults.value = response.data || [];
         } catch (error) {
             console.error("خطا در جستجوی لغت:", error);
-            // toast.error(`خطا در جستجو: ${searchErrorMsg.value || 'خطای شبکه'}`); // اختیاری
+            // toast.error(`خطا در جستجو: ${searchErrorMsg.value || 'خطای شبکه'}`); 
             searchResults.value = []; 
         }
     }, 500); 
 });
 
-
+// ************** تغییر اصلی در این تابع است **************
+// فقط بر اساس کاما (,) یا خط جدید (\n) جدا می‌کند
 const parseToArray = (text) => {
     if (!text) return [];
-    return text.split(/[\n,-]/) 
+    // استفاده از یک RegEx که بر اساس کاما یا خط جدید جدا می‌کند
+    return text.split(/[\n,]/) 
                .map(s => s.trim())
                .filter(s => s.length > 0);
 };
+// ********************************************************
 
-const setupWordFormatWatchers = () => {
-  watch(synonym, (newValue) => {
-    if (newValue.includes(' ')) {
-      synonym.value = newValue.replace(/\s+/g, '-');
-    }
-  });
 
-  watch(opposite, (newValue) => {
-    if (newValue.includes(' ')) {
-      opposite.value = newValue.replace(/\s+/g, '-');
-    }
-  });
-
-  watch(relatedWords, (newValue) => {
-    if (newValue.includes(' ')) {
-      relatedWords.value = newValue.replace(/\s+/g, '-');
-    }
-  });
-};
+// ************** توابع watcher حذف شدند **************
+// watch ها برای جایگزینی فاصله با خط تیره حذف شدند
+// const setupWordFormatWatchers = () => {
+//   watch(synonym, (newValue) => {
+//     if (newValue.includes(' ')) {
+//       synonym.value = newValue.replace(/\s+/g, '-');
+//     }
+//   });
+// ...
+// };
+// ****************************************************
 
 const saveWordHandler = async () => {
     if (!selectedDictionary.value) {
@@ -376,6 +379,7 @@ const saveWordHandler = async () => {
     const payload = {
         word: wordName.value.trim(),
         meaning: definition.value.trim(), 
+        // استفاده از تابع اصلاح شده parseToArray
         synonyms: parseToArray(synonym.value), 
         antonyms: parseToArray(opposite.value), 
         related_words: parseToArray(relatedWords.value), 
@@ -389,7 +393,6 @@ const saveWordHandler = async () => {
     try {
         if (!AUTH_TOKEN.value) {
             handleAuthError();
-            //  toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
             return;
         }
 
@@ -415,7 +418,7 @@ const saveWordHandler = async () => {
 
 onMounted(() => {
   fetchDictionariesList();
-  setupWordFormatWatchers();
+  // setupWordFormatWatchers(); // حذف شد
 });
 
 const toggleExpansion = () => {
