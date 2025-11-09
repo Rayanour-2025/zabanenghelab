@@ -104,29 +104,32 @@
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:تعریف</label>
-            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36" ></textarea>
+            <!-- اصلاح: استفاده از text-sm و overflow-y-auto و حذف scrollbar-hide -->
+            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-y-auto break-words text-right focus:outline-none max-h-36" ></textarea>
           </div>
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:نام لغت</label>
-            <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
+            <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
           </div>
         </div>
 
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:متضاد</label>
+            <!-- اصلاح: استفاده از text-sm و overflow-y-auto و حذف scrollbar-hide -->
             <textarea
               v-model="opposite"
               placeholder="متضادها را با کاما یا خط جدید جدا کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-y-auto break-words text-right focus:outline-none max-h-36"
             ></textarea>
           </div>
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:مترادف</label>
+            <!-- اصلاح: استفاده از text-sm و overflow-y-auto و حذف scrollbar-hide -->
             <textarea
               v-model="synonym"
               placeholder="مترادف‌ها را با کاما یا خط جدید جدا کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-y-auto break-words text-right focus:outline-none max-h-36"
             ></textarea>
           </div>
         </div>
@@ -134,18 +137,20 @@
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:توضیحات</label>
+            <!-- اصلاح: استفاده از text-sm و overflow-y-auto و حذف scrollbar-hide -->
             <textarea
               v-model="examples"
               placeholder="توضیحات لازم را وارد کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-y-auto break-words text-right focus:outline-none max-h-36"
             ></textarea>
           </div>
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:هم‌خانواده</label>
+            <!-- اصلاح: استفاده از text-sm و overflow-y-auto و حذف scrollbar-hide -->
             <textarea
               v-model="relatedWords"
               placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-y-auto break-words text-right focus:outline-none max-h-36"
             ></textarea>
           </div>
         </div>
