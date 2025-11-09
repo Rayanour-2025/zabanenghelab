@@ -16,10 +16,11 @@
       <div class="w-full border-t border-[#DADDD8]"></div>
       <div class="text-[#2B2B2B] w-[80%] text-right text-base leading-[30px] py-[25px]">لغات گزارش شده</div>
     </div>
+    
     <div class="w-full flex flex-col justify-center items-end gap-[30px] px-[40px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
       <div class="w-full font-zain flex flex-col items-end gap-8">
         <div class="flex flex-row justify-between items-center w-full h-[50px]">
-          <button @click="OpenModalStudentList = true" type="button" class="flex flex-row justify-center items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)]">
+          <button @click="openCreateWordModal" type="button" class="flex flex-row justify-center items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)]">
             <span class="text-white font-bold text-[13px] leading-[24px]">اضافه کردن لغت</span>
             <icons-add-or-create class="w-5 h-5" />
           </button>
@@ -27,11 +28,21 @@
             <div class="relative w-[400px]">
               <input v-model="searchQuery" type="text" placeholder="لغت مورد نظر را وارد کنید" class="w-full h-[50px] pl-[14px] pr-[50px] text-right text-[13px] leading-[22px] text-[#2B2B2B] font-normal placeholder:text-[#DADDD8] bg-[#F5F6F4] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] focus:outline-none" />
               <icons-search class="absolute right-[14px] top-1/2 -translate-y-1/2 w-[22px] h-[22px] text-[#2B2B2B] pointer-events-none" />
-              <ul v-if="filteredSuggestions && filteredSuggestions.length" class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg max-h-40 overflow-auto z-10" >
-                <li v-for="(item, index) in filteredSuggestions" :key="index" @click="selectSuggestion(item)" class="px-4 py-2 cursor-pointer hover:bg-gray-100 text-right text-sm" >
-                  {{ item }}
+              
+              <ul v-if="searchQuery.length >= 2 && searchResults.length" class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg max-h-60 overflow-auto z-10" >
+                <li v-for="word in searchResults" :key="word.id" class="px-4 py-2 flex justify-between items-center hover:bg-gray-100 text-right text-sm" >
+                  <span class="text-[#2B2B2B]">{{ word.word }} - <span class="text-gray-500 text-xs truncate max-w-[200px] inline-block">{{ word.meaning }}</span></span>
+                  <button @click="editWord(word)" class="text-white bg-[#7FB77E] px-2 py-1 rounded-md text-xs hover:bg-green-700 transition-colors duration-200">
+                    ویرایش
+                  </button>
                 </li>
               </ul>
+               <div v-if="searchingWord" class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg px-4 py-2 text-center text-sm text-gray-500">
+                در حال جستجو...
+              </div>
+              <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length === 0" class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg px-4 py-2 text-center text-sm text-gray-500">
+                نتیجه‌ای یافت نشد.
+              </div>
             </div>
           </div>
         </div>
@@ -70,45 +81,31 @@
     <transition name="modal-slide" appear>
       <div v-if="OpenModalStudentList" @click="OpenModalStudentList = false" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50" >
         <div @click.stop class="absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-xl bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[45px] flex flex-col items-center px-[28px] py-[35px] gap-[32px] font-zain" >
+          
+          <h2 class="text-xl font-bold text-[#7FB77E] mb-4">{{ isEditMode ? 'ویرایش لغت' : 'اضافه کردن لغت جدید' }}</h2>
+          
           <div :class="['w-full','overflow-hidden','flex','flex-col','items-end','gap-[28px]','mb-3','transition-all','duration-500','ease-in-out',isExpanded ? 'max-h-[2000px]' : 'max-h-52',]" >
             <div class="flex flex-col items-end gap-[10px] w-full">
               <span class="text-base leading-[24px] text-[#2B2B2B]">:لطفا دیکشنری مورد نظر را انتخاب کنید</span>
               <div class="relative w-full sm:w-[300px]">
                 <div v-if="loadingDictionaries" class="p-3 text-xs text-gray-500">در حال بارگذاری دیکشنری‌ها...</div>
-                <select
-                  v-else
-                  v-model="selectedDictionary"
-                  class="appearance-none w-full h-[50px] px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-right text-xs text-[#2B2B2B] focus:outline-none cursor-pointer truncate"
-                >
+                <select v-else v-model="selectedDictionary" :disabled="isEditMode" class="appearance-none w-full h-[50px] px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-right text-xs text-[#2B2B2B] focus:outline-none cursor-pointer truncate" >
                   <option :value="null" disabled>انتخاب یا سرچ میان دیکشنری‌ها</option>
-                  <option v-for="dict in dictionaries" :key="dict.id" :value="dict.id">
-                    {{ dict.name }}
-                  </option>
+                  <option v-for="dict in dictionaries" :key="dict.id" :value="dict.id">{{ dict.name }}</option>
                 </select>
-                <icons-down-arrow
-                  v-if="!loadingDictionaries"
-                  class="absolute left-[16px] top-1/2 -translate-y-1/2 w-[13px] h-[13px] pointer-events-none"
-                />
+                <icons-down-arrow v-if="!loadingDictionaries" class="absolute left-[16px] top-1/2 -translate-y-1/2 w-[13px] h-[13px] pointer-events-none" />
+                <p v-if="isEditMode" class="text-xs text-red-500 mt-1">دیکشنری لغت ویرایشی قابل تغییر نیست.</p>
               </div>
             </div>
 
             <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-6 sm:gap-12">
               <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
                 <label class="text-lg leading-[28px] text-[#2B2B2B]">:تعریف</label>
-                <textarea
-                  v-model="definition"
-                  placeholder="تعریف مورد نظر را وارد کنید"
-                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none"
-                ></textarea>
+                <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] resize-none overflow-auto break-words text-right focus:outline-none" ></textarea>
               </div>
               <div class="w-full sm:w-[50%] flex flex-col items-end gap-[10px]">
                 <label class="text-lg leading-[28px] text-[#2B2B2B]">:نام لغت</label>
-                <input
-                  type="text"
-                  v-model="wordName"
-                  placeholder="نام لغت دلخواه را وارد کنید"
-                  class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] text-right truncate focus:outline-none"
-                />
+                <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-[16px] py-[14px] bg-[rgba(127,183,126,0.2)] rounded-[12px] text-xs text-[#2B2B2B] leading-[20px] text-right truncate focus:outline-none" />
               </div>
             </div>
 
@@ -155,33 +152,13 @@
             <div class="w-full h-[1px] bg-[#DADDD8]"></div>
             <button type="button" @click="toggleExpansion" class="absolute top-1/2 -translate-y-1/2 flex justify-center items-center gap-[8px] px-[22px] py-[6px] bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-300 shadow-md" >
               <icons-down-arrow :class="['w-[13px]','h-[13px]','text-white','transition-transform','duration-500',isExpanded ? 'rotate-180' : 'rotate-0',]" />
-              <span class="text-white text-sm leading-[28px]">{{
-                isExpanded ? 'موارد کمتر' : 'موارد بیشتر'
-              }}</span>
+              <span class="text-white text-sm leading-[28px]">{{isExpanded ? 'موارد کمتر' : 'موارد بیشتر'}}</span>
             </button>
           </div>
 
-          <button type="button" @click="createWordHandler" :disabled="creatingWord" class="w-full flex justify-center items-start mt-3" >
-            <div
-              :class="[
-                'w-full',
-                'flex',
-                'justify-center',
-                'items-center',
-                'gap-[8px]',
-                'px-12',
-                'py-[14px]',
-                'bg-[#7FB77E]',
-                'rounded-[1000px]',
-                'transition-colors',
-                'duration-300',
-                'shadow-lg',
-                creatingWord ? 'opacity-60 cursor-not-allowed' : 'hover:bg-green-700',
-              ]"
-            >
-              <span class="text-white font-bold text-xl text-center leading-[38px]">{{
-                creatingWord ? 'در حال ساخت...' : 'ساخت لغت'
-              }}</span>
+          <button type="button" @click="saveWordHandler" :disabled="creatingWord || updatingWord" class="w-full flex justify-center items-start mt-3" >
+            <div :class="['w-full','flex','justify-center','items-center','gap-[8px]','px-12','py-[14px]','bg-[#7FB77E]','rounded-[1000px]','transition-colors','duration-300','shadow-lg', (creatingWord || updatingWord) ? 'opacity-60 cursor-not-allowed' : 'hover:bg-green-700',]" >
+              <span class="text-white font-bold text-xl text-center leading-[38px]">{{ (creatingWord || updatingWord) ? 'در حال پردازش...' : (isEditMode ? 'ذخیره ویرایش' : 'ساخت لغت') }}</span>
             </div>
           </button>
         </div>
@@ -191,12 +168,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'; // 💡 watch اضافه شد
+import { ref, onMounted, computed, watch } from 'vue';
 import { useToast } from 'vue-toastification/dist/index.mjs';
 import { useAuthToken } from '@/composables/useAuthCrypto';
+import useSearchWords from '@/composables/useSearchWords'; // 💡 ایمپورت کامپوسابل جستجو
+import useUpdateWord from '@/composables/useUpdateWord'; // 💡 ایمپورت کامپوسابل آپدیت
+
+// فرض می‌شود که useCreateWord و useFetchDictionaries قبلاً تعریف شده‌اند
+// import useCreateWord from '@/composables/useCreateWord'; 
+// import useFetchDictionaries from '@/composables/useFetchDictionaries'; 
 
 const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
-
 const toast = useToast(); 
 const isExpanded = ref(false);
 
@@ -210,50 +192,15 @@ const opposite = ref("");
 const relatedWords = ref(""); 
 const examples = ref("");   
 
-// ... بقیه کد (search, fetchDictionaries, onMounted) ...
+// 💡 حالت‌های جدید برای ویرایش و جستجو
+const isEditMode = ref(false); // تعیین حالت: ایجاد (false) یا ویرایش (true)
+const currentWordId = ref(null); // نگهداری شناسه لغت در حال ویرایش
 
-// **تابع parseToArray اصلاح شده برای پشتیبانی از "-"**
-const parseToArray = (text) => {
-    if (!text) return [];
-    // 💡 جدا کردن با خط جدید (\n)، کاما (,) یا خط فاصله (-)
-    return text.split(/[\n,-]/) 
-               .map(s => s.trim())
-               .filter(s => s.length > 0);
-};
-
-// **💡 Watcher برای تبدیل فاصله‌ها به خط فاصله (-) در لحظه**
-const setupWordFormatWatchers = () => {
-  // مترادف (Synonyms)
-  watch(synonym, (newValue) => {
-    if (newValue.includes(' ')) {
-      synonym.value = newValue.replace(/\s+/g, '-');
-    }
-  });
-
-  // متضاد (Antonyms)
-  watch(opposite, (newValue) => {
-    if (newValue.includes(' ')) {
-      opposite.value = newValue.replace(/\s+/g, '-');
-    }
-  });
-
-  // هم‌خانواده (Related Words)
-  watch(relatedWords, (newValue) => {
-    if (newValue.includes(' ')) {
-      relatedWords.value = newValue.replace(/\s+/g, '-');
-    }
-  });
-};
-
-// فراخوانی Watcherها بعد از راه‌اندازی کامپوننت
-onMounted(() => {
-  fetchDictionariesList();
-  setupWordFormatWatchers();
-});
+const searchResults = ref([]); // برای نگهداری نتایج جستجوی ادمین
+const dictionaryIdForSearch = 1; // 💡 دیکشنری مورد نظر برای جستجو (فعلاً ثابت 1)
 
 
-// ... بقیه کد (filteredSuggestions, selectSuggestion, fetchDictionariesList) ...
-
+// 💡 استفاده از کامپوسابل‌ها
 const { 
   fetchDictionaries, 
   responseData: dictionariesResponse, 
@@ -261,8 +208,29 @@ const {
   errMessage: dictionariesErrorMsg 
 } = useFetchDictionaries(); // فرض بر وجود
 
+const { 
+  createWord,
+  loading: creatingWord,
+  errMessage: createWordErrorMsg,
+} = useCreateWord(); // فرض بر وجود
+
+const { 
+  searchWords,
+  loading: searchingWord,
+  errMessage: searchErrorMsg,
+} = useSearchWords(); // 💡 استفاده از useSearchWords
+
+const { 
+  updateWord,
+  loading: updatingWord,
+  errMessage: updateWordErrorMsg,
+} = useUpdateWord(); // 💡 استفاده از useUpdateWord
+
 const dictionaries = ref([]); 
+
+// تابع واکشی دیکشنری‌ها (بدون تغییر)
 const fetchDictionariesList = async () => {
+    // ... کد fetchDictionariesList قبلی شما ...
     try {
         if (!AUTH_TOKEN.value) {
              toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
@@ -275,7 +243,8 @@ const fetchDictionariesList = async () => {
 
         if (Array.isArray(data)) {
             dictionaries.value = data;
-            if (dictionaries.value.length > 0) {
+            if (dictionaries.value.length > 0 && selectedDictionary.value === null) {
+                // فقط اگر در حالت ویرایش نباشیم یا دیکشنری قبلاً انتخاب نشده باشد، مقداردهی پیش‌فرض انجام شود
                 selectedDictionary.value = dictionaries.value[0].id;
             }
         } else {
@@ -287,37 +256,126 @@ const fetchDictionariesList = async () => {
     }
 };
 
-const searchQuery = ref("");
-const suggestions = ref([
-  "کتاب", "مدرسه", "کامپیوتر", "لغت", "یادگیری", "برنامه‌نویسی",
-]);
 
-const filteredSuggestions = computed(() => {
-  const currentSuggestions = suggestions.value || []; 
-  const query = searchQuery.value?.toLowerCase() || "";
-  
-  if (!query) return []; 
-  
-  return currentSuggestions.filter((item) =>
-    item.toLowerCase().includes(query)
-  )
-});
-
-function selectSuggestion(item) {
-  searchQuery.value = item;
+// تابع پاکسازی فیلدهای مودال
+const clearWordFields = () => {
+    isEditMode.value = false;
+    currentWordId.value = null;
+    wordName.value = "";
+    definition.value = "";
+    synonym.value = "";
+    opposite.value = "";
+    relatedWords.value = "";
+    examples.value = "";
+    isExpanded.value = false; // بستن بخش اضافی
+    // تنظیم پیش‌فرض دیکشنری هنگام ایجاد جدید
+    if (dictionaries.value.length > 0) {
+        selectedDictionary.value = dictionaries.value[0].id; 
+    } else {
+        selectedDictionary.value = null;
+    }
 }
 
-const {
-  createWord,
-  loading: creatingWord,
-  errMessage: createWordErrorMsg,
-} = useCreateWord(); // فرض بر وجود
+// 💡 تابع باز کردن مودال در حالت ایجاد لغت جدید
+const openCreateWordModal = () => {
+  clearWordFields(); // پاکسازی قبل از باز شدن
+  OpenModalStudentList.value = true;
+}
 
-const toggleExpansion = () => {
-  isExpanded.value = !isExpanded.value;
+// تابع تبدیل آرایه به رشته (با خط فاصله)
+const arrayToFormattedString = (arr) => {
+    if (!arr || arr.length === 0) return "";
+    return arr.join('-'); // پیوستن با خط فاصله، مطابق با منطق parseToArray
 };
 
-const createWordHandler = async () => {
+// 💡 تابع پر کردن مودال برای ویرایش
+const editWord = (word) => {
+    clearWordFields(); // پاکسازی اولیه
+    isEditMode.value = true;
+    currentWordId.value = word.id;
+    selectedDictionary.value = word.dictionary_id; 
+    wordName.value = word.word || "";
+    definition.value = word.meaning || "";
+    synonym.value = arrayToFormattedString(word.synonyms);
+    opposite.value = arrayToFormattedString(word.antonyms);
+    relatedWords.value = arrayToFormattedString(word.related_words);
+    examples.value = word.description || "";
+    
+    OpenModalStudentList.value = true; // باز کردن مودال
+    searchQuery.value = ""; // بستن لیست جستجو
+}
+
+// 💡 تابع جستجوی لغات با تاخیر (Debouncing)
+const searchQuery = ref("");
+let searchTimer = null;
+
+watch(searchQuery, (newQuery) => {
+    // پاک کردن تایمر قبلی
+    if (searchTimer) {
+        clearTimeout(searchTimer);
+    }
+    
+    searchResults.value = []; // پاکسازی نتایج قبلی
+    
+    // اگر کوئری کمتر از 2 کاراکتر باشد، جستجو انجام نشود
+    if (newQuery.length < 2) {
+        return; 
+    }
+
+    // تنظیم تایمر جدید
+    searchTimer = setTimeout(async () => {
+        try {
+            if (!AUTH_TOKEN.value) {
+                toast.error("خطا: توکن احراز هویت یافت نشد.");
+                return;
+            }
+            
+            // 💡 فراخوانی API جستجو با دیکشنری 1
+            const response = await searchWords(AUTH_TOKEN.value, dictionaryIdForSearch, newQuery.trim());
+            
+            // 💡 به‌روزرسانی نتایج جستجو
+            searchResults.value = response.data || [];
+        } catch (error) {
+            console.error("خطا در جستجوی لغت:", error);
+            // toast.error(`خطا در جستجو: ${searchErrorMsg.value || 'خطای شبکه'}`); // اختیاری
+            searchResults.value = []; // در صورت خطا لیست خالی شود
+        }
+    }, 500); // 500 میلی‌ثانیه تاخیر
+});
+
+
+// تابع parseToArray (بدون تغییر)
+const parseToArray = (text) => {
+    if (!text) return [];
+    // جدا کردن با خط جدید (\n)، کاما (,) یا خط فاصله (-)
+    return text.split(/[\n,-]/) 
+               .map(s => s.trim())
+               .filter(s => s.length > 0);
+};
+
+// تابع Watcherها برای تبدیل فاصله‌ها به خط فاصله (-) (بدون تغییر)
+const setupWordFormatWatchers = () => {
+  watch(synonym, (newValue) => {
+    if (newValue.includes(' ')) {
+      synonym.value = newValue.replace(/\s+/g, '-');
+    }
+  });
+
+  watch(opposite, (newValue) => {
+    if (newValue.includes(' ')) {
+      opposite.value = newValue.replace(/\s+/g, '-');
+    }
+  });
+
+  watch(relatedWords, (newValue) => {
+    if (newValue.includes(' ')) {
+      relatedWords.value = newValue.replace(/\s+/g, '-');
+    }
+  });
+};
+
+// 💡 تابع هندلر ذخیره (ایجاد یا ویرایش)
+const saveWordHandler = async () => {
     if (!selectedDictionary.value) {
         toast.error("لطفاً یک دیکشنری انتخاب کنید.");
         return;
@@ -327,17 +385,21 @@ const createWordHandler = async () => {
         return;
     }
     
-    if (creatingWord.value) return;
+    if (creatingWord.value || updatingWord.value) return;
 
     const payload = {
-        dictionary_id: selectedDictionary.value,
         word: wordName.value.trim(),
-        meaning: definition.value.trim(), // (تعریف)
-        synonyms: parseToArray(synonym.value), // (مترادف)
-        antonyms: parseToArray(opposite.value), // (متضاد)
-        related_words: parseToArray(relatedWords.value), // (هم‌خانواده)
-        description: examples.value.trim(), 
+        meaning: definition.value.trim(), 
+        synonyms: parseToArray(synonym.value), 
+        antonyms: parseToArray(opposite.value), 
+        related_words: parseToArray(relatedWords.value), 
+        description: examples.value.trim() || null, 
     };
+    
+    // اگر حالت ایجاد بود، dictionary_id نیز لازم است
+    if (!isEditMode.value) {
+      payload.dictionary_id = selectedDictionary.value;
+    }
 
     try {
         if (!AUTH_TOKEN.value) {
@@ -345,23 +407,36 @@ const createWordHandler = async () => {
              return;
         }
 
-        await createWord(AUTH_TOKEN.value, payload);
-        
-        toast.success("لغت جدید با موفقیت ایجاد شد.");
+        if (isEditMode.value && currentWordId.value) {
+            // حالت ویرایش
+            await updateWord(AUTH_TOKEN.value, currentWordId.value, payload);
+            toast.success("لغت با موفقیت ویرایش شد.");
+        } else {
+            // حالت ایجاد
+            await createWord(AUTH_TOKEN.value, payload);
+            toast.success("لغت جدید با موفقیت ایجاد شد.");
+        }
 
-        wordName.value = "";
-        definition.value = "";
-        synonym.value = "";
-        opposite.value = "";
-        relatedWords.value = "";
-        examples.value = "";
-        // OpenModalStudentList.value = false;
+        // پاکسازی و بستن مودال پس از موفقیت
+        clearWordFields();
+        OpenModalStudentList.value = false;
         
     } catch (error) {
-        console.error("خطا در ایجاد لغت:", error);
-        const displayMessage = createWordErrorMsg.value || "خطای ناشناخته در ساخت لغت";
-        toast.error(`خطا در ایجاد لغت: ${displayMessage}`);
+        console.error(`خطا در ${isEditMode.value ? 'ویرایش' : 'ایجاد'} لغت:`, error);
+        const errorMsg = isEditMode.value ? updateWordErrorMsg.value : createWordErrorMsg.value;
+        const displayMessage = errorMsg || "خطای ناشناخته در پردازش لغت";
+        toast.error(`خطا: ${displayMessage}`);
     }
+};
+
+
+onMounted(() => {
+  fetchDictionariesList();
+  setupWordFormatWatchers();
+});
+
+const toggleExpansion = () => {
+  isExpanded.value = !isExpanded.value;
 };
 </script>
 
