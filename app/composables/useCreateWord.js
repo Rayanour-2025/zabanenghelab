@@ -18,21 +18,16 @@ const useCreateWord = () => {
 
     console.log(payload)
     const apiUrl = 'https://ip3.ir/dictionary/api/v1/words';
-    
+
     try {
-      let headers = {
-        Authorization: `Bearer ${token}`,
-      };
-
-      if (contentType === "application/json") {
-          headers["Content-Type"] = "application/json";
-      }
-
       const response = await axios.post(
         apiUrl,
         payload,
         {
-          headers: headers,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
