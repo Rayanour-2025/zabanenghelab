@@ -84,68 +84,68 @@
 
 <transition name="modal-slide" appear>
   <div v-if="OpenModalStudentList" @click="OpenModalStudentList = false" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50" >
-    <div @click.stop class="absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-md bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[30px] flex flex-col items-center px-6 py-8 gap-6 font-zain" >
+    <div @click.stop class="absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[40px] flex flex-col items-center px-8 py-10 gap-8 font-zain" >
       
       
-      <div :class="['w-full','overflow-hidden','flex','flex-col','items-end','gap-4','mb-2','transition-all','duration-500','ease-in-out',isExpanded ? 'max-h-[2000px]' : 'max-h-52',]" >
-        <div class="flex flex-col items-end gap-2 w-full">
+      <div :class="['w-full','overflow-hidden','flex','flex-col','items-end','gap-5','mb-3','transition-all','duration-500','ease-in-out',isExpanded ? 'max-h-[2000px]' : 'max-h-52',]" >
+        <div class="flex flex-col items-end gap-3 w-full">
           <span class="text-sm leading-6 text-[#2B2B2B]">:لطفا دیکشنری مورد نظر را انتخاب کنید</span>
-          <div class="relative w-full sm:w-[250px]">
-            <div v-if="loadingDictionaries" class="p-2 text-xs text-gray-500">در حال بارگذاری دیکشنری‌ها...</div>
-            <select v-else v-model="selectedDictionary" :disabled="isEditMode" class="appearance-none w-full h-10 px-3 py-2 bg-[rgba(127,183,126,0.2)] rounded-lg text-right text-xs text-[#2B2B2B] focus:outline-none cursor-pointer truncate" >
+          <div class="relative w-full sm:w-[300px]">
+            <div v-if="loadingDictionaries" class="p-3 text-xs text-gray-500">در حال بارگذاری دیکشنری‌ها...</div>
+            <select v-else v-model="selectedDictionary" :disabled="isEditMode" class="appearance-none w-full h-11 px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-right text-xs text-[#2B2B2B] focus:outline-none cursor-pointer truncate" >
               <option :value="null" disabled>انتخاب یا سرچ میان دیکشنری‌ها</option>
               <option v-for="dict in dictionaries" :key="dict.id" :value="dict.id">{{ dict.name }}</option>
             </select>
-            <icons-down-arrow v-if="!loadingDictionaries" class="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" />
+            <icons-down-arrow v-if="!loadingDictionaries" class="absolute left-4 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" />
             <p v-if="isEditMode" class="text-xs text-red-500 mt-1">دیکشنری لغت ویرایشی قابل تغییر نیست.</p>
           </div>
         </div>
 
-        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-4 sm:gap-6">
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-2">
+        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
+          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:تعریف</label>
-            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-3 py-2 bg-[rgba(127,183,126,0.2)] rounded-lg text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none" ></textarea>
+            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none" ></textarea>
           </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-2">
+          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:نام لغت</label>
-            <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-3 py-2 h-10 bg-[rgba(127,183,126,0.2)] rounded-lg text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
+            <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
           </div>
         </div>
 
-        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-4 sm:gap-6">
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-2">
+        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
+          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:متضاد</label>
             <textarea
               v-model="opposite"
               placeholder="متضادها را با کاما یا خط جدید جدا کنید"
-              class="w-full px-3 py-2 bg-[rgba(127,183,126,0.2)] rounded-lg text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none"
             ></textarea>
           </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-2">
+          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:مترادف</label>
             <textarea
               v-model="synonym"
               placeholder="مترادف‌ها را با کاما یا خط جدید جدا کنید"
-              class="w-full px-3 py-2 bg-[rgba(127,183,126,0.2)] rounded-lg text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none"
             ></textarea>
           </div>
         </div>
 
-        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-4 sm:gap-6">
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-2">
+        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
+          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:مثال‌ها</label>
             <textarea
               v-model="examples"
               placeholder="مثال‌های مرتبط را بنویسید (به عنوان توضیحات/Description ارسال می‌شود)"
-              class="w-full px-3 py-2 bg-[rgba(127,183,126,0.2)] rounded-lg text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none"
             ></textarea>
           </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-2">
+          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:هم‌خانواده</label>
             <textarea
               v-model="relatedWords"
               placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
-              class="w-full px-3 py-2 bg-[rgba(127,183,126,0.2)] rounded-lg text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none"
             ></textarea>
           </div>
         </div>
@@ -153,15 +153,15 @@
 
       <div class="relative w-full flex flex-col items-center">
         <div class="w-full h-[1px] bg-[#DADDD8]"></div>
-        <button type="button" @click="toggleExpansion" class="absolute top-1/2 -translate-y-1/2 flex justify-center items-center gap-1 px-4 py-1 bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-300 shadow-md" >
-          <icons-down-arrow :class="['w-3','h-3','text-white','transition-transform','duration-500',isExpanded ? 'rotate-180' : 'rotate-0',]" />
-          <span class="text-xs text-white leading-5">{{isExpanded ? 'موارد کمتر' : 'موارد بیشتر'}}</span>
+        <button type="button" @click="toggleExpansion" class="absolute top-1/2 -translate-y-1/2 flex justify-center items-center gap-2 px-5 py-2 bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-300 shadow-md" >
+          <icons-down-arrow :class="['w-[13px]','h-[13px]','text-white','transition-transform','duration-500',isExpanded ? 'rotate-180' : 'rotate-0',]" />
+          <span class="text-white text-sm leading-6">{{isExpanded ? 'موارد کمتر' : 'موارد بیشتر'}}</span>
         </button>
       </div>
 
-      <button type="button" @click="saveWordHandler" :disabled="creatingWord || updatingWord" class="w-full flex justify-center items-start mt-2" >
-        <div :class="['w-full','flex','justify-center','items-center','gap-2','px-8','py-3','bg-[#7FB77E]','rounded-[1000px]','transition-colors','duration-300','shadow-lg', (creatingWord || updatingWord) ? 'opacity-60 cursor-not-allowed' : 'hover:bg-green-700',]" >
-          <span class="text-white font-bold text-lg text-center leading-7">{{ (creatingWord || updatingWord) ? 'در حال پردازش...' : (isEditMode ? 'ذخیره ویرایش' : 'ساخت لغت') }}</span>
+      <button type="button" @click="saveWordHandler" :disabled="creatingWord || updatingWord" class="w-full flex justify-center items-start mt-3" >
+        <div :class="['w-full','flex','justify-center','items-center','gap-2','px-10','py-3.5','bg-[#7FB77E]','rounded-[1000px]','transition-colors','duration-300','shadow-lg', (creatingWord || updatingWord) ? 'opacity-60 cursor-not-allowed' : 'hover:bg-green-700',]" >
+          <span class="text-white font-bold text-xl text-center leading-9">{{ (creatingWord || updatingWord) ? 'در حال پردازش...' : (isEditMode ? 'ذخیره ویرایش' : 'ساخت لغت') }}</span>
         </div>
       </button>
     </div>
