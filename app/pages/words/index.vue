@@ -90,7 +90,7 @@
       <div :class="['w-full','overflow-hidden','flex','flex-col','items-end','gap-5','mb-3','transition-all','duration-500','ease-in-out',isExpanded ? 'max-h-[2000px]' : 'max-h-52',]" >
         <div class="flex flex-col items-end gap-3 w-full">
           <span class="text-sm leading-6 text-[#2B2B2B]">:لطفا دیکشنری مورد نظر را انتخاب کنید</span>
-          <div class="relative w-full sm:w-[300px]">
+          <div class="relative w-full md:w-[50%]">
             <div v-if="loadingDictionaries" class="p-3 text-xs text-gray-500">در حال بارگذاری دیکشنری‌ها...</div>
             <select v-else v-model="selectedDictionary" :disabled="isEditMode" class="appearance-none w-full h-11 px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-right text-xs text-[#2B2B2B] focus:outline-none cursor-pointer truncate" >
               <option :value="null" disabled>انتخاب یا سرچ میان دیکشنری‌ها</option>
@@ -434,16 +434,16 @@ textarea {
 }
 
 .custom-offcanvas2 {
-direction: rtl; 
-overflow-y: auto;
+  overflow-y: auto;
+  cursor: pointer;
 }
 .custom-offcanvas2::-webkit-scrollbar {
-width: 10px;
+  width: 10px;
 }
 
 .custom-offcanvas2::-webkit-scrollbar-thumb {
-background: rgba(0, 0, 0, 0.2);
-border-radius: 4px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 
