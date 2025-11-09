@@ -104,7 +104,7 @@
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:تعریف</label>
-            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide" ></textarea>
+            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36" ></textarea>
           </div>
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:نام لغت</label>
@@ -118,7 +118,7 @@
             <textarea
               v-model="opposite"
               placeholder="متضادها را با کاما یا خط جدید جدا کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36"
             ></textarea>
           </div>
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
@@ -126,7 +126,7 @@
             <textarea
               v-model="synonym"
               placeholder="مترادف‌ها را با کاما یا خط جدید جدا کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36"
             ></textarea>
           </div>
         </div>
@@ -137,7 +137,7 @@
             <textarea
               v-model="examples"
               placeholder="توضیحات لازم را وارد کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36"
             ></textarea>
           </div>
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
@@ -145,7 +145,7 @@
             <textarea
               v-model="relatedWords"
               placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none scrollbar-hide max-h-36"
             ></textarea>
           </div>
         </div>
