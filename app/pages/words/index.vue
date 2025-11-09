@@ -32,23 +32,28 @@
               <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length" class="absolute top-full mt-2 w-full bg-white border border-gray-200 shadow-xl rounded-xl max-h-80 overflow-y-auto z-10 p-2 custom-offcanvas2">
                 <ul class="divide-y divide-gray-100">
                   <li v-for="word in searchResults" :key="word.id" class="flex justify-between items-start py-3 px-2 transition-all duration-200" >
-                    <div class="flex-shrink-0 flex items-center gap-2">
-                       <button @click="editWord(word)" class="p-2 text-white bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-200 shadow-md tooltip" title="ویرایش لغت">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
-                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-                        </svg>
-                       </button>
-
-                      <button @click="confirmDelete(word)" :disabled="deletingWord" :class="['p-2','text-white','bg-red-500','rounded-full','transition-colors','duration-200','shadow-md','tooltip', deletingWord ? 'opacity-60 cursor-not-allowed' : 'hover:bg-red-700']"  title="حذف لغت" >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
-                          <path d="M3 6h18"/>
-                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-                          <path d="M10 11v6"/>
-                          <path d="M14 11v6"/>
-                          <path d="M14 2l-2-2-2 2"/>
-                        </svg>
-                      </button>
-                    </div>
+                    <div class="flex flex-row items-center justify-center gap-3">
+                    <button @click="editWord(word)" class="flex-shrink-0 p-2 text-white bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-200 shadow-md tooltip" title="ویرایش لغت">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                        </svg>
+                    </button>
+                    <button 
+                      @click="confirmDelete(word)" 
+                      :disabled="deletingWord"
+                      :class="['p-2','text-white','bg-red-500','rounded-full','transition-colors','duration-200','shadow-md','tooltip', deletingWord ? 'opacity-60 cursor-not-allowed' : 'hover:bg-red-700']" 
+                      title="حذف لغت"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                        <path d="M3 6h18"/>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                        <path d="M10 11v6"/>
+                        <path d="M14 11v6"/>
+                        <path d="M14 2l-2-2-2 2"/>
+                      </svg>
+                    </button>
+                    </div>
+                    <!-- UPDATED: Display Word and Pronunciation -->
                     <div class="flex flex-col items-start justify-end flex-grow min-w-0 pr-2">
                         <div class="flex items-center justify-end w-full gap-2">
                             <span v-if="word.pronunciation" class="text-xs text-gray-400 font-normal italic">[{{ word.pronunciation }}]</span>
