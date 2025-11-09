@@ -43,7 +43,6 @@ const useDeleteWord = () => {
       }
 
       errMessage.value = message;
-      // پرتاب خطا برای مدیریت توسط کامپوننت
       throw new Error(message); 
       
     } finally {
