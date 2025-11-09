@@ -38,8 +38,8 @@
                         </svg>
                     </button>
                     <div class="flex flex-col items-start justify-end flex-grow min-w-0 pr-2">
-                        <span class="font-bold text-sm text-[#2B2B2B] truncate w-full">{{ word.word }}</span>
-                        <span class="text-gray-500 text-xs mt-1 truncate w-full inline-block">{{ word.meaning }}</span>
+                        <span class="font-bold text-sm text-[#2B2B2B] truncate w-full text-right">{{ word.word }}</span>
+                        <span class="text-gray-500 text-xs mt-1 truncate w-full inline-block text-right">{{ word.meaning }}</span>
                     </div>
                   </li>
                 </ul>
