@@ -101,7 +101,7 @@
           </div>
         </div>
 
-        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
+        <div class="w-full flex flex-col sm:flex-row justify-between items-center">
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3 overflow-hidden">
             <label class="text-base leading-6 text-[#2B2B2B]">:تعریف</label>
             <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36" ></textarea>
@@ -112,7 +112,7 @@
           </div>
         </div>
 
-        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
+        <div class="w-full flex flex-col sm:flex-row justify-between items-center">
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3 overflow-hidden">
             <label class="text-base leading-6 text-[#2B2B2B]">:متضاد</label>
             <textarea
@@ -131,7 +131,7 @@
           </div>
         </div>
 
-        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
+        <div class="w-full flex flex-col sm:flex-row justify-between items-center">
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3 overflow-hidden">
             <label class="text-base leading-6 text-[#2B2B2B]">:توضیحات</label>
             <textarea
@@ -436,7 +436,7 @@ textarea {
 .custom-offcanvas2 {
   overflow-y: auto;
   cursor: pointer;
-  margin-right: 5px;
+  transform: translateX(-5px);
 }
 .custom-offcanvas2::-webkit-scrollbar {
   width: 8px;
