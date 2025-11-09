@@ -29,20 +29,18 @@
               <input v-model="searchQuery" type="text" placeholder="جستجوی لغت مورد نظر..." class="w-full h-[50px] pl-[14px] pr-[50px] text-right text-[13px] leading-[22px] text-[#2B2B2B] font-normal placeholder:text-[#DADDD8] bg-[#F5F6F4] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] focus:outline-none" />
               <icons-search class="absolute right-[14px] top-1/2 -translate-y-1/2 w-[22px] h-[22px] text-[#2B2B2B] pointer-events-none" />
               
-              <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length" class="absolute top-full mt-2 w-full bg-white border border-gray-200 shadow-xl rounded-xl max-h-80 overflow-y-auto z-10 p-2" dir="ltr">
+              <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length" class="absolute top-full mt-2 w-full bg-white border border-gray-200 shadow-xl rounded-xl max-h-80 overflow-y-auto z-10 p-2">
                 <ul class="divide-y divide-gray-100">
                   <li v-for="word in searchResults" :key="word.id" class="flex justify-between items-start py-3 px-2 transition-all duration-200" >
-                    
-                    <div class="flex flex-col items-end flex-grow min-w-0 pr-2">
-                        <span class="font-bold text-sm text-[#2B2B2B] truncate w-full">{{ word.word }}</span>
-                        <span class="text-gray-500 text-xs mt-1 truncate w-full inline-block text-right">{{ word.meaning }}</span>
-                    </div>
-
                     <button @click="editWord(word)" class="flex-shrink-0 p-2 text-white bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-200 shadow-md tooltip" title="ویرایش لغت">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
                             <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
                         </svg>
                     </button>
+                    <div class="flex flex-col items-start flex-grow min-w-0 pr-2">
+                        <span class="font-bold text-sm text-[#2B2B2B] truncate w-full">{{ word.word }}</span>
+                        <span class="text-gray-500 text-xs mt-1 truncate w-full inline-block">{{ word.meaning }}</span>
+                    </div>
                   </li>
                 </ul>
               </div>
