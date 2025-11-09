@@ -453,14 +453,12 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import { useToast } from 'vue-toastification/dist/index.mjs';
 import { useRouter } from 'vue-router';
-// Import Composables (فرض بر وجود این فایل‌ها و کامپوزبل‌ها است)
-import { useAuthToken } from '@/composables/useAuthCrypto';
-import useSearchWords from '@/composables/useSearchWords';
-import useUpdateWord from '@/composables/useUpdateWord';
-import useCreateWord from '@/composables/useCreateWord';
-import useFetchDictionaries from '@/composables/useFetchDictionaries';
-// 👈 NEW: اضافه کردن کامپوزبل حذف واژه
-import useDeleteWord from '@/composable/useDeleteWord'; 
+// import { useAuthToken } from '@/composables/useAuthCrypto';
+// import useSearchWords from '@/composables/useSearchWords';
+// import useUpdateWord from '@/composables/useUpdateWord';
+// import useCreateWord from '@/composables/useCreateWord';
+// import useFetchDictionaries from '@/composables/useFetchDictionaries';
+// import useDeleteWord from '@/composable/useDeleteWord'; 
 
 const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
 const toast = useToast();
