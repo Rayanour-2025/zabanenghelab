@@ -60,22 +60,33 @@
         </div>
         <div class="w-full h-px border border-[#DADDD8]"></div>
         <div class="w-full flex flex-col items-start justify-center gap-10">
-          
-          <div v-for="group in groupedDictionaries" :key="group.groupName" class="w-full flex flex-col items-end gap-[12px]">
-            <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:{{ group.groupName }}</span>
-            
+          <div class="w-full flex flex-col items-end gap-[12px]">
+            <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:فارسی</span>
             <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
-              <DictionaryTag 
-                v-for="dict in group.dictionaries"
-                :key="dict.id"
-                :title="dict.title" 
-                :dictionary-id="dict.id"
-                :is-selected="selectedDictionaryTags.includes(dict.id)"
-                @toggle="toggleDictionaryTag(dict.id)"
-              />
+              <DictionaryTag title="فرهنگ موضوعی فارسی" />
+              <DictionaryTag title="فرهنگ جامع زبان فارسی" />
+              <DictionaryTag title="عمید" />
+              <DictionaryTag title="معین" />
+              <DictionaryTag title="دهخدا" />
+              <DictionaryTag title="زبان انقلاب" />
+              <DictionaryTag title="فرهنگ اصطلاحات مالی و سرمایه‌گذاری" />
+              <DictionaryTag title="فرهنگ زبان‌آموز فارسی" />
+              <DictionaryTag title="لغت‌نامه بزرگ فارسی" />
+              <DictionaryTag title="فرهنگ سخن" />
             </div>
           </div>
-
+          <div class="w-full flex flex-col items-end gap-[12px]">
+            <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:انگلیسی</span>
+            <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
+              <DictionaryTag title="مک میلن" />
+              <DictionaryTag title="آکسفورد" />
+              <DictionaryTag title="لانگمن" />
+              <DictionaryTag title="کمبریج" />
+              <DictionaryTag title="کالینز" />
+              <DictionaryTag title="گوگل ترنسلیت" />
+              <DictionaryTag title="مریام-وبستر" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -189,6 +200,7 @@ import { useRouter } from 'vue-router';
 // import useCreateWord from '@/composables/useCreateWord'; 
 // import useFetchDictionaries from '@/composables/useFetchDictionaries'; 
 
+// فرض بر این است که کامپوزبل‌ها در دسترس هستند
 const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
 const toast = useToast(); 
 const router = useRouter();
@@ -208,45 +220,13 @@ const isEditMode = ref(false);
 const currentWordId = ref(null); 
 
 const searchResults = ref([]); 
-const dictionaryIdForSearch = 1; 
+const dictionaryIdForSearch = 1; // این مقدار به تناسب نیاز شما تنظیم شده است
 
-const selectedDictionaryTags = ref([]); 
-
-const mockDictionariesData = [
-    { id: 1, title: "فرهنگ موضوعی فارسی", group: "فارسی" },
-    { id: 2, title: "فرهنگ جامع زبان فارسی", group: "فارسی" },
-    // ... بقیه دیکشنری‌های فارسی
-    { id: 11, title: "مک میلن", group: "انگلیسی" },
-    // ... بقیه دیکشنری‌های انگلیسی
-];
-
-const groupedDictionaries = computed(() => {
-    return mockDictionariesData.reduce((acc, dict) => {
-        const group = acc.find(g => g.groupName === dict.group);
-        if (!group) {
-            acc.push({ groupName: dict.group, dictionaries: [dict] });
-        } else {
-            group.dictionaries.push(dict);
-        }
-        return acc;
-    }, []);
-});
-
-
+// فرض بر این است که این توابع از کامپوزبل‌ها می‌آیند
 const handleAuthError = () => {
     toast.error("مشکلی در شناسایی شما پیش آمده. لطفاً دوباره وارد شوید.");
     router.push('/login');
 };
-
-const toggleDictionaryTag = (id) => {
-  const index = selectedDictionaryTags.value.indexOf(id);
-  if (index > -1) {
-    selectedDictionaryTags.value.splice(index, 1); 
-  } else {
-    selectedDictionaryTags.value.push(id);
-  }
-};
-
 
 const { 
   fetchDictionaries, 
