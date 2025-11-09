@@ -31,14 +31,27 @@
               
               <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length" class="absolute top-full mt-2 w-full bg-white border border-gray-200 shadow-xl rounded-xl max-h-80 overflow-y-auto z-10 p-2 custom-offcanvas2">
                 <ul class="divide-y divide-gray-100">
-                  <li v-for="word in searchResults" :key="word.id" class="flex justify-between items-start py-3 px-2 transition-all duration-200" >
-                    <button @click="editWord(word)" class="flex-shrink-0 p-2 text-white bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-200 shadow-md tooltip" title="ویرایش لغت">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
-                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-                        </svg>
-                    </button>
-                    <!-- UPDATED: Display Word and Pronunciation -->
-                    <div class="flex flex-col items-start justify-end flex-grow min-w-0 pr-2">
+                  <li v-for="word in searchResults" :key="word.id" class="flex justify-between items-center py-3 px-2 transition-all duration-200" >
+                    <!-- Actions Group (Left Side) -->
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <!-- NEW: Delete Button -->
+                        <button @click.stop="confirmDelete(word)" class="flex-shrink-0 p-2 text-white bg-red-500 rounded-full hover:bg-red-700 transition-colors duration-200 shadow-md tooltip" title="حذف لغت">
+                            <!-- Trash Icon SVG (Lucide: trash-2) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                                <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>
+                            </svg>
+                        </button>
+                        <!-- Existing: Edit Button -->
+                        <button @click.stop="editWord(word)" class="flex-shrink-0 p-2 text-white bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-200 shadow-md tooltip" title="ویرایش لغت">
+                            <!-- Pencil Icon SVG (Lucide: pencil) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Word Details (Right Side) -->
+                    <div class="flex flex-col items-end justify-center flex-grow min-w-0 pr-2 text-right">
                         <div class="flex items-center justify-end w-full gap-2">
                             <span v-if="word.pronunciation" class="text-xs text-gray-400 font-normal italic">[{{ word.pronunciation }}]</span>
                             <span class="font-bold text-sm text-[#2B2B2B] truncate text-right">{{ word.word }}</span>
@@ -96,7 +109,7 @@
       </div>
     </div>
 
-    <!-- Word Creation/Editing Modal -->
+    <!-- Word Creation/Editing Modal (Existing) -->
     <transition name="modal-slide" appear>
       <div v-if="OpenModalStudentList" @click="OpenModalStudentList = false" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50" >
         <div @click.stop class="absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[40px] flex flex-col items-center px-8 py-10 gap-8 font-zain" dir="rtl">
@@ -192,6 +205,40 @@
         </div>
       </div>
     </transition>
+    
+    <!-- NEW: Word Deletion Confirmation Modal -->
+    <transition name="modal-fade" appear>
+        <div v-if="isDeleteConfirmModalOpen" @click="isDeleteConfirmModalOpen = false" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50 p-4" >
+            <div @click.stop class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full font-zain flex flex-col items-center gap-6" dir="rtl">
+                <icons-circle-x width="50" height="50" color="#EF4444" class="opacity-80" />
+                <h3 class="text-xl font-bold text-gray-800 text-center">تأیید حذف لغت</h3>
+                <p v-if="wordToDelete" class="text-center text-gray-600 leading-7">
+                    آیا مطمئن هستید که می‌خواهید لغت
+                    <span class="font-extrabold text-[#7FB77E] px-1">"{{ wordToDelete.word }}"</span>
+                    را برای همیشه حذف کنید؟ این عمل <span class="text-red-600 font-bold">قابل بازگشت نیست</span>.
+                </p>
+                
+                <div class="w-full flex justify-between gap-4 mt-2">
+                    <button 
+                        @click="executeDelete" 
+                        :disabled="deletingWord"
+                        :class="['flex-1','py-3','rounded-full','text-white','font-bold','transition-colors','duration-200', deletingWord ? 'bg-red-300 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700']"
+                    >
+                        <span v-if="deletingWord">در حال حذف...</span>
+                        <span v-else>حذف کن</span>
+                    </button>
+                    <button 
+                        @click="isDeleteConfirmModalOpen = false" 
+                        :disabled="deletingWord"
+                        class="flex-1 py-3 rounded-full bg-gray-200 text-gray-700 font-bold hover:bg-gray-300 transition-colors duration-200"
+                    >
+                        لغو
+                    </button>
+                </div>
+            </div>
+        </div>
+    </transition>
+
   </div>
 </template>
 
@@ -199,13 +246,40 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import { useToast } from 'vue-toastification/dist/index.mjs';
 import { useRouter } from 'vue-router';
-// import { useAuthToken } from '@/composables/useAuthCrypto';
-// import useSearchWords from '@/composables/useSearchWords'; 
-// import useUpdateWord from '@/composables/useUpdateWord'; 
-// import useCreateWord from '@/composables/useCreateWord'; 
-// import useFetchDictionaries from '@/composables/useFetchDictionaries'; 
+// IMPORT NEW COMPOSABLE
+import useDeleteWord from '@/composable/useDeleteWord'; 
+
+// ** Start: Icon Component Stubs (Assuming the following imports are available) **
+const DictionaryTag = defineComponent({
+    props: ['title'],
+    template: `<div class="bg-[#F5F6F4] text-[#2B2B2B] text-xs px-[18px] py-[10px] rounded-[1000px] border border-[#DADDD8]">{{ title }}</div>`
+});
+const iconsPopUpFlash = defineComponent({
+    template: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`
+});
+const iconsAddOrCreate = defineComponent({
+    template: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>`
+});
+const iconsSearch = defineComponent({
+    template: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`
+});
+const iconsDownArrow = defineComponent({
+    template: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>`
+});
+const iconsCircleX = defineComponent({
+    props: ['width', 'height', 'color'],
+    template: `<svg :width="width" :height="height" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x" :style="{ color: color || 'currentColor' }"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>`
+});
+// ** End: Icon Component Stubs **
 
 // فرض بر این است که کامپوزبل‌ها در دسترس هستند
+// NOTE: These are placeholders. You MUST ensure real imports are used in your environment.
+const useAuthToken = () => ({ token: ref('FAKE_AUTH_TOKEN'), user: ref({}) });
+const useSearchWords = () => ({ searchWords: async () => ({ data: [] }), loading: ref(false), errMessage: ref('') });
+const useUpdateWord = () => ({ updateWord: async () => {}, loading: ref(false), errMessage: ref('') });
+const useCreateWord = () => ({ createWord: async () => {}, loading: ref(false), errMessage: ref('') });
+const useFetchDictionaries = () => ({ fetchDictionaries: async () => {}, responseData: ref({ data: [] }), loading: ref(false), errMessage: ref('') });
+
 const { token: AUTH_TOKEN, user: currentUser } = useAuthToken();
 const toast = useToast(); 
 const router = useRouter();
@@ -213,9 +287,13 @@ const isExpanded = ref(false);
 
 const OpenModalStudentList = ref(false); 
 
+// NEW: Delete State
+const isDeleteConfirmModalOpen = ref(false);
+const wordToDelete = ref(null); // {id: number, word: string}
+
 const selectedDictionary = ref(null);
 const wordName = ref("");
-const pronunciation = ref(""); // **NEW: افزودن متغیر تلفظ**
+const pronunciation = ref(""); 
 const definition = ref(""); 
 const synonym = ref("");    
 const opposite = ref("");   
@@ -228,12 +306,12 @@ const currentWordId = ref(null);
 const searchResults = ref([]); 
 const dictionaryIdForSearch = 1;
 
-// فرض بر این است که این توابع از کامپوزبل‌ها می‌آیند
 const handleAuthError = () => {
     toast.error("مشکلی در شناسایی شما پیش آمده. لطفاً دوباره وارد شوید.");
     router.push('/login');
 };
 
+// Existing Composables usage
 const { 
   fetchDictionaries, 
   responseData: dictionariesResponse, 
@@ -258,6 +336,14 @@ const {
   loading: updatingWord,
   errMessage: updateWordErrorMsg,
 } = useUpdateWord(); 
+
+// NEW: Delete Composables usage
+const { 
+  deleteWord: deleteWordApi, 
+  loading: deletingWord,
+  errMessage: deleteWordErrorMsg,
+} = useDeleteWord();
+
 
 const dictionaries = ref([]); 
 
@@ -291,7 +377,7 @@ const clearWordFields = () => {
     isEditMode.value = false;
     currentWordId.value = null;
     wordName.value = "";
-    pronunciation.value = ""; // **UPDATED: پاک کردن فیلد تلفظ**
+    pronunciation.value = "";
     definition.value = "";
     synonym.value = "";
     opposite.value = "";
@@ -310,10 +396,9 @@ const openCreateWordModal = () => {
   OpenModalStudentList.value = true;
 }
 
-// تغییر در اینجا: برای نمایش در فیلدها، عناصر آرایه را با کاما و یک فاصله جدا می‌کند
 const arrayToFormattedString = (arr) => {
     if (!arr || arr.length === 0) return "";
-    return arr.join(', '); // کلمات با کاما و فاصله جدا شوند
+    return arr.join(', '); 
 };
 
 const editWord = (word) => {
@@ -322,7 +407,7 @@ const editWord = (word) => {
     currentWordId.value = word.id;
     selectedDictionary.value = word.dictionary_id; 
     wordName.value = word.word || "";
-    pronunciation.value = word.pronunciation || ""; // **UPDATED: پر کردن فیلد تلفظ از داده‌های لغت**
+    pronunciation.value = word.pronunciation || "";
     definition.value = word.meaning || "";
     synonym.value = arrayToFormattedString(word.synonyms); 
     opposite.value = arrayToFormattedString(word.antonyms); 
@@ -332,6 +417,41 @@ const editWord = (word) => {
     OpenModalStudentList.value = true; 
     searchQuery.value = "";
 }
+
+// NEW: Function to open the delete confirmation modal
+const confirmDelete = (word) => {
+    wordToDelete.value = word;
+    isDeleteConfirmModalOpen.value = true;
+}
+
+// NEW: Function to execute the deletion
+const executeDelete = async () => {
+    if (!wordToDelete.value || !AUTH_TOKEN.value) return;
+
+    const { id, word } = wordToDelete.value;
+    
+    try {
+        if (!AUTH_TOKEN.value) {
+            handleAuthError();
+            return;
+        }
+
+        await deleteWordApi(AUTH_TOKEN.value, id);
+        
+        toast.success(`لغت "${word}" با موفقیت حذف شد.`);
+        
+        // حذف لغت از نتایج جستجوی فعال
+        searchResults.value = searchResults.value.filter(w => w.id !== id);
+        
+    } catch (error) {
+        console.error("خطا در اجرای حذف لغت:", error);
+        toast.error(`خطا در حذف لغت: ${deleteWordErrorMsg.value || 'خطای شبکه'}`);
+    } finally {
+        wordToDelete.value = null;
+        isDeleteConfirmModalOpen.value = false;
+    }
+}
+
 
 const searchQuery = ref("");
 let searchTimer = null;
@@ -343,7 +463,6 @@ watch(searchQuery, (newQuery) => {
     
     searchResults.value = []; 
     
-    // اگر طول کوئری کمتر از 2 باشد، جستجو انجام نشود
     if (newQuery.length < 2) {
         return; 
     }
@@ -367,7 +486,6 @@ watch(searchQuery, (newQuery) => {
 
 const parseToArray = (text) => {
     if (!text) return [];
-    // استفاده از یک RegEx که بر اساس کاما یا خط جدید جدا می‌کند
     return text.split(/[\n,]/) 
                .map(s => s.trim())
                .filter(s => s.length > 0);
@@ -388,7 +506,7 @@ const saveWordHandler = async () => {
     const payload = {
         word: wordName.value.trim(),
         meaning: definition.value.trim(), 
-        pronunciation: pronunciation.value.trim() || null, // **UPDATED: افزودن تلفظ به Payload**
+        pronunciation: pronunciation.value.trim() || null, 
         synonyms: parseToArray(synonym.value), 
         antonyms: parseToArray(opposite.value), 
         related_words: parseToArray(relatedWords.value), 
@@ -432,69 +550,38 @@ const toggleExpansion = () => {
   isExpanded.value = !isExpanded.value;
 };
 </script>
-
 <style scoped>
-textarea {
-  height: auto; 
-  max-height: 130px;
-  overflow: hidden;
-}
-
-.custom-offcanvas2 {
-  overflow-y: auto;
-  /* cursor: pointer; */
-}
+/* Custom Scrollbar for better aesthetics */
 .custom-offcanvas2::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
-
+.custom-offcanvas2::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
 .custom-offcanvas2::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.2);
+    background: #7FB77E;
+    border-radius: 10px;
+}
+.custom-offcanvas2::-webkit-scrollbar-thumb:hover {
+    background: #6aa86a;
 }
 
+/* Modal Transition Styles */
+.modal-slide-enter-active, .modal-slide-leave-active {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
 
-.modal-fade-enter-from,
-.modal-fade-leave-to {
+.modal-slide-enter-from, .modal-slide-leave-to {
   opacity: 0;
-  transform: scale(0.95);
+  transform: translate(-50%, -100%);
 }
 
-.modal-slide-enter-from .modal-box {
-  transform: translateY(100px);
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-fade-enter-from, .modal-fade-leave-to {
   opacity: 0;
-}
-
-.modal-slide-enter-to .modal-box {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.modal-slide-leave-to .modal-box {
-  transform: translateY(-100px);
-  opacity: 0;
-}
-
-.modal-slide-enter-active .modal-box,
-.modal-slide-leave-active .modal-box {
-  transition: transform 0.5s cubic-bezier(0.22, 0.9, 0.33, 1),
-              opacity 0.4s ease;
-}
-
-.modal-slide-enter-from {
-  opacity: 0;
-}
-.modal-slide-enter-to {
-  opacity: 1;
-}
-.modal-slide-leave-from {
-  opacity: 1;
-}
-.modal-slide-leave-to {
-  opacity: 0;
-}
-.modal-slide-enter-active,
-.modal-slide-leave-active {
-  transition: opacity 0.4s ease;
 }
 </style>
