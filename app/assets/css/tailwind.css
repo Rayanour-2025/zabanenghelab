@@ -14,11 +14,11 @@
     font-family: 'Zain-Regular', sans-serif;
   }
   .Toastify__toast-container {
-    padding: 0 !important; /* حذف padding پیش‌فرض کانتینر */
+    padding: 0 !important; 
   }
 
   .Toastify__toast--rtl.Toastify__toast-container--top-left {
-    right: 10px !important; /* فاصله از راست */
-    left: auto !important;   /* override فاصله از چپ */
+    right: 10px !important; 
+    left: auto !important;   
   }
 }

@@ -53,7 +53,7 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
           authStore.setLoginData(responseData.value); 
           toast.success("ورود موفقیت‌آمیز بود. در حال هدایت...");
           
-          await navigateTo('/'); 
+          await navigateTo('/words'); 
       } else {
           toast.error("ورود موفق بود، اما ساختار پاسخ سرور صحیح نیست.");
           generateNewCaptcha();

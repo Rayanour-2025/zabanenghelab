@@ -16,7 +16,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        zain: ['Zain-Regular', 'sans-serif'],
+        zain: ['Zain-Regular', 'system-ui', 'sans-serif'],
       },
 
     },

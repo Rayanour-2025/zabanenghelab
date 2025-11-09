@@ -2,23 +2,15 @@
 import axios from "axios";
 import { ref } from "vue";
 
-/**
- * به‌روزرسانی اطلاعات یک واژه موجود
- * @returns {Object} reactive states & methods
- */
-const useUpdateWord = () => {
-  const responseData = ref(null);  // پاسخ کامل سرور
-  const loading = ref(false);      // وضعیت بارگذاری
-  const err = ref(false);          // آیا خطا رخ داده؟
-  const errMessage = ref("");      // پیام خطا
-  const success = ref(false);      // آیا عملیات موفق بود؟
 
-  /**
-   * به‌روزرسانی یک واژه خاص
-   * @param {string} token - توکن احراز هویت کاربر
-   * @param {number} wordId - شناسه واژه (مثلاً 2)
-   * @param {object} payload - داده‌های جدید برای به‌روزرسانی (شامل word، meaning، synonyms و غیره)
-   */
+const useUpdateWord = () => {
+  const responseData = ref(null);  
+  const loading = ref(false);     
+  const err = ref(false);         
+  const errMessage = ref("");     
+  const success = ref(false);     
+
+
   const updateWord = async (token, wordId, payload) => {
     loading.value = true;
     err.value = false;
@@ -26,8 +18,6 @@ const useUpdateWord = () => {
     errMessage.value = "";
     responseData.value = null;
 
-    // آدرس API برای PUT (به‌روزرسانی واژه)
-    // توجه: شناسه واژه (wordId) در مسیر URL قرار می‌گیرد.
     const apiUrl = `https://ip3.ir/dictionary/api/v1/words/${wordId}`;
 
     try {
@@ -54,12 +44,10 @@ const useUpdateWord = () => {
         "خطا در به‌روزرسانی واژه";
 
       if (typeof message === "object") {
-        // اگر پیام خطا یک شیء (مثلاً شامل خطاهای اعتبارسنجی) باشد، آن را تبدیل به رشته می‌کنیم
         message = JSON.stringify(message);
       }
 
       errMessage.value = message;
-      // پرتاب خطا برای مدیریت توسط کامپوننت فراخواننده
       throw new Error(message);
     } finally {
       loading.value = false;

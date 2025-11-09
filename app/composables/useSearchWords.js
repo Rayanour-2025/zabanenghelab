@@ -2,23 +2,13 @@
 import axios from "axios";
 import { ref } from "vue";
 
-/**
- * جستجوی واژه‌ها در یک لغت‌نامه خاص (Admin Search)
- * @returns {Object} reactive states & methods
- */
 const useSearchWords = () => {
-  const responseData = ref(null);  // پاسخ کامل سرور
-  const loading = ref(false);      // وضعیت بارگذاری
-  const err = ref(false);          // آیا خطا رخ داده؟
-  const errMessage = ref("");      // پیام خطا
-  const success = ref(false);      // آیا عملیات موفق بود؟
+  const responseData = ref(null); 
+  const loading = ref(false);   
+  const err = ref(false);        
+  const errMessage = ref("");    
+  const success = ref(false);      
 
-  /**
-   * جستجوی واژه‌ها
-   * @param {string} token - توکن احراز هویت کاربر
-   * @param {number} dictionaryId - شناسه لغت‌نامه (مثلاً 1)
-   * @param {string} searchTerm - واژه‌ای که باید جستجو شود (مثلاً "سلامتی")
-   */
   const searchWords = async (token, dictionaryId, searchTerm) => {
     loading.value = true;
     err.value = false;
@@ -26,7 +16,6 @@ const useSearchWords = () => {
     errMessage.value = "";
     responseData.value = null;
 
-    // ساخت URL با پارامترهای query
     const apiUrl = 
       `https://ip3.ir/dictionary/api/v1/dictionaries/${dictionaryId}/words/admin-search?word=${searchTerm}`;
 
@@ -56,7 +45,6 @@ const useSearchWords = () => {
       }
 
       errMessage.value = message;
-      // پرتاب خطا برای مدیریت توسط کامپوننت فراخواننده
       throw new Error(message);
     } finally {
       loading.value = false;

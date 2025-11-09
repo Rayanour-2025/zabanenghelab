@@ -31,17 +31,17 @@
               
               <ul v-if="searchQuery.length >= 2 && searchResults.length" class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg max-h-60 overflow-auto z-10" >
                 <li v-for="word in searchResults" :key="word.id" class="px-4 py-2 flex justify-between items-center hover:bg-gray-100 text-right text-sm" >
-                  <span class="text-[#2B2B2B]">{{ word.word }} - <span class="text-gray-500 text-xs truncate max-w-[200px] inline-block">{{ word.meaning }}</span></span>
                   <button @click="editWord(word)" class="text-white bg-[#7FB77E] px-2 py-1 rounded-md text-xs hover:bg-green-700 transition-colors duration-200">
                     ویرایش
                   </button>
+                  <span class="text-[#2B2B2B]">{{ word.word }}<span class="text-gray-500 text-xs truncate max-w-[200px] inline-block">{{ word.meaning }}</span></span>
                 </li>
               </ul>
                <div v-if="searchingWord" class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg px-4 py-2 text-center text-sm text-gray-500">
-                در حال جستجو...
+                ...درحال جستجو
               </div>
               <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length === 0" class="absolute top-full mt-1 w-full bg-white shadow-lg rounded-lg px-4 py-2 text-center text-sm text-gray-500">
-                نتیجه‌ای یافت نشد.
+                .نتیجه ای یافت نشد
               </div>
             </div>
           </div>
@@ -192,45 +192,41 @@ const opposite = ref("");
 const relatedWords = ref(""); 
 const examples = ref("");   
 
-// 💡 حالت‌های جدید برای ویرایش و جستجو
-const isEditMode = ref(false); // تعیین حالت: ایجاد (false) یا ویرایش (true)
-const currentWordId = ref(null); // نگهداری شناسه لغت در حال ویرایش
+const isEditMode = ref(false); 
+const currentWordId = ref(null); 
 
-const searchResults = ref([]); // برای نگهداری نتایج جستجوی ادمین
-const dictionaryIdForSearch = 1; // 💡 دیکشنری مورد نظر برای جستجو (فعلاً ثابت 1)
+const searchResults = ref([]); 
+const dictionaryIdForSearch = 1;
 
 
-// 💡 استفاده از کامپوسابل‌ها
 const { 
   fetchDictionaries, 
   responseData: dictionariesResponse, 
   loading: loadingDictionaries, 
   errMessage: dictionariesErrorMsg 
-} = useFetchDictionaries(); // فرض بر وجود
+} = useFetchDictionaries(); 
 
 const { 
   createWord,
   loading: creatingWord,
   errMessage: createWordErrorMsg,
-} = useCreateWord(); // فرض بر وجود
+} = useCreateWord();
 
 const { 
   searchWords,
   loading: searchingWord,
   errMessage: searchErrorMsg,
-} = useSearchWords(); // 💡 استفاده از useSearchWords
+} = useSearchWords(); 
 
 const { 
   updateWord,
   loading: updatingWord,
   errMessage: updateWordErrorMsg,
-} = useUpdateWord(); // 💡 استفاده از useUpdateWord
+} = useUpdateWord(); 
 
 const dictionaries = ref([]); 
 
-// تابع واکشی دیکشنری‌ها (بدون تغییر)
 const fetchDictionariesList = async () => {
-    // ... کد fetchDictionariesList قبلی شما ...
     try {
         if (!AUTH_TOKEN.value) {
              toast.error("خطا: توکن احراز هویت یافت نشد. لطفا مجددا وارد شوید.");
@@ -244,7 +240,6 @@ const fetchDictionariesList = async () => {
         if (Array.isArray(data)) {
             dictionaries.value = data;
             if (dictionaries.value.length > 0 && selectedDictionary.value === null) {
-                // فقط اگر در حالت ویرایش نباشیم یا دیکشنری قبلاً انتخاب نشده باشد، مقداردهی پیش‌فرض انجام شود
                 selectedDictionary.value = dictionaries.value[0].id;
             }
         } else {
@@ -257,7 +252,6 @@ const fetchDictionariesList = async () => {
 };
 
 
-// تابع پاکسازی فیلدهای مودال
 const clearWordFields = () => {
     isEditMode.value = false;
     currentWordId.value = null;
@@ -267,8 +261,7 @@ const clearWordFields = () => {
     opposite.value = "";
     relatedWords.value = "";
     examples.value = "";
-    isExpanded.value = false; // بستن بخش اضافی
-    // تنظیم پیش‌فرض دیکشنری هنگام ایجاد جدید
+    isExpanded.value = false; 
     if (dictionaries.value.length > 0) {
         selectedDictionary.value = dictionaries.value[0].id; 
     } else {
@@ -276,21 +269,18 @@ const clearWordFields = () => {
     }
 }
 
-// 💡 تابع باز کردن مودال در حالت ایجاد لغت جدید
 const openCreateWordModal = () => {
-  clearWordFields(); // پاکسازی قبل از باز شدن
+  clearWordFields();
   OpenModalStudentList.value = true;
 }
 
-// تابع تبدیل آرایه به رشته (با خط فاصله)
 const arrayToFormattedString = (arr) => {
     if (!arr || arr.length === 0) return "";
-    return arr.join('-'); // پیوستن با خط فاصله، مطابق با منطق parseToArray
+    return arr.join('-');
 };
 
-// 💡 تابع پر کردن مودال برای ویرایش
 const editWord = (word) => {
-    clearWordFields(); // پاکسازی اولیه
+    clearWordFields(); 
     isEditMode.value = true;
     currentWordId.value = word.id;
     selectedDictionary.value = word.dictionary_id; 
@@ -301,28 +291,24 @@ const editWord = (word) => {
     relatedWords.value = arrayToFormattedString(word.related_words);
     examples.value = word.description || "";
     
-    OpenModalStudentList.value = true; // باز کردن مودال
-    searchQuery.value = ""; // بستن لیست جستجو
+    OpenModalStudentList.value = true; 
+    searchQuery.value = "";
 }
 
-// 💡 تابع جستجوی لغات با تاخیر (Debouncing)
 const searchQuery = ref("");
 let searchTimer = null;
 
 watch(searchQuery, (newQuery) => {
-    // پاک کردن تایمر قبلی
     if (searchTimer) {
         clearTimeout(searchTimer);
     }
     
-    searchResults.value = []; // پاکسازی نتایج قبلی
+    searchResults.value = []; 
     
-    // اگر کوئری کمتر از 2 کاراکتر باشد، جستجو انجام نشود
-    if (newQuery.length < 2) {
-        return; 
-    }
+    // if (newQuery.length < 2) {
+    //     return; 
+    // }
 
-    // تنظیم تایمر جدید
     searchTimer = setTimeout(async () => {
         try {
             if (!AUTH_TOKEN.value) {
@@ -330,30 +316,25 @@ watch(searchQuery, (newQuery) => {
                 return;
             }
             
-            // 💡 فراخوانی API جستجو با دیکشنری 1
             const response = await searchWords(AUTH_TOKEN.value, dictionaryIdForSearch, newQuery.trim());
             
-            // 💡 به‌روزرسانی نتایج جستجو
             searchResults.value = response.data || [];
         } catch (error) {
             console.error("خطا در جستجوی لغت:", error);
             // toast.error(`خطا در جستجو: ${searchErrorMsg.value || 'خطای شبکه'}`); // اختیاری
-            searchResults.value = []; // در صورت خطا لیست خالی شود
+            searchResults.value = []; 
         }
-    }, 500); // 500 میلی‌ثانیه تاخیر
+    }, 500); 
 });
 
 
-// تابع parseToArray (بدون تغییر)
 const parseToArray = (text) => {
     if (!text) return [];
-    // جدا کردن با خط جدید (\n)، کاما (,) یا خط فاصله (-)
     return text.split(/[\n,-]/) 
                .map(s => s.trim())
                .filter(s => s.length > 0);
 };
 
-// تابع Watcherها برای تبدیل فاصله‌ها به خط فاصله (-) (بدون تغییر)
 const setupWordFormatWatchers = () => {
   watch(synonym, (newValue) => {
     if (newValue.includes(' ')) {
@@ -374,7 +355,6 @@ const setupWordFormatWatchers = () => {
   });
 };
 
-// 💡 تابع هندلر ذخیره (ایجاد یا ویرایش)
 const saveWordHandler = async () => {
     if (!selectedDictionary.value) {
         toast.error("لطفاً یک دیکشنری انتخاب کنید.");
@@ -396,7 +376,6 @@ const saveWordHandler = async () => {
         description: examples.value.trim() || null, 
     };
     
-    // اگر حالت ایجاد بود، dictionary_id نیز لازم است
     if (!isEditMode.value) {
       payload.dictionary_id = selectedDictionary.value;
     }
@@ -408,16 +387,13 @@ const saveWordHandler = async () => {
         }
 
         if (isEditMode.value && currentWordId.value) {
-            // حالت ویرایش
             await updateWord(AUTH_TOKEN.value, currentWordId.value, payload);
             toast.success("لغت با موفقیت ویرایش شد.");
         } else {
-            // حالت ایجاد
             await createWord(AUTH_TOKEN.value, payload);
             toast.success("لغت جدید با موفقیت ایجاد شد.");
         }
 
-        // پاکسازی و بستن مودال پس از موفقیت
         clearWordFields();
         OpenModalStudentList.value = false;
         
