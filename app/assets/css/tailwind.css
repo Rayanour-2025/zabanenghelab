@@ -21,4 +21,14 @@
     right: 10px !important; 
     left: auto !important;   
   }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;  
+    scrollbar-width: none;    
+  }
+
+
 }
