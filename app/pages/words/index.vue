@@ -101,47 +101,46 @@
           </div>
         </div>
 
-        <!-- NEW ROW: Definition on the Right | Word Name and Pronunciation on the Left -->
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
-          
-          <!-- Column 1 (Right): Definition -->
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
-            <label class="text-base leading-6 text-[#2B2B2B]">:تعریف</label>
-            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36" ></textarea>
+          <div class="w-full flex flex-col items-end gap-3">
+            <label class="text-base leading-6 text-[#2B2B2B]">:تلفظ</label>
+            <input type="text" v-model="pronunciation" placeholder="تلفظ یا آوانگاری لغت" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
           </div>
-          
-          <!-- Column 2 (Left): Word Name and Pronunciation (Stacked) -->
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-5">
-            
-            <!-- Word Name -->
-            <div class="w-full flex flex-col items-end gap-3">
-              <label class="text-base leading-6 text-[#2B2B2B]">:نام لغت</label>
-              <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
-            </div>
-
-            <!-- Pronunciation (NEW FIELD) -->
-            <div class="w-full flex flex-col items-end gap-3">
-              <label class="text-base leading-6 text-[#2B2B2B]">:تلفظ</label>
-              <input type="text" v-model="pronunciation" placeholder="تلفظ یا آوانگاری لغت (phonetic)" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
-            </div>
-
+          <div class="w-full flex flex-col items-end gap-3">
+            <label class="text-base leading-6 text-[#2B2B2B]">:نام لغت</label>
+            <input type="text" v-model="wordName" placeholder="نام لغت دلخواه را وارد کنید" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
           </div>
         </div>
 
         <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
-            <label class="text-base leading-6 text-[#2B2B2B]">:متضاد</label>
-            <textarea
-              v-model="opposite"
-              placeholder="متضادها را با کاما یا خط جدید جدا کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
-            ></textarea>
-          </div>
-          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
             <label class="text-base leading-6 text-[#2B2B2B]">:مترادف</label>
             <textarea
               v-model="synonym"
               placeholder="مترادف‌ها را با کاما یا خط جدید جدا کنید"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
+            ></textarea>
+          </div>
+          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
+            <label class="text-base leading-6 text-[#2B2B2B]">:تعریف</label>
+            <textarea v-model="definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36" ></textarea>
+          </div>
+        </div>
+
+        <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
+          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
+            <label class="text-base leading-6 text-[#2B2B2B]">:هم‌خانواده</label>
+            <textarea
+              v-model="relatedWords"
+              placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
+              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
+            ></textarea>
+          </div>
+          <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
+            <label class="text-base leading-6 text-[#2B2B2B]">:متضاد</label>
+            <textarea
+              v-model="opposite"
+              placeholder="متضادها را با کاما یا خط جدید جدا کنید"
               class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
             ></textarea>
           </div>
@@ -157,12 +156,6 @@
             ></textarea>
           </div>
           <div class="w-full sm:w-[50%] flex flex-col items-end gap-3">
-            <label class="text-base leading-6 text-[#2B2B2B]">:هم‌خانواده</label>
-            <textarea
-              v-model="relatedWords"
-              placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید"
-              class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36"
-            ></textarea>
           </div>
         </div>
       </div>
