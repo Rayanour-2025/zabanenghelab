@@ -37,8 +37,12 @@
                             <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
                         </svg>
                     </button>
+                    <!-- UPDATED: Display Word and Pronunciation -->
                     <div class="flex flex-col items-start justify-end flex-grow min-w-0 pr-2">
-                        <span class="font-bold text-sm text-[#2B2B2B] truncate w-full text-right">{{ word.word }}</span>
+                        <div class="flex items-center justify-end w-full gap-2">
+                            <span v-if="word.pronunciation" class="text-xs text-gray-400 font-normal italic">[{{ word.pronunciation }}]</span>
+                            <span class="font-bold text-sm text-[#2B2B2B] truncate text-right">{{ word.word }}</span>
+                        </div>
                         <span class="text-gray-500 text-xs mt-1 truncate w-full inline-block text-right">{{ word.meaning }}</span>
                     </div>
                   </li>
@@ -59,6 +63,7 @@
           </div>
         </div>
         <div class="w-full h-px border border-[#DADDD8]"></div>
+        <!-- Dictionary Selection Block -->
         <div class="w-full flex flex-col items-start justify-center gap-10">
           <div class="w-full flex flex-col items-end gap-[12px]">
             <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:فارسی</span>
@@ -91,6 +96,7 @@
       </div>
     </div>
 
+    <!-- Word Creation/Editing Modal -->
     <transition name="modal-slide" appear>
       <div v-if="OpenModalStudentList" @click="OpenModalStudentList = false" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50" >
         <div @click.stop class="absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[40px] flex flex-col items-center px-8 py-10 gap-8 font-zain" dir="rtl">
@@ -108,7 +114,6 @@
                   <option v-for="dict in dictionaries" :key="dict.id" :value="dict.id">{{ dict.name }}</option>
                 </select>
                 <icons-down-arrow v-if="!loadingDictionaries" class="absolute left-4 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" />
-                <!-- <p v-if="isEditMode" class="text-xs text-red-500 mt-1">دیکشنری لغت ویرایشی قابل تغییر نیست.</p> -->
               </div>
             </div>
 
@@ -210,6 +215,7 @@ const OpenModalStudentList = ref(false);
 
 const selectedDictionary = ref(null);
 const wordName = ref("");
+const pronunciation = ref(""); // **NEW: افزودن متغیر تلفظ**
 const definition = ref(""); 
 const synonym = ref("");    
 const opposite = ref("");   
@@ -220,7 +226,7 @@ const isEditMode = ref(false);
 const currentWordId = ref(null); 
 
 const searchResults = ref([]); 
-const dictionaryIdForSearch = 1; // این مقدار به تناسب نیاز شما تنظیم شده است
+const dictionaryIdForSearch = 1;
 
 // فرض بر این است که این توابع از کامپوزبل‌ها می‌آیند
 const handleAuthError = () => {
@@ -285,6 +291,7 @@ const clearWordFields = () => {
     isEditMode.value = false;
     currentWordId.value = null;
     wordName.value = "";
+    pronunciation.value = ""; // **UPDATED: پاک کردن فیلد تلفظ**
     definition.value = "";
     synonym.value = "";
     opposite.value = "";
@@ -315,8 +322,8 @@ const editWord = (word) => {
     currentWordId.value = word.id;
     selectedDictionary.value = word.dictionary_id; 
     wordName.value = word.word || "";
+    pronunciation.value = word.pronunciation || ""; // **UPDATED: پر کردن فیلد تلفظ از داده‌های لغت**
     definition.value = word.meaning || "";
-    // از تابع اصلاح شده استفاده می‌شود
     synonym.value = arrayToFormattedString(word.synonyms); 
     opposite.value = arrayToFormattedString(word.antonyms); 
     relatedWords.value = arrayToFormattedString(word.related_words); 
@@ -348,20 +355,16 @@ watch(searchQuery, (newQuery) => {
                 return;
             }
             
-            // اینجا dictionaryIdForSearch باید بر اساس نیاز شما تنظیم شود
             const response = await searchWords(AUTH_TOKEN.value, dictionaryIdForSearch, newQuery.trim());
             
             searchResults.value = response.data || [];
         } catch (error) {
             console.error("خطا در جستجوی لغت:", error);
-            // toast.error(`خطا در جستجو: ${searchErrorMsg.value || 'خطای شبکه'}`); 
             searchResults.value = []; 
         }
     }, 500); 
 });
 
-// ************** تغییر اصلی در این تابع است **************
-// فقط بر اساس کاما (,) یا خط جدید (\n) جدا می‌کند
 const parseToArray = (text) => {
     if (!text) return [];
     // استفاده از یک RegEx که بر اساس کاما یا خط جدید جدا می‌کند
@@ -369,20 +372,6 @@ const parseToArray = (text) => {
                .map(s => s.trim())
                .filter(s => s.length > 0);
 };
-// ********************************************************
-
-
-// ************** توابع watcher حذف شدند **************
-// watch ها برای جایگزینی فاصله با خط تیره حذف شدند
-// const setupWordFormatWatchers = () => {
-//   watch(synonym, (newValue) => {
-//     if (newValue.includes(' ')) {
-//       synonym.value = newValue.replace(/\s+/g, '-');
-//     }
-//   });
-// ...
-// };
-// ****************************************************
 
 const saveWordHandler = async () => {
     if (!selectedDictionary.value) {
@@ -399,7 +388,7 @@ const saveWordHandler = async () => {
     const payload = {
         word: wordName.value.trim(),
         meaning: definition.value.trim(), 
-        // استفاده از تابع اصلاح شده parseToArray
+        pronunciation: pronunciation.value.trim() || null, // **UPDATED: افزودن تلفظ به Payload**
         synonyms: parseToArray(synonym.value), 
         antonyms: parseToArray(opposite.value), 
         related_words: parseToArray(relatedWords.value), 
@@ -425,7 +414,6 @@ const saveWordHandler = async () => {
         }
 
         clearWordFields();
-        // OpenModalStudentList.value = false;
         
     } catch (error) {
         console.error(`خطا در ${isEditMode.value ? 'ویرایش' : 'ایجاد'} لغت:`, error);
@@ -438,7 +426,6 @@ const saveWordHandler = async () => {
 
 onMounted(() => {
   fetchDictionariesList();
-  // setupWordFormatWatchers(); // حذف شد
 });
 
 const toggleExpansion = () => {
