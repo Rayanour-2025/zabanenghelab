@@ -86,7 +86,7 @@
       <div v-if="OpenModalStudentList" @click="OpenModalStudentList = false" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50" >
         <div @click.stop class="absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[40px] flex flex-col items-center px-8 py-10 gap-8 font-zain" dir="rtl">
           <button @click="OpenModalStudentList = false" class="absolute top-5 left-5 p-2 rounded-full hover:bg-gray-100 transition duration-150">
-            <icons-circle-x width="24" height="24" color="#7FB77E" />
+            <icons-circle-x width="5" height="5" color="#7FB77E" />
           </button>
           
           <div :class="['w-full','overflow-hidden','flex','flex-col','items-end','gap-5','mb-3','transition-all','duration-500','ease-in-out',isExpanded ? 'max-h-[2000px]' : 'max-h-52',]" >
