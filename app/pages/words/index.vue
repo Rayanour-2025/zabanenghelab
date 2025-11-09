@@ -30,14 +30,14 @@
               <icons-search class="absolute right-[14px] top-1/2 -translate-y-1/2 w-[22px] h-[22px] text-[#2B2B2B] pointer-events-none" />
               
               <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length" class="absolute top-full mt-2 w-full bg-white border border-gray-200 shadow-xl rounded-xl max-h-80 overflow-y-auto z-10 p-2">
-                <ul class="divide-y divide-gray-100">
+                <ul class="divide-y divide-gray-100 custom-offcanvas2">
                   <li v-for="word in searchResults" :key="word.id" class="flex justify-between items-start py-3 px-2 transition-all duration-200" >
                     <button @click="editWord(word)" class="flex-shrink-0 p-2 text-white bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-200 shadow-md tooltip" title="ویرایش لغت">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
                             <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
                         </svg>
                     </button>
-                    <div class="flex flex-col items-start flex-grow min-w-0 pr-2">
+                    <div class="flex flex-col items-start justify-start flex-grow min-w-0 pr-2">
                         <span class="font-bold text-sm text-[#2B2B2B] truncate w-full">{{ word.word }}</span>
                         <span class="text-gray-500 text-xs mt-1 truncate w-full inline-block">{{ word.meaning }}</span>
                     </div>
