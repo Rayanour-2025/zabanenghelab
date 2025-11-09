@@ -29,8 +29,8 @@
               <input v-model="searchQuery" type="text" placeholder="جستجوی لغت مورد نظر..." class="w-full h-[50px] pl-[14px] pr-[50px] text-right text-[13px] leading-[22px] text-[#2B2B2B] font-normal placeholder:text-[#DADDD8] bg-[#F5F6F4] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] focus:outline-none" />
               <icons-search class="absolute right-[14px] top-1/2 -translate-y-1/2 w-[22px] h-[22px] text-[#2B2B2B] pointer-events-none" />
               
-              <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length" class="absolute top-full mt-2 w-full bg-white border border-gray-200 shadow-xl rounded-xl max-h-80 overflow-y-auto z-10 p-2">
-                <ul class="divide-y divide-gray-100 custom-offcanvas2">
+              <div v-if="searchQuery.length >= 2 && !searchingWord && searchResults.length" class="absolute top-full mt-2 w-full bg-white border border-gray-200 shadow-xl rounded-xl max-h-80 overflow-y-auto z-10 p-2 custom-offcanvas2">
+                <ul class="divide-y divide-gray-100">
                   <li v-for="word in searchResults" :key="word.id" class="flex justify-between items-start py-3 px-2 transition-all duration-200" >
                     <button @click="editWord(word)" class="flex-shrink-0 p-2 text-white bg-[#7FB77E] rounded-full hover:bg-green-700 transition-colors duration-200 shadow-md tooltip" title="ویرایش لغت">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
