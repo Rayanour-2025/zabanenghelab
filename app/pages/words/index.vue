@@ -398,7 +398,7 @@
               <span class="text-white text-sm leading-6">{{
                 isExpanded ? 'موارد کمتر' : 'موارد بیشتر'
               }}</span>
-              <icons-down-arrow
+              <IconsDownArrowWhite
                 :class="[
                   'w-[13px]',
                   'h-[13px]',
