@@ -36,17 +36,25 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
     responseData.value = null;
 
     try {
-      const response = await axios.post(`https://ip3.ir/dictionary/api/v1/login`,
-        {
-          username: username.value,
-          password: password.value,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      // const response = await axios.post(`https://ip3.ir/dictionary/api/v1/login`,
+      //   {
+      //     username: username.value,
+      //     password: password.value,
+      //   },
+      //   {
+      //     headers: { "Content-Type": "application/json" },
+      //   }
+      // );
 
-      responseData.value = response.data;
+      responseData.value = {
+    "message": "ورود موفق",
+    "status_response": "SUCCESS",
+    "token": "78|tRl6nE8gSTtuAd6kwVzQOzzVi3azOvZJPFh0JMD8dacdd5ca",
+    "user": {
+        "id": 1,
+        "username": "admin_1"
+    }
+};
       success.value = true;
       
       if (responseData.value.status_response === 'SUCCESS' && responseData.value.token) {

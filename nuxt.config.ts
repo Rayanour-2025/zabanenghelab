@@ -5,7 +5,13 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'], 
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-tiptap-editor'], 
+
+  tiptap: {
+    lang: 'fa',
+    editor: {
+    }
+  },
 
   css: ['~/assets/css/tailwind.css'],
 
@@ -28,6 +34,14 @@ export default defineNuxtConfig({
         changeOrigin: true,
         prependPath: true,
       },
+    },
+  },
+
+
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
     },
   },
 })
