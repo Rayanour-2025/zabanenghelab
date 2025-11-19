@@ -20,16 +20,55 @@
           </div>
 
           <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
+            <!-- FIELD: Word Name (با قابلیت بررسی موجودیت) -->
             <div class="w-full flex flex-col items-start gap-3">
               <label class="text-base leading-6 text-[#2B2B2B]">نام لغت: <span class="text-red-500">*</span></label>
               <div class="relative w-full">
-                <input v-if="!hasHTML(formData.wordName)" type="text" v-model="formData.wordName" placeholder="نام لغت دلخواه را وارد کنید" required class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
-                <div v-else v-html="formData.wordName" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" ></div>
-                <button v-if="formData.wordName" @click="openEditorModal('wordName', 'ویرایش لغت')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
-                  <IconsPencil width="13" height="13" color="#7FB77E" />
-                </button>
+                <!-- Wrapper برای اعمال کلاس هشدار/موجودیت -->
+                <div :class="{
+                  'border border-red-500 rounded-xl': wordCheckResult && wordCheckResult.exists,
+                  'border border-transparent': !wordCheckResult || !wordCheckResult.exists,
+                  'transition-all duration-300': true
+                }">
+                  
+                  <input 
+                    v-if="!hasHTML(formData.wordName)" 
+                    type="text" 
+                    v-model="formData.wordName" 
+                    placeholder="نام لغت دلخواه را وارد کنید" 
+                    required 
+                    :class="[
+                      'w-full px-4 py-3 h-11 text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none rounded-xl',
+                      (wordCheckResult && wordCheckResult.exists) ? 'bg-red-100 placeholder-red-400' : 'bg-[rgba(127,183,126,0.2)]',
+                    ]"
+                  />
+                  <!-- در حالت ویرایش HTML -->
+                  <div 
+                    v-else 
+                    v-html="formData.wordName" 
+                    :class="[
+                      'w-full px-4 py-3 h-11 text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none rounded-xl',
+                      (wordCheckResult && wordCheckResult.exists) ? 'bg-red-100 border border-red-500' : 'bg-[rgba(127,183,126,0.2)]',
+                    ]"
+                  ></div>
+
+                  <button v-if="formData.wordName" @click="openEditorModal('wordName', 'ویرایش لغت')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
+                    <IconsPencil width="13" height="13" color="#7FB77E" />
+                  </button>
+                </div>
+                
+                <!-- پیام وضعیت/هشدار -->
+                <p v-if="searchLoading" class="text-xs text-gray-500 mt-1 mr-2 flex items-center gap-1">
+                    <IconsSpinner class="animate-spin w-4 h-4 text-gray-400" />
+                    در حال بررسی موجودیت لغت...
+                </p>
+                <p v-else-if="wordCheckResult && wordCheckResult.exists" class="text-[10px] text-red-600 mt-1 mr-2 font-medium">
+                  ⚠️ این لغت {{ wordCheckResult.count }} بار قبلاً ذخیره شده است.
+                </p>
               </div>
             </div>
+            
+            <!-- FIELD: Pronunciation -->
             <div class="w-full flex flex-col items-start gap-3">
               <label class="text-base leading-6 text-[#2B2B2B]">تلفظ:</label>
               <div class="relative w-full">
@@ -43,6 +82,7 @@
           </div>
 
           <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
+            <!-- FIELD: Definition -->
             <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
                 <label class="text-base leading-6 text-[#2B2B2B]">تعریف: <span class="text-red-500">*</span></label>
                 <div class="relative w-full">
@@ -53,6 +93,7 @@
                   </button>
                 </div>
             </div>
+            <!-- FIELD: Synonym -->
             <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
               <label class="text-base leading-6 text-[#2B2B2B]">مترادف:</label>
               <div class="relative w-full">
@@ -65,8 +106,10 @@
             </div>
           </div>
 
+          <!-- Expanded Fields -->
           <div :class="[ 'w-full', 'overflow-hidden', 'flex', 'flex-col', 'items-end', 'gap-5', 'transition-all', 'duration-500', 'ease-in-out', isExpanded ? 'max-h-[2000px]' : 'max-h-0',]" >
             <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
+              <!-- FIELD: Opposite -->
               <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
                 <label class="text-base leading-6 text-[#2B2B2B]">متضاد:</label>
                 <div class="relative w-full">
@@ -77,6 +120,7 @@
                   </button>
                 </div>
               </div>
+              <!-- FIELD: Related Words -->
               <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
                 <label class="text-base leading-6 text-[#2B2B2B]">هم‌خانواده:</label>
                 <div class="relative w-full">
@@ -90,6 +134,7 @@
             </div>
 
             <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
+              <!-- FIELD: Examples -->
               <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
                 <label class="text-base leading-6 text-[#2B2B2B]">توضیحات:</label>
                 <div class="relative w-full">
@@ -146,8 +191,23 @@
 <script setup>
 import { ref, watch, reactive } from 'vue';
 import RichTextEditor from './RichTextEditor.vue';
+import { useAuthToken } from '@/composables/useAuthCrypto';
+
+import useSearchWords from '~/composables/useSearchWords'; 
+
+// دریافت توکن از کامپوزبل Auth
+const { token } = useAuthToken(); 
+
+// 👈 استفاده از کامپوزبل جستجو
+const { 
+  searchWords: searchWordsApi, 
+  loading: searchLoading, 
+  responseData: searchResponseData, 
+  err: searchError,
+} = useSearchWords(); 
 
 const props = defineProps({
+// ... (سایر پراپ‌ها)
   isOpen: {
     type: Boolean,
     default: false,
@@ -175,14 +235,94 @@ const props = defineProps({
 });
 
 const hasHTML = (value) => /<\/?[a-z][\s\S]*>/i.test(value);
+const emit = defineEmits(['update:isOpen', 'save']);
 
-
-
+const isExpanded = ref(false);
 const isEditorModalOpen = ref(false);
 const editorTitle = ref(''); 
 const currentFieldToEdit = ref(null);
-
 const editorContent = ref(''); 
+
+// 👈 متغیرهای جدید برای بررسی موجودیت لغت
+// `isWordChecking` اکنون با `searchLoading` از کامپوزبل همگام است
+// const isWordChecking = ref(false); 
+const wordCheckResult = ref(null); // { exists: boolean, count: number }
+const API_DEBOUNCE_TIME = 500; // تاخیر 500 میلی‌ثانیه
+let searchTimeout = null;
+
+const formData = reactive({
+  selectedDictionary: null,
+  wordName: '',
+  pronunciation: '',
+  definition: '',
+  synonym: '',
+  opposite: '',
+  relatedWords: '',
+  examples: '',
+});
+
+
+// 👈 منطق جدید بررسی موجودیت لغت با استفاده از useSearchWords
+watch(
+  () => formData.wordName,
+  (newWord) => {
+    // 1. اگر حالت ویرایش است یا دیکشنری انتخاب نشده، بررسی موجودیت لغت را انجام نده
+    if (props.isEditMode || !formData.selectedDictionary) {
+      wordCheckResult.value = null;
+      return;
+    }
+    
+    // 2. پاک کردن تایم‌اوت قبلی
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    
+    const word = newWord ? newWord.trim() : '';
+    
+    // 3. اگر محتوا خالی یا خیلی کوتاه است، بررسی نکن
+    if (word.length < 2) {
+      wordCheckResult.value = null;
+      return;
+    }
+
+    // 4. تنظیم تایم‌اوت جدید (Debounce)
+    searchTimeout = setTimeout(async () => {
+      // اگر در این مدت کلمه تغییر کرد، ادامه نده
+      if (formData.wordName.trim() !== word) {
+        return;
+      }
+      
+      try {
+        // 5. فراخوانی تابع واقعی جستجوی API
+        const response = await searchWordsApi(
+          token.value, // توکن احراز هویت
+          formData.selectedDictionary, // ID دیکشنری
+          word // کلمه مورد جستجو
+        );
+
+        // 6. پردازش پاسخ API (همانند خروجی JSON که ارائه کردید)
+        if (response && Array.isArray(response.data) && response.data.length > 0) {
+          wordCheckResult.value = { 
+            exists: true, 
+            count: response.data.length 
+          };
+        } else {
+          wordCheckResult.value = { 
+            exists: false, 
+            count: 0 
+          };
+        }
+
+      } catch (error) {
+        // 7. در صورت خطا در API (مثلا: سرور در دسترس نیست یا خطای توکن)
+        console.error("Word availability check failed:", error);
+        wordCheckResult.value = null; 
+        // می‌توان اینجا یک پیام خطای موقت به کاربر نشان داد
+      }
+      
+    }, API_DEBOUNCE_TIME);
+  }
+);
 
 
 const openEditorModal = (fieldKey, title) => {
@@ -199,21 +339,6 @@ const saveEditorContent = (content) => {
     }
 };
 
-const emit = defineEmits(['update:isOpen', 'save']);
-
-const isExpanded = ref(false);
-
-const formData = reactive({
-  selectedDictionary: null,
-  wordName: '',
-  pronunciation: '',
-  definition: '',
-  synonym: '',
-  opposite: '',
-  relatedWords: '',
-  examples: '',
-});
-
 const fillForm = (data) => {
   formData.selectedDictionary = data.selectedDictionary || (props.dictionaries.length > 0 ? props.dictionaries[0].id : null);
   formData.wordName = data.wordName || '';
@@ -224,6 +349,7 @@ const fillForm = (data) => {
   formData.relatedWords = data.relatedWords || '';
   formData.examples = data.examples || '';
   isExpanded.value = false; 
+  wordCheckResult.value = null; // پاک کردن نتایج بررسی در هنگام باز شدن/ویرایش
 };
 
 watch(
@@ -243,6 +369,19 @@ watch(
     }
 );
 
+// 👈 اضافه کردن watch برای دیکشنری (تا در صورت تغییر دیکشنری، دوباره بررسی انجام شود)
+watch(
+  () => formData.selectedDictionary,
+  () => {
+    if (formData.wordName) {
+      // تریگر کردن دستی watch بر روی wordName
+      // این کار باعث می‌شود بلافاصله بررسی موجودیت لغت دوباره انجام شود
+      const tempWord = formData.wordName;
+      formData.wordName = ''; // ریست موقت
+      formData.wordName = tempWord; // بازنشانی مقدار برای تریگر کردن watch
+    }
+  }
+)
 
 const toggleExpansion = () => {
   isExpanded.value = !isExpanded.value;

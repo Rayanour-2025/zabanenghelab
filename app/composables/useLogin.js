@@ -49,7 +49,7 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
       responseData.value = {
     "message": "ورود موفق",
     "status_response": "SUCCESS",
-    "token": "78|tRl6nE8gSTtuAd6kwVzQOzzVi3azOvZJPFh0JMD8dacdd5ca",
+    "token": "82|AzwUTFeXrEARa3XrenN4ukVvxJ1nK9nPO8IEiR6288603694",
     "user": {
         "id": 1,
         "username": "admin_1"
