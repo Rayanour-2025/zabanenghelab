@@ -1,7 +1,7 @@
 <template>
   <transition name="modal-slide" appear>
     <div v-if="isOpen"class="fixed inset-0 z-[1000000] flex justify-center items-center w-full bg-black/50"@click="$emit('update:isOpen', false)">
-      <div @click.stop class="modal-box absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg  bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)]  rounded-[40px] flex flex-col items-center px-8 py-10 gap-8  font-zain max-h-[90vh] overflow-y-auto custom-offcanvas3" dir="rtl" >
+      <div @click.stop class="modal-box absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-[550px]  bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)]  rounded-[40px] flex flex-col items-center px-8 py-10 gap-8  font-zain max-h-[90vh] overflow-y-auto custom-offcanvas3" dir="rtl" >
         <button @click="$emit('update:isOpen', false)" class="absolute top-5 left-5 p-2 rounded-full hover:bg-gray-100 transition duration-150" >
           <icons-circle-x width="35" height="35" color="#7FB77E" />
         </button>
@@ -12,7 +12,7 @@
             <label class="text-sm leading-6 text-[#2B2B2B]">لطفا دیکشنری مورد نظر را انتخاب کنید: <span class="text-red-500">*</span></label>
             <div class="relative w-full md:w-[50%]">
               <div v-if="loadingDictionaries" class="p-3 text-xs text-gray-500">در حال بارگذاری دیکشنری‌ها...</div>
-              <select v-else v-model="formData.selectedDictionary" :disabled="isEditMode" required class="appearance-none w-full h-11 px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-right text-xs text-[#2B2B2B] focus:outline-none cursor-pointer truncate disabled:opacity-70" >
+              <select v-else v-model="formData.selectedDictionary" :disabled="isEditMode" required class="appearance-none w-full h-11 px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-right text-sm text-[#2B2B2B] focus:outline-none cursor-pointer truncate disabled:opacity-70" >
                 <option :value="null" disabled>انتخاب یا سرچ میان دیکشنری‌ها</option>
                 <option  class="border-none" v-for="dict in dictionaries" :key="dict.id" :value="dict.id" >{{ dict.name }}</option>
               </select>
@@ -25,7 +25,7 @@
               <label class="text-base leading-6 text-[#2B2B2B]">نام لغت: <span class="text-red-500">*</span></label>
               <div class="relative w-full">
                 <div :class="{'border border-red-500 rounded-xl': wordCheckResult && wordCheckResult.exists,'border border-transparent': !wordCheckResult || !wordCheckResult.exists,'transition-all duration-300': true}">
-                  <input v-if="!hasHTML(formData.wordName)" type="text" v-model="formData.wordName" placeholder="نام لغت دلخواه را وارد کنید" required :class="['w-full px-4 py-3 h-11 text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none rounded-xl',(wordCheckResult && wordCheckResult.exists) ? 'bg-red-100 placeholder-red-400' : 'bg-[rgba(127,183,126,0.2)]',]"/>
+                  <input v-if="!hasHTML(formData.wordName)" type="text" v-model="formData.wordName" placeholder="نام لغت دلخواه را وارد کنید" required :class="['w-full px-4 py-3 h-11 text-sm text-[#2B2B2B] leading-5 text-right truncate focus:outline-none rounded-xl',(wordCheckResult && wordCheckResult.exists) ? 'bg-red-100 placeholder-red-400' : 'bg-[rgba(127,183,126,0.2)]',]"/>
                   <div v-else v-html="formData.wordName" :class="['w-full px-4 py-3 h-11 text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none rounded-xl',(wordCheckResult && wordCheckResult.exists) ? 'bg-red-100 border border-red-500' : 'bg-[rgba(127,183,126,0.2)]',]"></div>
 
                   <button v-if="formData.wordName" @click="openEditorModal('wordName', 'ویرایش لغت')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
@@ -46,72 +46,69 @@
             <div class="w-full flex flex-col items-start gap-3">
               <label class="text-base leading-6 text-[#2B2B2B]">تلفظ:</label>
               <div class="relative w-full">
-                <input type="text" v-model="formData.pronunciation" placeholder="تلفظ یا آوانگاری لغت" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
+                <input type="text" v-model="formData.pronunciation" placeholder="تلفظ یا آوانگاری لغت" class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 text-right truncate focus:outline-none" />
               </div>
             </div>
           </div>
 
           <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
-            <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
-                <label class="text-base leading-6 text-[#2B2B2B]">تعریف: <span class="text-red-500">*</span></label>
+            <div class="w-full flex flex-col items-start gap-3">
+                <label class="text-base leading-6 text-[#2B2B2B]">معنی: <span class="text-red-500">*</span></label>
                 <div class="relative w-full">
-                  <textarea v-if="!hasHTML(formData.definition)" v-model="formData.definition" placeholder="تعریف مورد نظر را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[6rem]" ></textarea>
+                  <textarea v-if="!hasHTML(formData.definition)" v-model="formData.definition" placeholder="معنی مورد نظر را وارد کنید" class="w-full h-52 px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[6rem]" ></textarea>
                   <div v-else v-html="formData.definition" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[6rem]"></div>
                   <button v-if="formData.definition" @click="openEditorModal('definition', 'ویرایش تعریف')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
                         <IconsPencil width="13" height="13" color="#7FB77E" />
                   </button>
                 </div>
             </div>
-            <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
-              <label class="text-base leading-6 text-[#2B2B2B]">مترادف:</label>
-              <div class="relative w-full">
-                <textarea v-if="!hasHTML(formData.synonym)"  v-model="formData.synonym" placeholder="مترادف‌ها را با کاما یا خط جدید جدا کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[6rem]" ></textarea>
-                <div v-else v-html="formData.synonym" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[6rem]"></div>
-                <button v-if="formData.synonym" @click="openEditorModal('synonym', 'ویرایش مترادف')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
-                  <IconsPencil width="13" height="13" color="#7FB77E" />
-                </button>
-              </div>
-            </div>
           </div>
 
           <div :class="[ 'w-full', 'overflow-hidden', 'flex', 'flex-col', 'items-end', 'gap-5', 'transition-all', 'duration-500', 'ease-in-out', isExpanded ? 'max-h-[2000px]' : 'max-h-0',]" >
+
+          <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
+            <div class="w-full flex flex-col items-start gap-3">
+              <label class="text-base leading-6 text-[#2B2B2B]">مترادف:</label>
+              <textarea v-model="formData.synonym" placeholder="مترادف‌ها را با کاما کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[6rem]" ></textarea>
+            </div>
+          </div>
             
             <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
               <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
                 <label class="text-base leading-6 text-[#2B2B2B]">متضاد:</label>
-                <div class="relative w-full">
-                  <textarea v-if="!hasHTML(formData.opposite)" v-model="formData.opposite" placeholder="متضادها را با کاما یا خط جدید جدا کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></textarea>
-                  <div v-else v-html="formData.opposite" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></div>
-                  <button v-if="formData.opposite" @click="openEditorModal('opposite', 'ویرایش متضاد')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
-                    <IconsPencil width="13" height="13" color="#7FB77E" />
-                  </button>
-                </div>
+                <textarea v-model="formData.opposite" placeholder="متضادها را با کاما کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></textarea>
               </div>
               <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
                 <label class="text-base leading-6 text-[#2B2B2B]">هم‌خانواده:</label>
-                <div class="relative w-full">
-                  <textarea v-if="!hasHTML(formData.relatedWords)" v-model="formData.relatedWords" placeholder="لغات هم‌خانواده را با کاما یا خط جدید جدا کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></textarea>
-                  <div v-else v-html="formData.relatedWords" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></div>
-                  <button v-if="formData.relatedWords" @click="openEditorModal('relatedWords', 'ویرایش متضاد')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
-                    <IconsPencil width="13" height="13" color="#7FB77E" />
-                  </button>
-                </div>
+                <textarea v-model="formData.relatedWords" placeholder="لغات هم‌خانواده را با کاما کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></textarea>
               </div>
             </div>
 
             <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
-              <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
-                <label class="text-base leading-6 text-[#2B2B2B]">توضیحات:</label>
+              <div class="w-full flex flex-col items-start gap-3">
+                <label class="text-base leading-6 text-[#2B2B2B]">مثال ها:</label>
                 <div class="relative w-full">
-                  <textarea v-if="!hasHTML(formData.examples)" v-model="formData.examples" placeholder="توضیحات لازم را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></textarea>
+                  <textarea v-if="!hasHTML(formData.examples)" v-model="formData.examples" placeholder="مثال های لازم را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></textarea>
                   <div v-else v-html="formData.examples" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></div>
                   <button v-if="formData.examples" @click="openEditorModal('examples', 'ویرایش توضیحات')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
                     <IconsPencil width="13" height="13" color="#7FB77E" />
                   </button>
                 </div>
               </div>
-              <div class="w-full sm:w-[50%]"></div>
             </div>
+
+            <!-- <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
+              <div class="w-full flex flex-col items-start gap-3">
+                <label class="text-base leading-6 text-[#2B2B2B]">توضیحات:</label>
+                <div class="relative w-full">
+                  <textarea v-if="!hasHTML(formData.examples)" v-model="formData.examples" placeholder="توضیحات لازم را وارد کنید" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></textarea>
+                  <div v-else v-html="formData.examples" class="w-full px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-xs text-[#2B2B2B] leading-5 resize-none overflow-auto break-words text-right focus:outline-none custom-offcanvas2 max-h-36 min-h-[5rem]" ></div>
+                  <button v-if="formData.examples" @click="openEditorModal('examples', 'ویرایش توضیحات')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
+                    <IconsPencil width="13" height="13" color="#7FB77E" />
+                  </button>
+                </div>
+              </div>
+            </div> -->
           </div>
 
           <div class="relative w-full flex flex-col items-center mt-3">
