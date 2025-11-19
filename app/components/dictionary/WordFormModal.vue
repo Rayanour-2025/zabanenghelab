@@ -1,7 +1,19 @@
 <template>
   <transition name="modal-slide" appear>
-    <div v-if="isOpen" @click="$emit('update:isOpen', false)" class="fixed inset-0 z-[1000000] bottom-0 flex justify-center items-center w-full bg-black/50" >
-      <div @click.stop class="modal-box absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[40px] flex flex-col items-center px-8 py-10 gap-8 font-zain" dir="rtl" >
+    <div 
+  v-if="isOpen"
+  class="fixed inset-0 z-[1000000] flex justify-center items-center w-full 
+         bg-black/50 overflow-y-auto"
+  @click="$emit('update:isOpen', false)"
+>
+      <div
+  @click.stop
+  class="modal-box absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg 
+         bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] 
+         rounded-[40px] flex flex-col items-center px-8 py-10 gap-8 
+         font-zain max-h-[90vh] overflow-y-auto"
+  dir="rtl"
+>
         <button @click="$emit('update:isOpen', false)" class="absolute top-5 left-5 p-2 rounded-full hover:bg-gray-100 transition duration-150" >
           <icons-circle-x width="35" height="35" color="#7FB77E" />
         </button>
@@ -20,46 +32,20 @@
           </div>
 
           <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
-            <!-- FIELD: Word Name (با قابلیت بررسی موجودیت) -->
             <div class="w-full flex flex-col items-start gap-3">
               <label class="text-base leading-6 text-[#2B2B2B]">نام لغت: <span class="text-red-500">*</span></label>
               <div class="relative w-full">
-                <!-- Wrapper برای اعمال کلاس هشدار/موجودیت -->
-                <div :class="{
-                  'border border-red-500 rounded-xl': wordCheckResult && wordCheckResult.exists,
-                  'border border-transparent': !wordCheckResult || !wordCheckResult.exists,
-                  'transition-all duration-300': true
-                }">
-                  
-                  <input 
-                    v-if="!hasHTML(formData.wordName)" 
-                    type="text" 
-                    v-model="formData.wordName" 
-                    placeholder="نام لغت دلخواه را وارد کنید" 
-                    required 
-                    :class="[
-                      'w-full px-4 py-3 h-11 text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none rounded-xl',
-                      (wordCheckResult && wordCheckResult.exists) ? 'bg-red-100 placeholder-red-400' : 'bg-[rgba(127,183,126,0.2)]',
-                    ]"
-                  />
-                  <!-- در حالت ویرایش HTML -->
-                  <div 
-                    v-else 
-                    v-html="formData.wordName" 
-                    :class="[
-                      'w-full px-4 py-3 h-11 text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none rounded-xl',
-                      (wordCheckResult && wordCheckResult.exists) ? 'bg-red-100 border border-red-500' : 'bg-[rgba(127,183,126,0.2)]',
-                    ]"
-                  ></div>
+                <div :class="{'border border-red-500 rounded-xl': wordCheckResult && wordCheckResult.exists,'border border-transparent': !wordCheckResult || !wordCheckResult.exists,'transition-all duration-300': true}">
+                  <input v-if="!hasHTML(formData.wordName)" type="text" v-model="formData.wordName" placeholder="نام لغت دلخواه را وارد کنید" required :class="['w-full px-4 py-3 h-11 text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none rounded-xl',(wordCheckResult && wordCheckResult.exists) ? 'bg-red-100 placeholder-red-400' : 'bg-[rgba(127,183,126,0.2)]',]"/>
+                  <div v-else v-html="formData.wordName" :class="['w-full px-4 py-3 h-11 text-xs text-[#2B2B2B] leading-5 text-right truncate focus:outline-none rounded-xl',(wordCheckResult && wordCheckResult.exists) ? 'bg-red-100 border border-red-500' : 'bg-[rgba(127,183,126,0.2)]',]"></div>
 
                   <button v-if="formData.wordName" @click="openEditorModal('wordName', 'ویرایش لغت')" type="button" class="absolute top-1 left-1 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors" >
                     <IconsPencil width="13" height="13" color="#7FB77E" />
                   </button>
                 </div>
                 
-                <!-- پیام وضعیت/هشدار -->
                 <p v-if="searchLoading" class="text-xs text-gray-500 mt-1 mr-2 flex items-center gap-1">
-                    <IconsSpinner class="animate-spin w-4 h-4 text-gray-400" />
+                <IconsSpinner class="animate-spin w-4 h-4 text-gray-400" />
                     در حال بررسی موجودیت لغت...
                 </p>
                 <p v-else-if="wordCheckResult && wordCheckResult.exists" class="text-[10px] text-red-600 mt-1 mr-2 font-medium">
@@ -82,7 +68,6 @@
           </div>
 
           <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8" >
-            <!-- FIELD: Definition -->
             <div class="w-full sm:w-[50%] flex flex-col items-start gap-3">
                 <label class="text-base leading-6 text-[#2B2B2B]">تعریف: <span class="text-red-500">*</span></label>
                 <div class="relative w-full">
