@@ -1,7 +1,7 @@
 <template>
   <transition name="modal-slide" appear>
-    <div v-if="isOpen"class="fixed inset-0 z-[1000000] flex justify-center items-center w-full bg-black/50 overflow-hidden"@click="$emit('update:isOpen', false)">
-      <div @click.stop class="modal-box absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg  bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)]  rounded-[40px] flex flex-col items-center px-8 py-10 gap-8  font-zain max-h-[90vh] overflow-y-auto custom-offcanvas2" dir="rtl" >
+    <div v-if="isOpen"class="fixed inset-0 z-[1000000] flex justify-center items-center w-full bg-black/50"@click="$emit('update:isOpen', false)">
+      <div @click.stop class="modal-box absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-lg  bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)]  rounded-[40px] flex flex-col items-center px-8 py-10 gap-8  font-zain max-h-[90vh] overflow-y-auto custom-offcanvas3" dir="rtl" >
         <button @click="$emit('update:isOpen', false)" class="absolute top-5 left-5 p-2 rounded-full hover:bg-gray-100 transition duration-150" >
           <icons-circle-x width="35" height="35" color="#7FB77E" />
         </button>
@@ -369,6 +369,22 @@ const submitForm = () => {
 </script>
 
 <style scoped>
+.custom-offcanvas3 {
+  overflow-y: auto;
+  max-height: calc(100vh - 60px);
+  padding-top: 30px;  
+  padding-bottom: 30px;
+}
+
+.custom-offcanvas3::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-offcanvas3::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .custom-offcanvas2 {
   overflow-y: auto;
 }
