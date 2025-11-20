@@ -23,7 +23,7 @@
             </button>
 
             <button type="button">
-              <icons-microphone class="w-5 h-5"/>
+              <icons-microphone class="w-6 h-6"/>
             </button>
           </div>
         </div>

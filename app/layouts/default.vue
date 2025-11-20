@@ -1,20 +1,22 @@
 <template>
-  <div dir="ltr" class="bg-[#F5F6F4] min-h-screen flex flex-col justify-between">
+  <div dir="ltr" class="bg-[white] min-h-screen flex flex-col justify-between">
     <header class="w-full flex flex-row items-center justify-between px-12 py-6">
       <div class="flex flex-row items-center gap-4">
-        <button type="button" class="w-[110px] h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl" >
+        <button type="button"
+                class="w-[110px] h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl">
           <span class="font-zain font-normal text-lg text-[#FFFFFF]">حمایت</span>
         </button>
 
-        <button v-if="isLoggedIn" @click="handleLogout" type="button" class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-red-500 border border-red-500 shadow-[0_4px_8px_-5px_rgba(239,68,68,0.25)] rounded-2xl" >
+        <button v-if="isLoggedIn" @click="handleLogout" type="button"
+                class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-red-500 border border-red-500 shadow-[0_4px_8px_-5px_rgba(239,68,68,0.25)] rounded-2xl">
           <span class="font-zain font-normal text-lg text-[#FFFFFF]">خروج</span>
         </button>
 
-        <button v-else @click="handleLogin" type="button" class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl" >
+        <button v-else @click="handleLogin" type="button"
+                class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl">
           <span class="font-zain font-normal text-lg text-[#FFFFFF]">ورود</span>
         </button>
       </div>
-
       <div class="flex flex-row items-center gap-10">
         <nav class="flex flex-row items-center gap-8">
           <span class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">درباره ما</span>
@@ -28,19 +30,19 @@
       </div>
     </header>
 
-    <main class="flex-grow">
-      <slot />
+    <main class="flex-grow ">
+      <slot/>
     </main>
 
     <footer class="w-full bg-[#5A6E5A] mt-12 flex flex-col items-center justify-end gap-3 py-8 font-['Zain']">
       <div class="text-white font-black text-3xl text-center">لوگو</div>
       <div class="text-white font-normal text-base">: ارتباط با ما</div>
       <div class="flex items-center gap-8">
-        <icons-instagram class="w-[26px] h-[26px]" />
-        <icons-telegram class="w-[25px] h-[20px]" />
-        <icons-eitaa class="w-[24px] h-[24px]" />
-        <icons-bale class="w-[25px] h-[25px]" />
-        <icons-email class="w-[27px] h-[28px]" />
+        <icons-instagram class="w-[26px] h-[26px]"/>
+        <icons-telegram class="w-[25px] h-[20px]"/>
+        <icons-eitaa class="w-[24px] h-[24px]"/>
+        <icons-bale class="w-[25px] h-[25px]"/>
+        <icons-email class="w-[27px] h-[28px]"/>
       </div>
 
       <div class="flex flex-row items-center gap-10 mt-4">
@@ -59,18 +61,18 @@
 </template>
 
 <script setup>
-import { useAuthToken } from '@/composables/useAuthCrypto';
-import { useAuthStore } from '@/stores/auth';
-import { useRoute } from 'vue-router'; 
+import {useAuthToken} from '@/composables/useAuthCrypto';
+import {useAuthStore} from '@/stores/auth';
+import {useRoute} from 'vue-router';
 
-const { isLoggedIn } = useAuthToken();
+const {isLoggedIn} = useAuthToken();
 const authStore = useAuthStore();
 const route = useRoute();
 
 const handleLogout = () => {
   authStore.logout();
 
-  navigateTo(route.fullPath, { replace: true });
+  navigateTo(route.fullPath, {replace: true});
 };
 
 const handleLogin = () => {

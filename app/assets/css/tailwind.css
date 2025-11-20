@@ -2,33 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   @font-face {
-    font-family: 'Zain-Regular';
-    src: url('@/assets/fonts/Zain-Regular.ttf') format('truetype');
+    font-family: "Zain-Regular";
+    src: url("@/assets/fonts/Zain-Regular.ttf") format("truetype");
+  }
+
+  * {
+    color: #2b2b2b;
+    font-family: "Zain-Regular", sans-serif;
   }
 
   html {
-    font-family: 'Zain-Regular', sans-serif;
+    font-family: "Zain-Regular", sans-serif;
   }
   .Toastify__toast-container {
-    padding: 0 !important; 
+    padding: 0 !important;
   }
 
   .Toastify__toast--rtl.Toastify__toast-container--top-left {
-    right: 10px !important; 
-    left: auto !important;   
+    right: 10px !important;
+    left: auto !important;
   }
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
   .scrollbar-hide {
-    -ms-overflow-style: none;  
-    scrollbar-width: none;    
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-
-
 }
