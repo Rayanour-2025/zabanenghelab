@@ -1,21 +1,21 @@
 import axios from "axios";
 import { ref } from "vue";
 import { navigateTo } from "#app";
-import { useAuthStore } from "@/stores/auth"; 
+import { useAuthStore } from "@/stores/auth";
 
 export function useLogin({ toast, generateNewCaptcha, captchaText }) {
   const username = ref("");
   const password = ref("");
   const captchaInput = ref("");
 
-  const loading = ref(false);    
+  const loading = ref(false);
   const err = ref(false);
-  const errMessage = ref("");    
-  const success = ref(false);      
-  const responseData = ref(null); 
+  const errMessage = ref("");
+  const success = ref(false);
+  const responseData = ref(null);
 
   const authStore = useAuthStore();
-  
+
   const login = async () => {
     if (!username.value || !password.value || !captchaInput.value) {
       toast.error("لطفاً تمام فیلدها را پر کنید.");
@@ -48,17 +48,17 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
 
       responseData.value = response.data;
       success.value = true;
-      
+
       if (responseData.value.status_response === 'SUCCESS' && responseData.value.token) {
-          authStore.setLoginData(responseData.value); 
-          toast.success("ورود موفقیت‌آمیز بود. در حال هدایت...");
-          
+        authStore.setLoginData(responseData.value);
+        toast.success("ورود موفقیت‌آمیز بود. در حال هدایت...");
+
           await navigateTo('/words'); 
       } else {
-          toast.error("ورود موفق بود، اما ساختار پاسخ سرور صحیح نیست.");
-          generateNewCaptcha();
+        toast.error("ورود موفق بود، اما ساختار پاسخ سرور صحیح نیست.");
+        generateNewCaptcha();
       }
-      
+
       return response.data;
     } catch (error) {
       err.value = true;
@@ -79,7 +79,7 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
       captchaInput.value = "";
       generateNewCaptcha();
 
-      throw new Error(message); 
+      throw new Error(message);
     } finally {
       loading.value = false;
     }
@@ -94,6 +94,6 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
     errMessage,
     success,
     responseData,
-    login, 
+    login,
   };
 }
