@@ -21,17 +21,17 @@
       >
         <icons-pop-up-flash class="w-[18px] h-[18px]" />
         <span class="text-[#2B2B2B] text-right text-base leading-[30px]"
-          >درخواست‌ها</span
+          >لغات در خواستی</span
         >
       </div>
     </NuxtLink>
     <div class="w-full border-t border-[#DADDD8]"></div>
 
-    <NuxtLink to="/users" class="w-full">
+    <NuxtLink to="/manage_comments" class="w-full">
       <div
         class="text-[#2B2B2B] w-[80%] text-right text-base leading-[30px] py-[25px] cursor-pointer hover:text-[#7FB77E] transition-colors duration-200"
       >
-        کاربران
+        دیدگاه ها
       </div>
     </NuxtLink>
     <div class="w-full border-t border-[#DADDD8]"></div>
