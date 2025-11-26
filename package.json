@@ -1,0 +1,50 @@
+{
+  "name": "zaban-enghelab",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-vue": "^7.3.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@pinia/nuxt": "^0.11.3",
+    "@tiptap/extension-blockquote": "^3.10.7",
+    "@tiptap/extension-color": "^3.10.7",
+    "@tiptap/extension-font-family": "^3.11.0",
+    "@tiptap/extension-heading": "^3.10.7",
+    "@tiptap/extension-highlight": "^3.10.7",
+    "@tiptap/extension-image": "^3.10.7",
+    "@tiptap/extension-link": "^3.10.7",
+    "@tiptap/extension-text-align": "^3.10.7",
+    "@tiptap/extension-text-style": "^3.10.7",
+    "@tiptap/extension-underline": "^3.10.7",
+    "@tiptap/starter-kit": "^3.10.7",
+    "@tiptap/vue-3": "^3.10.7",
+    "@vueup/vue-quill": "^1.2.0",
+    "axios": "^1.13.2",
+    "ckeditor5": "^47.2.0",
+    "ckeditor5-premium-features": "^47.2.0",
+    "crypto-js": "^4.2.0",
+    "js-cookie": "^3.0.5",
+    "nuxt": "^4.2.0",
+    "nuxt-tiptap-editor": "^3.0.0",
+    "pinia": "^3.0.4",
+    "quill": "^2.0.3",
+    "sweetalert2": "^11.26.3",
+    "vue": "^3.5.22",
+    "vue-router": "^4.6.3",
+    "vue-toastification": "^2.0.0-rc.5"
+  },
+  "devDependencies": {
+    "@sidebase/nuxt-auth": "^1.1.0",
+    "@types/node": "^24.10.0",
+    "nuxt-auth-utils": "^0.5.25",
+    "zod": "^4.1.12"
+  }
+}
