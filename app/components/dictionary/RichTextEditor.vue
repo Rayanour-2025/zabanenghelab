@@ -238,7 +238,7 @@
     <!-- Editor -->
     <editor-content
       :editor="editor"
-      class="prose max-w-none p-4 min-h-[300px] max-h-[400px] overflow-y-auto custom-scrollbar focus:outline-none transition-shadow flex-1"
+      class="prose max-w-none p-4 min-h-[300px] max-h-[380px] overflow-y-auto custom-scrollbar focus:outline-none transition-shadow flex-1"
     />
   </div>
 </template>
