@@ -62,9 +62,7 @@ const {
     fetchComment,
     responseData: commentsRespone,
     loading: commentsLoading
-} = useFetchComment()
-const isShowReportCard = ref(false)
-const isShowAnswer = ref(false)
+} = useFetchComment() 
 const storeLogin = useAuthStore()
 const isShowSortBox = ref(false)
 const active = ref(1);
@@ -75,7 +73,7 @@ if (storeLogin.isLoggedIn == true) {
 const payload = ref({ body: 'sfsdf' })
 const submitComment = async () => {
     if (storeLogin.isLoggedIn && storeLogin.token) {
-        await sendComment(AUTH_TOKEN.value, props.wrodId,)
+        await sendComment(AUTH_TOKEN.value, props.wrodId, payload.value)
     } else {
         toast.error("ابتدا وارد حساب خود شوید")
     }

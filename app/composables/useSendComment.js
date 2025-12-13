@@ -48,7 +48,7 @@ const useSendComment = () => {
       if (typeof message === "object") {
         message = JSON.stringify(message);
       }
-
+      toast.error(message)
       errMessage.value = message; 
       throw new Error(message);
     } finally {
