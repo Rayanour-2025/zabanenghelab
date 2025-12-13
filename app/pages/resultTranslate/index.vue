@@ -5,10 +5,9 @@
       <div
         class="bg-[#F0F1EE] flex result flex-col gap-y-6 md:p-8 p-3 rounded-[35px] overflow-y-scroll shadow-[0px_7px_15px_-6px_#5C636940] w-full md:w-[70%] max-h-[700px] h-auto">
         <template v-if="!searchingWord && searchResults.length > 0">
-          <result-item  v-for="(result, index) in searchResults" :result="result" :key="index" />
+          <result-item v-for="(result, index) in searchResults" :result="result" :key="index" />
         </template>
-        <div v-if="searchingWord"
-          class=" mt-2 w-full   px-4 py-3 text-center text-sm text-[#7FB77E]  ">
+        <div v-if="searchingWord" class=" mt-2 w-full   px-4 py-3 text-center text-sm text-[#7FB77E]  ">
           <div class="flex items-center justify-center gap-2">
             <svg class="animate-spin h-4 w-4 text-[#7FB77E]" xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 24 24">
@@ -27,8 +26,8 @@
 </template>
 <script setup>
 import ResultItem from '~/components/ResultItem.vue';
+import { useToast } from "vue-toastification"
 import { useAuthToken } from '~/composables/useAuthCrypto';
-import { useToast } from 'vue-toastification/dist/index.mjs';
 import useSearchWords from '~/composables/useSearchWordsWithoutToken';
 import { useRouter } from 'vue-router';
 import { ref, watch } from "vue"
@@ -38,7 +37,7 @@ const {
   loading: searchingWord,
   errMessage: searchErrorMsg,
 } = useSearchWords();
-const toast = useToast()
+const toast = useToast() 
 const router = useRouter()
 const dictionaries = [
   "همه",
@@ -59,7 +58,7 @@ watch(searchQuery, (newQuery) => {
   searchResults.value = []
   if (searchTimer) {
     clearTimeout(searchTimer);
-  } 
+  }
   searchResults.value = [];
 
   // اگر طول کوئری کمتر از 2 باشد، جستجو انجام نشود
@@ -73,7 +72,7 @@ watch(searchQuery, (newQuery) => {
       const response = await searchWords(
         AUTH_TOKEN.value,
         newQuery.trim(),
-        1,2
+        1, 2
       );
       // در اینجا فرض می‌کنیم پاسخ به صورت { data: [ { word } ] } است.
       searchResults.value = response.data || [];
