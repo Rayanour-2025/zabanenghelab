@@ -28,7 +28,7 @@
 <script setup>
 import ResultItem from '~/components/ResultItem.vue';
 import { useAuthToken } from '~/composables/useAuthCrypto';
-import { useToast } from 'vue-toastification';
+import { useToast } from 'vue-toastification/dist/index.mjs';
 import useSearchWords from '~/composables/useSearchWordsWithoutToken';
 import { useRouter } from 'vue-router';
 import { ref, watch } from "vue"
