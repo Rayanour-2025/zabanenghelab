@@ -157,8 +157,7 @@ const dictionaries = ref([]);
 // --- توابع کمکی ---
 
 const handleAuthError = () => {
-  toast.error('مشکلی در شناسایی شما پیش آمده. لطفاً دوباره وارد شوید.');
-  // مطمئن شوید که مسیر `login` درست است
+  toast.error('مشکلی در شناسایی شما پیش آمده. لطفاً دوباره وارد شوید.'); 
   router.push('/login'); 
 };
 

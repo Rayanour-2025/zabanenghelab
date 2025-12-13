@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     head: {
       title: 'زبان انقلاب',
     },
+    pageTransition: {name: 'page', mode: 'out-in'}
   },
 
   runtimeConfig: {

@@ -41,7 +41,7 @@ export function decryptToken(encryptedToken) {
     }
 }
 
-export function useAuthToken() {
+export function useAuthToken () {
     const store = useAuthStore();
     return { 
         token: computed(() => store.token),

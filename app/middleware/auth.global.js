@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
         authStore.initAuthFromCookie();
     }
 
-    const protectedRoutes = ['/words', '/dashboard']; 
+    const protectedRoutes = ['/words', '/dashboard', '/edit_word']; 
     const isProtectedRoute = protectedRoutes.some(route => to.path.startsWith(route));
 
     if (isProtectedRoute && !authStore.isAuthenticated) {

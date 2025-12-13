@@ -13,11 +13,11 @@
 <script setup>
 const props = defineProps({
     width: {
-        type: Number,
+        type: String,
         required: true
     },
     height: {
-        type: Number,
+        type: String,
         required: true
     },
 })
