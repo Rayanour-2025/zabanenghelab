@@ -36,8 +36,7 @@ const {
   searchWords,
   loading: searchingWord,
   errMessage: searchErrorMsg,
-} = useSearchWords();
-const toast = Toastification.useToast() 
+} = useSearchWords(); 
 const router = useRouter()
 const dictionaries = [
   "همه",
