@@ -76,6 +76,7 @@ const payload = ref({ body: 'sfsdf' })
 const submitComment = async () => {
     if (storeLogin.isLoggedIn && storeLogin.token) {
         await sendComment(AUTH_TOKEN.value, props.wrodId,)
+        console.log(AUTH_TOKEN.value)
     } else {
         toast.error("ابتدا وارد حساب خود شوید")
     }
