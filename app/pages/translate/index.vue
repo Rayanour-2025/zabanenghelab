@@ -107,7 +107,6 @@ const dictionaries = [
     "فرهنگ سخن",
     "فرهنگ موضوعی فارسی",
 ];
-
 const reportMessageItems = [
     "واژه توهین‌آمیز یا نامناسب",
     "محتوای قومیتی، نژادی یا تبعیض‌آمیز",
@@ -210,7 +209,6 @@ textarea::-webkit-scrollbar-track {
         max-height: 500px;
         opacity: 1;
     }
-
     100% {
         max-height: 0;
         opacity: 0;
