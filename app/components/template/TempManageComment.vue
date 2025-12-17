@@ -28,11 +28,12 @@
             </p>
         </div>
         <div class="mt-5 flex gap-2">
-            <div @click="approve(comment.id, 'approve')" style="background-color: #e5737333"
+            <div @click="reject(comment.id, 'reject')" style="background-color: #e5737333"
                 class="flex items-center gap-2 p-3 rounded-full">
                 <red-trash width="22" height="22" />
             </div>
-            <div @click="reject()" class="flex items-center gap-2 bg-[#7FB77E33] p-3 rounded-full">
+            <div @click="approve(comment.id, 'approve')"
+                class="flex items-center gap-2 bg-[#7FB77E33] p-3 rounded-full">
                 <tick width="22" height="22" />
             </div>
         </div>
@@ -48,6 +49,7 @@ import ThreeDot from "~/components/icons/ThreeDot.vue";
 import reportcard from "~/components/reportcard.vue";
 import blackPin from "~/components/icons/blackPin.vue";
 import tick from "~/components/icons/tick.vue";
+import loadingAnimation from "~/components/loadingAnimation.vue";
 import { useAuthToken } from "~/composables/useAuthCrypto";
 import useEvaluateDashboardItem from "~/composables/useEvaluateDashboardItem.js";
 import usePinComment from "~/composables/usePinComment";
@@ -61,22 +63,36 @@ const props = defineProps({
 const { loading: pinLoading, pinComment } = usePinComment()
 const { token: AUTH_TOKEN, isLoggedIn } = useAuthToken()
 const { loading, evaluateItem } = useEvaluateDashboardItem()
+const {
+    fetchDashboardData,
+    responseData: commentData,
+    loading: reportCommentLoading
+} = useFetchDashboardData()
+const loadData = async () => {
+    if (loginStore.isAdmin && loginStore.token && loginStore.isLoggedIn) { 
+        await fetchDashboardData(AUTH_TOKEN.value, "comments") 
+    }
+}
 const approve = async (id, status) => {
     if (AUTH_TOKEN.value && isLoggedIn.value) {
         await evaluateItem(AUTH_TOKEN.value, id, status, 'comments')
+        loadData()
     }
 }
 const reject = async (id, status) => {
     if (AUTH_TOKEN.value && isLoggedIn.value) {
         await evaluateItem(AUTH_TOKEN.value, id, status, 'comments')
+        loadData()
+        loadData()
     }
 }
 const pin = async (id) => {
     if (AUTH_TOKEN.value && isLoggedIn.value) {
         await pinComment(AUTH_TOKEN.value, id)
+        loadData()
     }
 }
-console.log(props.comment.id)
+
 </script>
 <style>
 .popup-enter-active {

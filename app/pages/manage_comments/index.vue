@@ -6,7 +6,9 @@
         <template-temp-manage-comment v-for="comment in commentData.data" :key="comment.id" :comment="comment" />
       </template>
     </div>
+    <loading-animation v-if="commentLoading" />
   </div>
+
 </template>
 
 <script setup>
@@ -22,9 +24,9 @@ const { token: AUTH_TOKEN } = useAuthToken()
 const {
   fetchDashboardData,
   responseData: commentData,
-  loading: reportCommentLoading
+  loading: commentLoading
 } = useFetchDashboardData()
-const loadData = async () => {
+const loadData = async () => { 
   if (loginStore.isAdmin && loginStore.token && loginStore.isLoggedIn) {
     console.log(AUTH_TOKEN.value)
     await fetchDashboardData(AUTH_TOKEN.value, "comments")
