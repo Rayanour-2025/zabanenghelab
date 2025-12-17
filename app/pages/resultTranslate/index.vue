@@ -26,7 +26,7 @@
 </template>
 <script setup>
 import ResultItem from '~/components/ResultItem.vue';
-import { useToast } from "vue-toastification"
+import Toastification from "vue-toastification"
 import { useAuthToken } from '~/composables/useAuthCrypto';
 import useSearchWords from '~/composables/useSearchWordsWithoutToken';
 import { useRouter } from 'vue-router';
@@ -36,8 +36,7 @@ const {
   searchWords,
   loading: searchingWord,
   errMessage: searchErrorMsg,
-} = useSearchWords();
-const toast = useToast() 
+} = useSearchWords(); 
 const router = useRouter()
 const dictionaries = [
   "همه",

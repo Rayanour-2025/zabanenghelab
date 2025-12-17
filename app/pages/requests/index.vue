@@ -8,7 +8,7 @@
         <div class="flex items-center gap-3">
           <img :src="photo" class="md:w-12 w-10  md:h-12 h-10  rounded-full" alt="profile">
           <p class="mD:text-base text-xs">سعید علوی -
-            <sapn class="text-[#5C636980]"> ۱۴۰۱ آبان ۰۶ ۱۰:۳۲</sapn>
+            <span class="text-[#5C636980]"> ۱۴۰۱ آبان ۰۶ ۱۰:۳۲</span>
           </p>
         </div>
         <div class="md:mt-5 mt-2">

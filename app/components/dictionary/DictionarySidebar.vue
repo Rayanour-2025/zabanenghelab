@@ -5,7 +5,7 @@
     </h2>
     <div class="w-full border-t border-[#DADDD8]"></div>
 
-    <NuxtLink to="" class="w-full">
+    <NuxtLink to="/dashboard/dictionaries" class="w-full">
       <span
         class="text-[#2B2B2B] w-[80%] text-right text-base leading-[32px] py-[25px] cursor-pointer block hover:text-[#7FB77E] transition-colors duration-200">دیکشنری‌ها</span>
     </NuxtLink>

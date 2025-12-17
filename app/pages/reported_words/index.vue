@@ -7,7 +7,7 @@
           <img :src="photo" class="md:w-12 w-8 md:h-12 h-8 rounded-full" alt="profile" />
           <p class="text-xs md:text-base">
             سعید علوی -
-            <sapn class="text-[#5C636980]"> ۱۴۰۱ آبان ۰۶ ۱۰:۳۲</sapn>
+            <span class="text-[#5C636980]"> ۱۴۰۱ آبان ۰۶ ۱۰:۳۲</span>
           </p>
         </div>
         <div class="md:mt-5 mt-2 text-xs md:text-base">
@@ -45,6 +45,23 @@ import tick from "~/components/icons/tick.vue";
 definePageMeta({
   layout: "dashboard-admin"
 })
+const loginStore = useAuthStore()
+if (loginStore.isAdmin == 0) {
+  navigateTo('/')
+}
+const { token: AUTH_TOKEN } = useAuthToken()
+const {
+  fetchDashboardData,
+  responseData: reportWordData,
+  loading: reportWordLoading
+} = useFetchDashboardData()
+const loadData = async () => {
+  if (loginStore.isAdmin && loginStore.token && loginStore.isLoggedIn) {
+    await fetchDashboardData(AUTH_TOKEN.value, "word-reports")
+    console.log(reportWordData.value)
+  }
+}
+loadData()
 </script>
 
 <style scoped>

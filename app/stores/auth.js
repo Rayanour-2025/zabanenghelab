@@ -7,11 +7,12 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         isLoggedIn: undefined, 
         user: null, 
-        token: null,
+        token: null, 
+        isAdmin: 1
     }),
 
     getters: {
-        isAuthenticated: (state) => !!state.user && !!state.token && state.isLoggedIn === true,
+        isAuthenticated: (state) => !!state.user && !!state.token && state.isLoggedIn === true, 
     },
 
     actions: {
@@ -19,7 +20,8 @@ export const useAuthStore = defineStore('auth', {
             console.log(loginResponse);
             this.user = loginResponse.user;
             this.token = loginResponse.token;
-            this.isLoggedIn = true;
+            this.isLoggedIn = true; 
+            this.isAdmin = loginResponse.user.isAdmin
 
             const encryptedToken = encryptToken(loginResponse.token);
             

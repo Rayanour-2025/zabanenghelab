@@ -62,9 +62,29 @@ import photo from "~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png"
 import plus from "~/components/icons/plus.vue";
 import redTrash from "~/components/icons/redTrash.vue";
 import tick from "~/components/icons/tick.vue";
+import useFetchDashboardData from "~/composables/useFetchDashboardData";
+import { useAuthToken } from "~/composables/useAuthCrypto";
 definePageMeta({
   layout: 'dashboard-admin'
 })
+const loginStore = useAuthStore()
+if (loginStore.isAdmin == 0) {
+  navigateTo('/')
+}
+const { token: AUTH_TOKEN } = useAuthToken()
+const {
+  fetchDashboardData,
+  responseData: reportCommentData,
+  loading: reportCommentLoading
+} = useFetchDashboardData()
+const loadData = async () => {
+  if (loginStore.isAdmin && loginStore.token && loginStore.isLoggedIn) {
+    console.log(AUTH_TOKEN.value)
+    await fetchDashboardData(AUTH_TOKEN.value, "comment-reports")
+    console.log(reportCommentData.value)
+  }
+}
+loadData()
 </script>
 
 <style scoped>

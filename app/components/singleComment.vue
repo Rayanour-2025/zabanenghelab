@@ -118,7 +118,7 @@ const {
     loading: likeDislikeLoading,
 } = useLikeDislike()
 const reaction = async (reaction, commentId) => {
-    if (AUTH_TOKEN.value && storeLogin.isLoggedIn && storeLogin.token) {
+    if (AUTH_TOKEN.value && storeLogin.isLoggedIn && storeLogin.token) { 
         await likeDislike(AUTH_TOKEN.value, commentId, reaction)
     } else {
         toast.error("ابتدا وارد حساب خود شوید.")

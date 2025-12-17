@@ -2,11 +2,11 @@
 import { useAuthStore } from '@/stores/auth';
 
 export default defineNuxtRouteMiddleware((to, from) => {
-    const authStore = useAuthStore();
-    
-    if (authStore.isLoggedIn === undefined) {
-        authStore.initAuthFromCookie();
-    }
+  const authStore = useAuthStore();
+
+  if (authStore.isLoggedIn === undefined) {
+    authStore.initAuthFromCookie();
+  }
 
     const protectedRoutes = ['/words', '/dashboard', '/edit_word']; 
     const isProtectedRoute = protectedRoutes.some(route => to.path.startsWith(route));
@@ -17,5 +17,5 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     if (to.path === '/login' && authStore.isAuthenticated) {
         return navigateTo('/');
-    }
+  }
 });

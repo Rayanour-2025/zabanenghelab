@@ -3,7 +3,7 @@ import axios from "axios";
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
 const toast = useToast()
-const useLikeDislike = () => {
+const usePinComment = () => {
   const responseData = ref(null);  
   const loading = ref(false);     
   const err = ref(false);         
@@ -11,14 +11,14 @@ const useLikeDislike = () => {
   const success = ref(false);     
 
 
-  const likeDislike = async (token, commentId, status) => {
+  const pinComment = async (token, commentId) => {
     loading.value = true;
     err.value = false;
     success.value = false;
     errMessage.value = "";
     responseData.value = null;
 
-    const apiUrl = `https://ip3.ir/dictionary/api/v1/comments/${commentId}/${status}`;
+    const apiUrl = `https://ip3.ir/dictionary/api/v1/comments/${commentId}/pin`;
 
     try {
       const response = await axios.post(
@@ -41,7 +41,7 @@ const useLikeDislike = () => {
       let message =
         error.response?.data?.message ||
         error.response?.data ||
-        error.message;
+        error.message ;
 
       if (typeof message === "object") {
         message = JSON.stringify(message);
@@ -60,8 +60,8 @@ const useLikeDislike = () => {
     err,
     errMessage,
     success,
-    likeDislike,
+    pinComment,
   };
 };
 
-export default useLikeDislike;
+export default usePinComment;
