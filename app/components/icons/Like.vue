@@ -1,22 +1,22 @@
 <template>
-    <svg :width="width" :height="height" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <mask id="mask0_274_1378" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="20"
-            height="20">
-            <path d="M20 0H0V20H20V0Z" fill="white" />
-        </mask>
-        <g mask="url(#mask0_274_1378)">
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+    <svg :width="width" :height="height" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+
+        <g id="SVGRepo_iconCarrier">
             <path
-                d="M17.8991 9.95875C18.3158 8.79208 17.5658 7.79205 16.3158 7.79205H12.9824C12.4824 7.79205 12.0658 7.37538 12.1491 6.79205L12.5658 4.12538C12.7324 3.37538 12.2324 2.54205 11.4824 2.29205C10.8158 2.04205 9.98244 2.37538 9.64911 2.87538L6.23242 7.95871"
-                stroke="#2B2B2B" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                stroke-linejoin="round" />
-            <path
-                d="M6.23242 15.2921L8.81577 17.2921C9.14911 17.6254 9.8991 17.7921 10.3991 17.7921H13.5658C14.5658 17.7921 15.6491 17.0421 15.8991 16.0421L16.9324 12.9004"
-                stroke="#2B2B2B" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                stroke-linejoin="round" />
-            <path
-                d="M1.98242 15.292V7.12533C1.98242 5.95866 2.48242 5.54199 3.64909 5.54199H4.48242C5.64909 5.54199 6.14909 5.95866 6.14909 7.12533V15.292C6.14909 16.4587 5.64909 16.8753 4.48242 16.8753H3.64909C2.48242 16.8753 1.98242 16.4587 1.98242 15.292Z"
-                stroke="#2B2B2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                d="M20.2699 16.265L20.9754 12.1852C21.1516 11.1662 20.368 10.2342 19.335 10.2342H14.1539C13.6404 10.2342 13.2494 9.77328 13.3325 9.26598L13.9952 5.22142C14.1028 4.56435 14.0721 3.892 13.9049 3.24752C13.7664 2.71364 13.3545 2.28495 12.8128 2.11093L12.6678 2.06435C12.3404 1.95918 11.9831 1.98365 11.6744 2.13239C11.3347 2.29611 11.0861 2.59473 10.994 2.94989L10.5183 4.78374C10.3669 5.36723 10.1465 5.93045 9.86218 6.46262C9.44683 7.24017 8.80465 7.86246 8.13711 8.43769L6.69838 9.67749C6.29272 10.0271 6.07968 10.5506 6.12584 11.0844L6.93801 20.4771C7.0125 21.3386 7.7328 22 8.59658 22H13.2452C16.7265 22 19.6975 19.5744 20.2699 16.265Z"
+                :fill="color" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M2.96767 9.48508C3.36893 9.46777 3.71261 9.76963 3.74721 10.1698L4.71881 21.4063C4.78122 22.1281 4.21268 22.7502 3.48671 22.7502C2.80289 22.7502 2.25 22.1954 2.25 21.5129V10.2344C2.25 9.83275 2.5664 9.5024 2.96767 9.48508Z"
+                :fill="color" />
         </g>
+
     </svg>
 
 </template>
@@ -27,6 +27,10 @@ const props = defineProps({
         required: true
     },
     height: {
+        type: String,
+        required: true
+    },
+    color: {
         type: String,
         required: true
     }

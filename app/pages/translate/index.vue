@@ -14,11 +14,15 @@
                             </div>
                             <span class="text-sm" v-if="data.pronunciation">/{{ data.pronunciation }}/</span>
                         </div>
-                        <div @click="isShowCard = !isShowCard"
+                        <div v-if="storeLogin.isAdmin == false  " @click="isShowCard = !isShowCard"
                             class="bg-[#7FB77E33] p-3 cursor-pointer rounded-full flex items-center justify-center gap-2">
                             <Flag width="22" height="22" />
                             <p>گزارش</p>
                         </div>
+                        <NuxtLink to="\edit_word" v-if="storeLogin.isAdmin == 1 && storeLogin.isLoggedIn" @click="isShowCard = !isShowCard"
+                            class="bg-[#7FB77E33] p-3 cursor-pointer rounded-full flex items-center justify-center gap-2">
+                            <p>ویرایش</p>
+                        </NuxtLink>
                     </div>
                     <div>
                         <div class="flex">
@@ -59,8 +63,7 @@
                                 </div>
                                 <div v-if="data.related_words.length">
                                     <h3 class="text-xl font-medium my-4">هم خانواده:</h3>
-                                    <div 
-                                        class="bg-[#7FB77E33] w-fit rounded-2xl p-4 md:text-base text-[10px]">
+                                    <div class="bg-[#7FB77E33] w-fit rounded-2xl p-4 md:text-base text-[10px]">
                                         <span v-for="(rlt, index) in data.related_words" :key="index">{{ rlt }} ,</span>
                                     </div>
                                 </div>
@@ -76,24 +79,25 @@
                 </div>
                 <dictionary-list :dic-list-name="dictionaries" />
             </div>
-            <comments :wrod-id="data.id"/>
+            <comments :wrod-id="data.id" />
         </div>
         <transition name="popup">
             <word-report-card v-if="isShowCard" @click="isShowCard = !isShowCard" @close-card="closeCard" />
-        </transition> 
+        </transition>
     </div>
 </template>
 <script setup>
-const isShowCard = ref(false); 
+import reportcard from "~/components/reportcard.vue";
+import Flag from "~/components/icons/flag.vue";
+const isShowCard = ref(false);
 const isShowReportCard = ref(false);
 const closeCard = (value) => {
     isShowCard.value = value;
-} 
-import Flag from "~/components/icons/flag.vue"; 
-import reportcard from "~/components/reportcard.vue";  
-const storeWord = useWordStore(); 
+}
+const storeWord = useWordStore();
+const storeLogin = useAuthStore()
 const data = storeWord.selectedWord;
-console.log(data);
+console.log(storeLogin.isAdmin);
 if (data == null) {
     navigateTo("/resultTranslate");
 }
@@ -106,19 +110,7 @@ const dictionaries = [
     "فرهنگ جامع زبان فارسی",
     "فرهنگ سخن",
     "فرهنگ موضوعی فارسی",
-];
-const reportMessageItems = [
-    "واژه توهین‌آمیز یا نامناسب",
-    "محتوای قومیتی، نژادی یا تبعیض‌آمیز",
-    "محتوای سیاسی یا مغایر با قوانین",
-    "اطلاعات نادرست یا گمراه‌کننده",
-    "تهدید یا توهین مستقیم به کاربر دیگر",
-    "تبلیغاتی یا اسپم",
-    "سایر موارد",
-];
-const isShowSortBox = ref(false);
-
-
+];  
 const goToCommentsSection = () => {
     document.querySelector(".comments").scrollIntoView({
         behavior: "smooth",
@@ -209,6 +201,7 @@ textarea::-webkit-scrollbar-track {
         max-height: 500px;
         opacity: 1;
     }
+
     100% {
         max-height: 0;
         opacity: 0;

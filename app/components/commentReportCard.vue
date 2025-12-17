@@ -2,7 +2,7 @@
     <reportcard>
         <div @click.stop class="md:w-1/4 w-full h-auto p-7 rounded-[64px] bg-white flex flex-col justify-between">
             <h3 class="mb-6 font-bold">گزارش</h3>
-            <p class="text-xs">لطفاً دلیل گزارش این واژه را انتخاب کنید.</p>
+            <p class="text-xs">لطفاً دلیل گزارش این کامنت را انتخاب کنید.</p>
             <p class="text-xs mb-6">تیم پشتیبانی پس از بررسی، در صورت لزوم اقدام خواهد کرد.</p>
 
             <div class="flex flex-col mb-6 gap-7">
@@ -45,7 +45,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import Cookies from 'js-cookie'
 const emit = defineEmits(['closeCard']);
 const props = defineProps({
-    wordId: {
+    commentId: {
         required: true
     }
 })
@@ -56,11 +56,13 @@ const description = ref("");
 const showInput = ref(false);
 
 const reportItems = [
-    { id: 0, text: "معنی یا ترجمه نادرست" },
-    { id: 1, text: "اطلاعات ناقص یا گمراه‌کننده" },
-    { id: 2, text: "غلط املایی یا نگارشی" },
-    { id: 3, text: "واژه وجود خارجی ندارد" },
-    { id: 4, text: "سایر موارد" },
+    { id: 0, text: "واژه توهین‌آمیز یا نامناسب" },
+    { id: 1, text: "محتوای قومیتی، نژادی یا تبعیض‌آمیز" },
+    { id: 2, text: "محتوای سیاسی یا مغایر با قوانین" },
+    { id: 3, text: "اطلاعات نادرست یا گمراه‌کننده" },
+    { id: 4, text: "تهدید یا توهین مستقیم به کاربر دیگر" },
+    { id: 5, text: "تبلیغاتی یا اسپم" },
+    { id: 6, text: "سایر موارد" },
 ];
 
 const handleSelection = (index) => {
@@ -68,16 +70,16 @@ const handleSelection = (index) => {
     const item = reportItems[idx];
     if (item) {
         selectedReportId.value = item.id;
-        if (item.id === 4) {
+        if (item.id === 6) {
             showInput.value = true;
         } else {
             showInput.value = false;
             description.value = "";
         }
     }
-}; 
+};
 const toast = useToast()
-const url = `https://ip3.ir/dictionary/api/v1/words/${props.wordId}/reports`
+const url = `https://ip3.ir/dictionary/api/v1/comments/${props.commentId}/reports`
 const submitReport = async () => {
     if (!selectedReportId.value) return;
 
@@ -94,7 +96,7 @@ const submitReport = async () => {
             method: 'POST',
             body: bodyData,
             headers: {
-                'Authorization': `Bearer ${AUTH_TOKEN}`, 
+                'Authorization': `Bearer ${AUTH_TOKEN}`,
             }
         });
 

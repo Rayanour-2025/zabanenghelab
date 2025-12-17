@@ -1,43 +1,44 @@
 // /home/hamyar/Desktop/My_Folder/zaban-enghelab/nuxt.config.ts
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
 
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-tiptap-editor'], 
+  build: {
+    transpile: ["vue-toastification"],
+  },
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "nuxt-tiptap-editor"],
 
   tiptap: {
-    lang: 'fa',
-    editor: {
-    }
+    lang: "fa",
+    editor: {},
   },
 
-  css: ['~/assets/css/tailwind.css'],
+  css: ["~/assets/css/tailwind.css"],
 
   app: {
     head: {
-      title: 'زبان انقلاب',
+      title: "زبان انقلاب",
     },
-    pageTransition: {name: 'page', mode: 'out-in'}
+    pageTransition: { name: "page", mode: "out-in" },
   },
 
   runtimeConfig: {
     public: {
-      authSecretKey: process.env.AUTH_SECRET_KEY, 
-    }
+      authSecretKey: process.env.AUTH_SECRET_KEY,
+    },
   },
 
   nitro: {
     devProxy: {
-      '/api': {
-        target: 'https://ip3.ir/dictionary/api/v1', 
+      "/api": {
+        target: "https://ip3.ir/dictionary/api/v1",
         changeOrigin: true,
         prependPath: true,
       },
     },
   },
-
 
   postcss: {
     plugins: {
@@ -45,7 +46,4 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-})
-
-
-
+});

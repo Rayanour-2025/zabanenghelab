@@ -8,7 +8,7 @@ export const useAuthStore = defineStore('auth', {
         isLoggedIn: undefined, 
         user: null, 
         token: null, 
-        isAdmin: 1
+        isAdmin: 0
     }),
 
     getters: {
@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
             this.user = loginResponse.user;
             this.token = loginResponse.token;
             this.isLoggedIn = true; 
-            this.isAdmin = loginResponse.user.isAdmin
+            this.isAdmin = loginResponse.user.is_admin
 
             const encryptedToken = encryptToken(loginResponse.token);
             
