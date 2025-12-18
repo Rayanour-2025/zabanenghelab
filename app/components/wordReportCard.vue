@@ -56,11 +56,11 @@ const description = ref("");
 const showInput = ref(false);
 
 const reportItems = [
-    { id: 0, text: "معنی یا ترجمه نادرست" },
-    { id: 1, text: "اطلاعات ناقص یا گمراه‌کننده" },
-    { id: 2, text: "غلط املایی یا نگارشی" },
-    { id: 3, text: "واژه وجود خارجی ندارد" },
-    { id: 4, text: "سایر موارد" },
+    { id: 1, text: "معنی یا ترجمه نادرست" },
+    { id: 2, text: "اطلاعات ناقص یا گمراه‌کننده" },
+    { id: 3, text: "غلط املایی یا نگارشی" },
+    { id: 4, text: "واژه وجود خارجی ندارد" },
+    { id: 5, text: "سایر موارد" },
 ];
 
 const handleSelection = (index) => {
@@ -68,14 +68,11 @@ const handleSelection = (index) => {
     const item = reportItems[idx];
     if (item) {
         selectedReportId.value = item.id;
-        if (item.id === 4) {
+        if (item.id) {
             showInput.value = true;
-        } else {
-            showInput.value = false;
-            description.value = "";
         }
     }
-}; 
+};
 const toast = useToast()
 const url = `https://ip3.ir/dictionary/api/v1/words/${props.wordId}/reports`
 const submitReport = async () => {
@@ -94,7 +91,7 @@ const submitReport = async () => {
             method: 'POST',
             body: bodyData,
             headers: {
-                'Authorization': `Bearer ${AUTH_TOKEN}`, 
+                'Authorization': `Bearer ${AUTH_TOKEN.value}`,
             }
         });
 

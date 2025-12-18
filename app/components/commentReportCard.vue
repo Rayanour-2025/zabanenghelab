@@ -96,7 +96,7 @@ const submitReport = async () => {
             method: 'POST',
             body: bodyData,
             headers: {
-                'Authorization': `Bearer ${AUTH_TOKEN}`,
+                'Authorization': `Bearer ${AUTH_TOKEN.value}`,
             }
         });
 

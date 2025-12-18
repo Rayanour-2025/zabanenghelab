@@ -2,53 +2,23 @@
   <div
     class="w-full flex flex-col justify-center items-end gap-[30px] px-[20px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
     <div class="md:p-5 flex w-full flex-col items-center gap-y-6">
-      <div dir="rtl" class="bg-[#F5F6F4] w-full md:p-8 p-4  rounded-[55px]">
-        <div class="flex items-center gap-3">
-          <img :src="photo" class="md:w-12 w-8 md:h-12 h-8 rounded-full" alt="profile" />
-          <p class="text-xs md:text-base">
-            سعید علوی -
-            <span class="text-[#5C636980]"> ۱۴۰۱ آبان ۰۶ ۱۰:۳۲</span>
-          </p>
-        </div>
-        <div class="md:mt-5 mt-2 text-xs md:text-base">
-          <p>علت: <span class="font-semibold">اشتباه در معنی یا تایپ</span></p>
-        </div>
-        <div class="md:mt-5 mt-2">
-          <p class="  text-xs md:text-base">لغت: <span class="text-[#7FB77E]">سلام</span></p>
-        </div>
-        <div class="md:mt-3 mt-2 text-xs md:text-base">لغت نامه: <span class="text-[#7FB77E]">دهخدا</span></div>
-        <div class="md:mt-5 mt-2 text-xs md:text-base">
-          <h3>توضیحات:</h3>
-          <p class="mt-3 md:text-sm text-[10px]">به نظر میاد معنی نوشته‌شده کامل نیست یا یه بخشی از توضیح دهخدا جا
-            افتاده. لطفاً
-            بررسی بشه، چون توضیح اصلی این واژه در نسخه چاپی فرق داره.
-          </p>
-        </div>
-        <div class="md:mt-5 mt-2 flex gap-2">
-          <div style="background-color: #e5737333" class="flex items-center gap-2 p-3 rounded-full">
-            <red-trash width="22" height="22" />
-          </div>
-          <div class="flex items-center gap-2 bg-[#7FB77E33] p-3 rounded-full">
-            <tick width="22" height="22" />
-          </div>
-        </div>
-      </div>
+      <template v-if="reportWordData?.data?.length">
+        <temp-word-reported @send-data="reloadData" v-for="reportData in reportWordData?.data" :key="reportData.id"
+          :report-data="reportData" />
+      </template>
     </div>
+    <loading-animation v-if="reportWordLoading" />
   </div>
 </template>
 
 <script setup>
-import photo from "~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png";
-import plus from "~/components/icons/plus.vue";
-import redTrash from "~/components/icons/redTrash.vue";
-import tick from "~/components/icons/tick.vue";
+import TempWordReported from '~/components/template/TempWordReported.vue'
+import loadingAnimation from '~/components/loadingAnimation.vue'
+import useFetchDashboardData from '~/composables/useFetchDashboardData'
 definePageMeta({
   layout: "dashboard-admin"
 })
 const loginStore = useAuthStore()
-if (loginStore.isAdmin == 0) {
-  navigateTo('/')
-}
 const { token: AUTH_TOKEN } = useAuthToken()
 const {
   fetchDashboardData,
@@ -56,12 +26,16 @@ const {
   loading: reportWordLoading
 } = useFetchDashboardData()
 const loadData = async () => {
-  if (loginStore.isAdmin && loginStore.token && loginStore.isLoggedIn) {
+  console.log(loginStore.isLoggedIn)
+  if (loginStore.token && loginStore.isLoggedIn) {
     await fetchDashboardData(AUTH_TOKEN.value, "word-reports")
     console.log(reportWordData.value)
   }
 }
 loadData()
+const reloadData = (flag) => {
+  loadData()
+}
 </script>
 
 <style scoped>

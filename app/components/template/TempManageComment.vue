@@ -4,8 +4,8 @@
             <div class="flex items-center gap-3">
                 <img :src="photo" class="w-12 h-12 rounded-full" alt="profile" />
                 <p>
-                    سعید علوی -
-                    <span class="text-[#5C636980]"> ۱۴۰۱ آبان ۰۶ ۱۰:۳۲</span>
+                    {{comment.user.username}} -
+                    <span class="text-[#5C636980]"> {{comment.created_at}}</span>
                 </p>
             </div>
             <div class="relative">
@@ -41,6 +41,7 @@
     <transition name="popup">
         <reportcard @click="isShowPinBox = false" :class="!isShowPinBox ? 'hidden' : 'flex'" />
     </transition>
+    <loading-animation v-if="loading" />
 </template>
 <script setup>
 import photo from "~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png";
@@ -60,36 +61,27 @@ const props = defineProps({
         type: Object
     }
 })
+const emit = defineEmits(['sendData'])
 const { loading: pinLoading, pinComment } = usePinComment()
 const { token: AUTH_TOKEN, isLoggedIn } = useAuthToken()
 const { loading, evaluateItem } = useEvaluateDashboardItem()
-const {
-    fetchDashboardData,
-    responseData: commentData,
-    loading: reportCommentLoading
-} = useFetchDashboardData()
-const loadData = async () => {
-    if (loginStore.isAdmin && loginStore.token && loginStore.isLoggedIn) { 
-        await fetchDashboardData(AUTH_TOKEN.value, "comments") 
-    }
-}
+ 
 const approve = async (id, status) => {
     if (AUTH_TOKEN.value && isLoggedIn.value) {
         await evaluateItem(AUTH_TOKEN.value, id, status, 'comments')
-        loadData()
+        emit('sendData', true)
     }
 }
 const reject = async (id, status) => {
     if (AUTH_TOKEN.value && isLoggedIn.value) {
         await evaluateItem(AUTH_TOKEN.value, id, status, 'comments')
-        loadData()
-        loadData()
+        emit('sendData', true)
     }
 }
 const pin = async (id) => {
     if (AUTH_TOKEN.value && isLoggedIn.value) {
         await pinComment(AUTH_TOKEN.value, id)
-        loadData()
+        emit('sendData', true)
     }
 }
 

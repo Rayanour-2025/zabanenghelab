@@ -1,6 +1,4 @@
 <template>
-
-
   <div
     class="w-full flex flex-col justify-center items-end gap-[30px] px-[40px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
     <div class="p-5 flex w-full flex-col items-center gap-y-6">
@@ -67,10 +65,7 @@ import { useAuthToken } from "~/composables/useAuthCrypto";
 definePageMeta({
   layout: 'dashboard-admin'
 })
-const loginStore = useAuthStore()
-if (loginStore.isAdmin == 0) {
-  navigateTo('/')
-}
+const loginStore = useAuthStore() 
 const { token: AUTH_TOKEN } = useAuthToken()
 const {
   fetchDashboardData,
