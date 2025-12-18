@@ -9,7 +9,7 @@
         <form @submit.prevent="submitForm" class="w-full flex flex-col items-end gap-5" >
           
           <div class="flex flex-col items-start gap-3 w-full">
-            <label class="text-sm leading-6 text-[#2B2B2B]">لطفا دیکشنری مورد نظر را انتخاب کنید: <span class="text-red-500">*</span></label>
+            <label class="text-sm leading-6  text-[#2B2B2B]">لطفا دیکشنری مورد نظر را انتخاب کنید: <span class="text-red-500">*</span></label>
             <div class="relative w-full md:w-[50%]">
               <div v-if="loadingDictionaries" class="p-3 text-xs text-gray-500">در حال بارگذاری دیکشنری‌ها...</div>
               <select v-else v-model="formData.selectedDictionary" :disabled="isEditMode" required class="appearance-none w-full h-11 px-4 py-3 bg-[rgba(127,183,126,0.2)] rounded-xl text-right text-sm text-[#2B2B2B] focus:outline-none cursor-pointer truncate disabled:opacity-70" >
