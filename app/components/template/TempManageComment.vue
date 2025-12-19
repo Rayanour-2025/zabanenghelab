@@ -67,21 +67,34 @@ const { token: AUTH_TOKEN, isLoggedIn } = useAuthToken()
 const { loading, evaluateItem } = useEvaluateDashboardItem()
  
 const approve = async (id, status) => {
-    if (AUTH_TOKEN.value && isLoggedIn.value) {
-        await evaluateItem(AUTH_TOKEN.value, id, status, 'comments')
-        emit('sendData', true)
+    try {
+        console.log("Token:", AUTH_TOKEN.value); // چک کنید توکن خالی نباشد
+        console.log("ID:", id);
+        if (AUTH_TOKEN.value && isLoggedIn.value) {
+            await evaluateItem(AUTH_TOKEN.value, id, status, 'comments')
+        } else {
+            console.warn("User is not logged in or token is missing");
+        }
+    } catch (error) {
+        console.error("Error in approve function:", error);
     }
 }
 const reject = async (id, status) => {
-    if (AUTH_TOKEN.value && isLoggedIn.value) {
-        await evaluateItem(AUTH_TOKEN.value, id, status, 'comments')
-        emit('sendData', true)
+    try {
+        console.log("Token:", AUTH_TOKEN.value); // چک کنید توکن خالی نباشد
+        console.log("ID:", id);
+        if (AUTH_TOKEN.value && isLoggedIn.value) {
+            await evaluateItem(AUTH_TOKEN.value, id, status, 'comments')
+        } else {
+            console.warn("User is not logged in or token is missing");
+        }
+    } catch (error) {
+        console.error("Error in approve function:", error);
     }
 }
 const pin = async (id) => {
     if (AUTH_TOKEN.value && isLoggedIn.value) {
-        await pinComment(AUTH_TOKEN.value, id)
-        emit('sendData', true)
+        await pinComment(AUTH_TOKEN.value, id) 
     }
 }
 

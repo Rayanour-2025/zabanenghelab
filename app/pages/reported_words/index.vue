@@ -3,7 +3,7 @@
     class="w-full flex flex-col justify-center items-end gap-[30px] px-[20px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
     <div class="md:p-5 flex w-full flex-col items-center gap-y-6">
       <template v-if="reportWordData?.data?.length">
-        <temp-word-reported @send-data="reloadData" v-for="reportData in reportWordData?.data" :key="reportData.id"
+        <temp-word-reported @send="reload" v-for="reportData in reportWordData?.data" :key="reportData.id"
           :report-data="reportData" />
       </template>
     </div>
@@ -33,8 +33,11 @@ const loadData = async () => {
   }
 }
 loadData()
-const reloadData = (flag) => {
-  loadData()
+const reload = async (flag) => {
+  console.log(flag)
+  if (flag) {
+    await loadData()
+  }
 }
 </script>
 
