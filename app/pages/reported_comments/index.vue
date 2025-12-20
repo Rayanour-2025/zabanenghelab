@@ -2,70 +2,23 @@
   <div
     class="w-full flex flex-col justify-center items-end gap-[30px] px-[40px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
     <div class="p-5 flex w-full flex-col items-center gap-y-6">
-      <div dir="rtl" class="bg-[#F5F6F4] w-full p-8 rounded-[55px]">
-        <div class="flex justify-between items-center gap-3">
-          <div class="flex items-center gap-3">
-            <div class="flex  items-center">
-              <p class="ml-3">گزارش توسط: </p>
-              <img :src="photo" class="w-12 ml-2 h-12 rounded-full" alt="profile" />
-              <p class="text-xs font-semibold">
-                سعید علوی
-              </p>
-            </div>
-            <div class="flex  items-center">
-              <p class="ml-3">گزارش شده: </p>
-              <img :src="photo" class="w-12 ml-2 h-12 rounded-full" alt="profile" />
-              <p class="text-xs font-semibold">
-                مهرداد سعیدی
-              </p>
-            </div>
-          </div>
-          <p class="text-[#5C636980]"> ۱۴۰۱ آبان ۰۶ ۱۰:۳۲</p>
-        </div>
-        <div class="mt-5">
-          <p>علت: <span class="font-semibold">توهین به قومیت ها، اقلیت ها، اعتقادات و ...</span></p>
-        </div>
-        <div class="mt-5">
-          <p>لغت: <span class="text-[#7FB77E]">سلام</span></p>
-        </div>
-        <div class="mt-3">لغت نامه: <span class="text-[#7FB77E]">دهخدا</span></div>
-        <div class="mt-5">
-          <h3>نظر:</h3>
-          <p class="mt-3 text-sm">همیشه گفتن بعضیا تلفظ درست بلد نیستن، ولی واقعاً باید یه ذره بیشتر تمرین کنن،
-            تلفظشون فاجعه‌ست!
-          </p>
-        </div>
-        <div class="mt-5">
-          <h3>توضیحات:</h3>
-          <p class="mt-3 text-sm">اینجور لحن‌ها باعث بحث و بی‌احترامی بین کاربرا میشه. گفتم گزارش بدم که فضا آروم‌تر
-            بمونه.
-          </p>
-        </div>
-        <div class="mt-5 flex gap-2">
-          <div class=" text-[#7FB77E] bg-[#7FB77E33] px-5 py-2 rounded-full">
-            تایید
-          </div>
-          <div style="background-color: #e5737333; color:#E57373 "
-            class="text-[#E57373] py-2 px-5 flex items-center rounded-full">
-            رد
-          </div>
-        </div>
-      </div>
+      <template v-if="reportCommentData?.data.length">
+        <temp-comment-reported @send="reload" v-for="data in reportCommentData?.data" :report-data="data" :key="data.id" />
+      </template>
     </div>
+    <loadingAnimation v-if="reportCommentLoading" />
   </div>
 </template>
 
 <script setup>
-import photo from "~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png";
-import plus from "~/components/icons/plus.vue";
-import redTrash from "~/components/icons/redTrash.vue";
-import tick from "~/components/icons/tick.vue";
+import TempCommentReported from "~/components/template/TempCommentReported.vue";
 import useFetchDashboardData from "~/composables/useFetchDashboardData";
+import loadingAnimation from "~/components/loadingAnimation.vue";
 import { useAuthToken } from "~/composables/useAuthCrypto";
 definePageMeta({
   layout: 'dashboard-admin'
 })
-const loginStore = useAuthStore() 
+const loginStore = useAuthStore()
 const { token: AUTH_TOKEN } = useAuthToken()
 const {
   fetchDashboardData,
@@ -73,10 +26,15 @@ const {
   loading: reportCommentLoading
 } = useFetchDashboardData()
 const loadData = async () => {
-  if (loginStore.isAdmin && loginStore.token && loginStore.isLoggedIn) {
+  if (loginStore.token && loginStore.isLoggedIn) {
     console.log(AUTH_TOKEN.value)
     await fetchDashboardData(AUTH_TOKEN.value, "comment-reports")
-    console.log(reportCommentData.value)
+    console.log(reportCommentData?.value?.data)
+  }
+}
+const reload = (flag) => {
+  if (flag) {
+    loadData
   }
 }
 loadData()

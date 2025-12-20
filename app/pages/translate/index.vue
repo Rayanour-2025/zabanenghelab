@@ -14,12 +14,12 @@
                             </div>
                             <span class="text-sm" v-if="data.pronunciation">/{{ data.pronunciation }}/</span>
                         </div>
-                        <div v-if="storeLogin.isAdmin == false  " @click="isShowCard = !isShowCard"
+                        <div v-if="storeLogin.isAdmin == false" @click="isShowCard = !isShowCard"
                             class="bg-[#7FB77E33] p-3 cursor-pointer rounded-full flex items-center justify-center gap-2">
                             <Flag width="22" height="22" />
                             <p>گزارش</p>
                         </div>
-                        <NuxtLink to="\edit_word" v-if="storeLogin.isAdmin == 1 && storeLogin.isLoggedIn" @click="isShowCard = !isShowCard"
+                        <NuxtLink :to='{ path: "/edit_word", query: { word_id: data.id } }' v-if="storeLogin.isLoggedIn"
                             class="bg-[#7FB77E33] p-3 cursor-pointer rounded-full flex items-center justify-center gap-2">
                             <p>ویرایش</p>
                         </NuxtLink>
@@ -110,7 +110,7 @@ const dictionaries = [
     "فرهنگ جامع زبان فارسی",
     "فرهنگ سخن",
     "فرهنگ موضوعی فارسی",
-];  
+];
 const goToCommentsSection = () => {
     document.querySelector(".comments").scrollIntoView({
         behavior: "smooth",

@@ -26,7 +26,7 @@ const {
   loading: commentLoading
 } = useFetchDashboardData()
 const loadData = async () => {
-  if (loginStore.isAdmin && loginStore.token && loginStore.isLoggedIn) {
+  if (loginStore.token && loginStore.isLoggedIn) {
     console.log(AUTH_TOKEN.value)
     await fetchDashboardData(AUTH_TOKEN.value, "comments")
     console.log(commentData.value)
