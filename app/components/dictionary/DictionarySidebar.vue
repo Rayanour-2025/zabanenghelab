@@ -1,7 +1,9 @@
 <template>
   <div class="w-[195px] hidden font-zain md:flex flex-col items-end pr-6">
-    <h2 class="text-[#7FB77E] w-[80%] text-right text-lg leading-[38px] font-normal py-[25px]">
-      لغات
+    <h2 to="/words" class="text-[#7FB77E] w-[80%] text-right text-lg leading-[38px] font-normal py-[25px]"> 
+
+        لغات
+ 
     </h2>
     <div class="w-full border-t border-[#DADDD8]"></div>
 
@@ -44,22 +46,28 @@
     </NuxtLink>
   </div>
   <div dir="rtl" class="md:hidden px-4 w-full overflow-x-auto flex gap-4 whitespace-nowrap py-2">
-    <NuxtLink class="px-4 text-[#7FB77E] py-2 bg-[#DDE8D6] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block border border-[#7FB77E]">
+    <NuxtLink
+      class="px-4 text-[#7FB77E] py-2 bg-[#DDE8D6] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block border border-[#7FB77E]">
       لغات
     </NuxtLink>
-    <NuxtLink class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
+    <NuxtLink
+      class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
       دیکشنری ها
     </NuxtLink>
-    <NuxtLink class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
+    <NuxtLink
+      class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
       لغات درخواستی
     </NuxtLink>
-    <NuxtLink class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
+    <NuxtLink
+      class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
       لغات گزارش شده
     </NuxtLink>
-    <NuxtLink class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
+    <NuxtLink
+      class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
       دیدگاه ها
     </NuxtLink>
-    <NuxtLink class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
+    <NuxtLink
+      class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
       دیدگاه گزارش شده
     </NuxtLink>
   </div>

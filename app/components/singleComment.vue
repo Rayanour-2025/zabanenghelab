@@ -27,7 +27,7 @@
                         <p class="text-xl ml-2">{{ commentData.likes_count }}</p>
                         <like width="26" color="#ff0000" @click="reaction('like', commentData.id)" height="26" />
                     </div>
-                    <div @click="reaction('disLike', commentData.id)">
+                    <div @click="reaction('dislike', commentData.id)">
                         <dislike width="26" color="#ff0000" height="26" />
                     </div>
                 </div>
@@ -67,11 +67,11 @@
         </div>
     </div>
     <transition name="popup">
-        <comment-report-card v-if="isShowReportCard" @click="isShowReportCard = !isShowReportCard" @close-card="closeCard" />
+        <comment-report-card v-if="isShowReportCard" :comment-id="commentData?.id"
+            @click="isShowReportCard = !isShowReportCard" @close-card="closeCard" />
     </transition>
 </template>
 <script setup>
-import profileImg from '~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png'
 import answar from "~/components/icons/answar.vue";
 import Pin from "~/components/icons/Pin.vue";
 import Dislike from "~/components/icons/Dislike.vue";
@@ -101,12 +101,15 @@ const {
     likeDislike,
     loading: likeDislikeLoading,
 } = useLikeDislike()
-const reaction = async (reaction, commentId) => {
-    if (AUTH_TOKEN.value && storeLogin.isLoggedIn && storeLogin.token) {
-        await likeDislike(AUTH_TOKEN.value, commentId, reaction)
-    } else {
-        toast.error("ابتدا وارد حساب خود شوید.")
-        return
+const reaction = async (reactionType, commentId) => {  
+    try {
+        if (AUTH_TOKEN.value && storeLogin.isLoggedIn && storeLogin.token) { 
+            await likeDislike(AUTH_TOKEN.value, commentId, reactionType); 
+        } else {
+            toast.error("ابتدا وارد حساب خود شوید.");
+        }
+    } catch (error) {
+        console.error("خطا در عملیات لایک:", error);
     }
-}
+};
 </script>

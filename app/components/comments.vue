@@ -4,10 +4,10 @@
         <div class="w-full">
             <div class="w-full flex flex-col items-center justify-center">
                 <div v-if="replyTo" class="w-full mb-2 flex justify-between items-center bg-gray-100 p-2 rounded-lg">
-                    <p class="text-sm">در حال پاسخ به: <b>{{ replyTo.user.username }}</b></p>
+                    <p class="text-sm">در حال پاسخ به: <b>{{ replyTo?.user?.username }}</b></p>
                     <button @click="cancelReply" class="text-red-500 text-xs">انصراف</button>
                 </div>
-                <textarea name="commentText" v-model="payload.body" 
+                <textarea name="commentText" v-model="payload.body"
                     class=" shadow-[0px_7px_15px_-6px_#5C636940] text-sm bg-[#F0F1EE] w-full outline-none rounded-3xl p-8"
                     placeholder="دیدگاهتو باما درمیون بزارید..." id="commentText" rows="5"></textarea>
                 <button @click="submitComment()"
@@ -32,8 +32,8 @@
                 </ul>
             </div>
             <div class="mt-9 flex flex-col gap-y-20">
-                <single-comment v-for="comment in comments" :key="comment.id" @send-reply-id="setReply"
-                    :comment-data="comment" />
+                <single-comment v-for="comment in comments"   :key="comment?.id"
+                    @send-reply-id="setReply" :comment-data="comment" />
             </div>
         </div>
     </div>
@@ -95,12 +95,17 @@ const selectedSort = (num) => {
 };
 const comments = ref([])
 const fetchCommentsData = async () => {
-    await fetchComment(token, props.wrodId, active.value);
-    if (commentsRespone.value) {
-        comments.value = commentsRespone.value.data.comments
-        console.log(comments.value)
-    } else {
-        console.log("خطا:", commentsErrMessage.value);
+    try {
+        // اطمینان از وجود توکن و مقدار ورودی
+        await fetchComment(token, props.wrodId, active.value);
+        
+        if (commentsRespone.value && commentsRespone.value.data) {
+            comments.value = commentsRespone.value.data.comments;
+        } else if (commentsErrMessage?.value) { 
+        }
+    } catch (error) {
+        // 3. جلوگیری از Unhandled Error در هنگام اجرای emit والد
+        console.error("خطای غیرمنتظره در دریافت کامنت‌ها:", error);
     }
 };
 
@@ -120,7 +125,7 @@ const submitComment = async () => {
     } else {
         toast.error("ابتدا وارد حساب خود شوید")
     }
-}
+} 
 watch(active, () => {
     fetchCommentsData()
 })

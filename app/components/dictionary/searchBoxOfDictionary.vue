@@ -1,16 +1,15 @@
 <template>
     <div class="w-full font-zain flex flex-col items-end gap-8">
         <div class="flex flex-row justify-between items-center w-full h-[50px]">
-            <button   type="button"
+            <button type="button"
                 class="flex flex-row justify-center items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] hover:bg-green-700 transition-colors duration-300">
-                <span class="text-white font-bold text-[13px] leading-[24px]">اضافه کردن لغت</span>
+                <span class="text-white font-bold text-[13px] leading-[24px]">اضافه کردن لغت    </span>
                 <icons-add-or-create class="w-5 h-5" />
             </button>
 
             <div class="flex items-center justify-center gap-4">
                 <div class="relative w-[400px]">
-                    <input   type="text"
-                        placeholder="جستجوی لغت مورد نظر..."
+                    <input v-model="query" type="text" placeholder="جستجوی لغت نامه مورد نظر..."
                         class="w-full h-[50px] pl-[14px] pr-[50px] text-right text-[13px] leading-[22px] text-[#2B2B2B] font-normal placeholder:text-[#DADDD8] bg-[#F5F6F4] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] focus:outline-none" />
                     <icons-search
                         class="absolute right-[14px] top-1/2 -translate-y-1/2 w-[22px] h-[22px] text-[#2B2B2B] pointer-events-none" />
@@ -22,11 +21,12 @@
 
 </template>
 
-<script setup> 
- 
+<script setup>
+const query = defineModel()
+const text = "افزودن لغت"
 </script>
 
-<style scoped> 
+<style scoped>
 .modal-slide-enter-from,
 .modal-slide-leave-to {
     opacity: 0;

@@ -25,7 +25,7 @@ export const useAuthStore = defineStore("auth", {
       this.isAdmin = loginResponse.user.is_admin;
 
       const encryptedToken = encryptToken(loginResponse.token);
-
+      
       if (encryptedToken) {
         const tokenCookie = useCookie(TOKEN_COOKIE_NAME, {
           maxAge: 60 * 60 * 24 * 7,

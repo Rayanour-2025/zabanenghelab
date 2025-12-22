@@ -1,32 +1,30 @@
-// /home/hamyar/Desktop/My_Folder/zaban-enghelab/app/composables/useSearchWords.js
+// composable/useFetchDictionaries.js
 import axios from "axios";
 import { ref } from "vue";
 
-const useSearchDictionary = () => {
-  const responseData = ref(null); 
-  const loading = ref(false);   
+const useFetchLanguages = () => {
+  const responseData = ref(null);
+  const loading = ref(false);    
   const err = ref(false);        
-  const errMessage = ref("");    
-  const success = ref(false);      
+  const errMessage = ref("");     
+  const success = ref(false);   
 
-  const searchDictionary = async (token, searchTerm) => {
+  const fetchLanguages = async (token = null) => {
     loading.value = true;
     err.value = false;
     success.value = false;
     errMessage.value = "";
     responseData.value = null;
 
-    const apiUrl = 
-      `https://ip3.ir/dictionary/api/v1/dictionaries/search?dictionary=${searchTerm}`;
+    const headers = {};
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
 
     try {
       const response = await axios.get(
-        apiUrl,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `https://ip3.ir/dictionary/api/v1/languages`,
+        { headers }
       );
 
       responseData.value = response.data;
@@ -38,7 +36,7 @@ const useSearchDictionary = () => {
         error.response?.data?.message ||
         error.response?.data ||
         error.message ||
-        "خطا در جستجوی واژه‌ها";
+        "خطا در واکشی زبان ها";
 
       if (typeof message === "object") {
         message = JSON.stringify(message);
@@ -57,8 +55,8 @@ const useSearchDictionary = () => {
     err,
     errMessage,
     success,
-    searchDictionary,
+    fetchLanguages,
   };
 };
 
-export default useSearchDictionary;
+export default useFetchLanguages;

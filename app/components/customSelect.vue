@@ -1,7 +1,7 @@
 <template>
   <div class="custom-select-container" v-click-outside="close">
     <label v-if="label" class="select-label" @click="toggle">
-      {{ label }}:
+      {{ label }}: <span v-if="required" class="text-red-500">*</span>
     </label>
 
     <div class="custom-select">
@@ -36,6 +36,11 @@ export default {
     options: {
       type: Array,
       required: true
+    },
+    required: {
+      type: Boolean,
+      default: false,
+      required: false
     }
   },
   emits: ['update:modelValue'],
@@ -78,15 +83,15 @@ export default {
 .custom-select-container {
   display: flex;
   flex-direction: column;
-  gap: 8px; 
+  gap: 8px;
   direction: rtl;
   font-family: sans-serif;
   width: 250px;
 }
 
 .select-label {
-  font-size: 14px;  
-  margin-right: 12px; 
+  font-size: 14px;
+  margin-right: 12px;
   cursor: pointer;
 }
 
@@ -99,14 +104,14 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 50px;
+  /* border: 1px solid #e0e0e0; */
+  border-radius: 0.75rem;
   cursor: pointer;
-  background-color: white;
+  background-color: #7FB77E33;
 }
 
 .selected-text {
-  color: #4eb58c;
+  color: #5c6369a9;
   font-size: 16px;
 }
 

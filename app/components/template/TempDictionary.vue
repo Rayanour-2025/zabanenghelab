@@ -7,7 +7,7 @@
             <p v-if="data?.authors">{{ data.authors }}</p>
             <p class="mt-2">{{ data?.name }}</p>
         </div>
-        <button class="bg-[#7FB77E] mt-5 text-[#F5F6F4] px-6 py-2 rounded-full">ویرایش</button>
+        <button @click="sendData" class="bg-[#7FB77E] mt-5 text-[#F5F6F4] px-6 py-2 rounded-full">ویرایش</button>
     </div>
 </template>
 <script setup>
@@ -17,4 +17,8 @@ const props = defineProps({
         required: true
     }
 })
+const emit = defineEmits(['isOpenForm'])
+const sendData = () => {
+    emit('isOpenForm', {form: true, dicEdit: props.data})
+}
 </script>
