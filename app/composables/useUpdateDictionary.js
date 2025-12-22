@@ -43,6 +43,7 @@ const useUpdateDictionary = () => {
         error.response?.data ||
         error.message ||
         "خطا در به‌روزرسانی لغت نامه";
+      console.log(error)
     toast.error(message)
       if (typeof message === "object") {
         message = JSON.stringify(message);
