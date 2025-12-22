@@ -34,7 +34,7 @@ const useUpdateDictionary = () => {
 
       responseData.value = response.data;
       success.value = true;
-      toast.success(response.message)
+      toast.success(response.message || 'لغتنامه با موفقیت ویرایش شد')
       return response.data;
     } catch (error) {
       err.value = true;

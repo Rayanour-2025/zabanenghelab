@@ -94,7 +94,7 @@ const submitReport = async () => {
                 'Authorization': `Bearer ${AUTH_TOKEN.value}`,
             }
         });
-
+        toast.success(res.value.message || 'گزارش با موفقیت ثبت شد.')
         emit('closeCard', false);
 
     } catch (error) {

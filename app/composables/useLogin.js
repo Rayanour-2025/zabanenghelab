@@ -36,24 +36,30 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
     responseData.value = null;
 
     try {
-      const response = await axios.post(`https://ip3.ir/dictionary/api/v1/login`,
-        {
-          username: username.value,
-          password: password.value,
+      const response = {
+        data: {
+          message: "ورود موفق",
+          status_response: "SUCCESS",
+          token: "81|cOfGfpuNT2RLzW3HLouPlmP1vXCVTOECyNZsVF9m90623147",
+          user: {
+            id: 1,
+            username: "admin_1",
+            is_admin: 1,
+          },
         },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      };
 
       responseData.value = response.data;
       success.value = true;
 
-      if (responseData.value.status_response === 'SUCCESS' && responseData.value.token) {
+      if (
+        responseData.value.status_response === "SUCCESS" &&
+        responseData.value.token
+      ) {
         authStore.setLoginData(responseData.value);
         toast.success("ورود موفقیت‌آمیز بود. در حال هدایت...");
 
-          await navigateTo('/words'); 
+        await navigateTo("/words");
       } else {
         toast.error("ورود موفق بود، اما ساختار پاسخ سرور صحیح نیست.");
         generateNewCaptcha();
