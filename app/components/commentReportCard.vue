@@ -70,7 +70,7 @@ const handleSelection = (index) => {
     const item = reportItems[idx];
     if (item) {
         selectedReportId.value = item.id;
-        if (item.id === 6) {
+        if (item.id) {
             showInput.value = true;
         } else {
             showInput.value = false;

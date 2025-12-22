@@ -49,7 +49,7 @@
                             </p>
                         </div>
                         <div>
-                            <three-dot @click="isShowReportCard = true" class="cursor-pointer" width="26" height="26" />
+                            <three-dot @click="isShowReportCardForChild = true; chidlId = cmd.id" class="cursor-pointer" width="26" height="26" />
                         </div>
                     </div>
                     <div class="mt-4">
@@ -70,6 +70,10 @@
         <comment-report-card v-if="isShowReportCard" :comment-id="commentData?.id"
             @click="isShowReportCard = !isShowReportCard" @close-card="closeCard" />
     </transition>
+    <transition name="popup">
+        <comment-report-card v-if="isShowReportCardForChild" :comment-id="chidlId"
+            @click="isShowReportCardForChild = !isShowReportCardForChild" @close-card="closeCard" />
+    </transition>
 </template>
 <script setup>
 import answar from "~/components/icons/answar.vue";
@@ -86,6 +90,7 @@ const emit = defineEmits(['sendReplyId'])
 const { token: AUTH_TOKEN } = useAuthToken()
 const toast = useToast()
 const storeLogin = useAuthStore()
+const isShowReportCardForChild = ref(false)
 const isShowAnswer = ref(false)
 const isShowReportCard = ref(false)
 const props = defineProps({
@@ -94,6 +99,7 @@ const props = defineProps({
         type: Object
     }
 })
+const chidlId = ref()
 const reply = (comment) => {
     emit('sendReplyId', comment)
 }
