@@ -151,7 +151,7 @@ const onImageChange = (e) => {
 
 const sendData = async () => {
   const formData = new FormData()
-  editForm.value.name = props.dictionary.name,
+  editForm.value.name = props.dictionary.name
     editForm.value.source_language_id = props.dictionary.source_language.id
   editForm.value.target_language_id = props.dictionary.target_language.id
   editForm.value.description = props.dictionary.description
@@ -164,6 +164,10 @@ const sendData = async () => {
   console.log(editForm.value)
 
   await updateDictionary(AUTH_TOKEN.value, props.dictionary.id, formData)
+for (let pair of formData.entries()) {
+  console.log(pair[0], pair[1])
+}
+
 }
 </script>
 
