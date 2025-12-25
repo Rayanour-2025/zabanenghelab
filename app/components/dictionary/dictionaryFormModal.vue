@@ -11,7 +11,19 @@
           <icons-circle-x width="35" height="35" color="#7FB77E" />
         </button>
         <div class="flex items-center gap-4">
-          <h3>{{ dictionary.name }}</h3> <red-trash width="22" height="22" />
+          <h3>{{ dictionary.name }}</h3>
+          <red-trash class="cursor-pointer" v-if="!deleteLoading" @click="deleteDic(dictionary?.id)" width="22" height="22" />
+          <div dir="rtl" v-if="deleteLoading" class="flex items-center justify-center gap-2">
+            <svg class="animate-spin h-4 w-4 text-[#7FB77E]" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+              </circle>
+              <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
+            </svg>
+            <span>...درحال حذف</span>
+          </div>
         </div>
         <form class="w-full flex flex-col items-end gap-5">
           <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
@@ -117,6 +129,8 @@ import customSelect from '~/components/customSelect.vue';
 import { useAuthToken } from '~/composables/useAuthCrypto'
 import { useToast } from 'vue-toastification'
 import RichTextEditor from '~/components/dictionary/RichTextEditor.vue';
+import loadingAnimation from '~/components/loadingAnimation.vue';
+import useDeleteDictionary from '~/composables/useDeleteDictionary';
 import useUpdateDictionary from '~/composables/useUpdateDictionary';
 const props = defineProps({
   isOpen: Boolean,
@@ -129,10 +143,11 @@ const props = defineProps({
 });
 const text = ref('')
 const toast = useToast()
-const { isLoggedIn, token: AUTH_TOKEN } = useAuthToken()
+const { isLoggedIn, token: AUTH_TOKEN, isAdmin } = useAuthToken()
 const emit = defineEmits(['update:isOpen', 'save']);
 const isExpanded = ref(false);
 const isEditorModalOpen = ref(false);
+const { loading: deleteLoading, deleteDictionary } = useDeleteDictionary()
 const { loading, updateDictionary } = useUpdateDictionary()
 
 
@@ -159,9 +174,13 @@ const sendData = async () => {
   formData.append('authors', props.dictionary.authors || '');
   if (editForm.value.image) {
     formData.append('image', editForm.value.image);
-  } 
+  }
   await updateDictionary(AUTH_TOKEN.value, props.dictionary.id, formData)
-
+}
+const deleteDic = async (id) => {
+  if (isAdmin.value, AUTH_TOKEN.value) {
+    await deleteDictionary(AUTH_TOKEN.value, id)
+  }
 }
 </script>
 
