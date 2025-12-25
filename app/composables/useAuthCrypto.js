@@ -46,6 +46,7 @@ export function useAuthToken () {
     return { 
         token: computed(() => store.token),
         user: computed(() => store.user),
-        isLoggedIn: computed(() => store.isAuthenticated)
+        isLoggedIn: computed(() => store.isAuthenticated),
+        isAdmin: computed(() => store.isAdmin)
     };
 }

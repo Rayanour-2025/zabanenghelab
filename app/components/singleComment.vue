@@ -67,11 +67,11 @@
         </div>
     </div>
     <transition name="popup">
-        <comment-report-card v-if="isShowReportCard" :comment-id="commentData?.id"
+        <comment-report-card v-if="isShowReportCard && !isAdmin" :comment-id="commentData?.id"
             @click="isShowReportCard = !isShowReportCard" @close-card="closeCard" />
     </transition>
     <transition name="popup">
-        <comment-report-card v-if="isShowReportCardForChild" :comment-id="chidlId"
+        <comment-report-card v-if="isShowReportCardForChild && !isAdmin" :comment-id="chidlId"
             @click="isShowReportCardForChild = !isShowReportCardForChild" @close-card="closeCard" />
     </transition>
 </template>
@@ -87,7 +87,7 @@ import useLikeDislike from "@/composables/useLikeDislike";
 import { useToast } from 'vue-toastification';
 const emit = defineEmits(['sendReplyId'])
 // import profileImg from "@/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png";
-const { token: AUTH_TOKEN } = useAuthToken()
+const { token: AUTH_TOKEN, isAdmin } = useAuthToken()
 const toast = useToast()
 const storeLogin = useAuthStore()
 const isShowReportCardForChild = ref(false)

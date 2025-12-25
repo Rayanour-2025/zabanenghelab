@@ -13,7 +13,7 @@
         <div class="flex items-center gap-4">
           <h3>{{ dictionary.name }}</h3> <red-trash width="22" height="22" />
         </div>
-        <form @submit.prevent="sendData()" class="w-full flex flex-col items-end gap-5">
+        <form class="w-full flex flex-col items-end gap-5">
           <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
             <div class="w-full flex flex-col items-start gap-3">
               <label class="text-base leading-6 text-[#2B2B2B]">نام لغت نامه: <span
@@ -150,23 +150,17 @@ const onImageChange = (e) => {
 }
 
 const sendData = async () => {
-  // const formData = new FormData()
-  editForm.value.name = props.dictionary.name
-  editForm.value.source_language_id = props.dictionary.source_language.id
-  editForm.value.target_language_id = props.dictionary.target_language.id
-  editForm.value.description = props.dictionary.description
-  editForm.value.authors = props.dictionary.authors
-  // Object.keys(editForm.value).forEach(key => {
-  //   if (editForm.value[key] !== null) {
-  //     formData.append(key, editForm.value[key])
-  //   }
-  // })
-  // console.log(editForm.value)
-
-  // for (let pair of formData.entries()) {
-  //   console.log(pair[0], pair[1])
-  // }
-  await updateDictionary(AUTH_TOKEN.value, props.dictionary.id, editForm.value)
+  const formData = new FormData()
+  formData.append('_method', 'PUT')
+  formData.append('name', props.dictionary.name)
+  formData.append('source_language_id', props.dictionary.source_language.id);
+  formData.append('target_language_id', props.dictionary.target_language.id);
+  formData.append('description', props.dictionary.description || '');
+  formData.append('authors', props.dictionary.authors || '');
+  if (editForm.value.image) {
+    formData.append('image', editForm.value.image);
+  } 
+  await updateDictionary(AUTH_TOKEN.value, props.dictionary.id, formData)
 
 }
 </script>

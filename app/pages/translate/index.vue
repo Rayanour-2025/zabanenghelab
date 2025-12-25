@@ -1,48 +1,52 @@
 <template>
     <div>
-        <div dir="rtl" class="container bg-white mx-auto">
-            <!-- <search-word-box dir="rtl"  /> -->
-            <div
-                class="flex section md:flex-row flex-col-reverse items-start justify-between border mt-6 md:px-8 px-2 border-[#DADDD833]">
+
+
+        <div v-if="data?.word">
+            <div dir="rtl" class="container bg-white mx-auto">
+                <!-- <search-word-box dir="rtl"  /> -->
                 <div
-                    class="bg-[#F0F1EE] flex flex-col gap-y-6 p-8 rounded-[35px] shadow-[0px_7px_15px_-6px_#5C636940] md:w-[70%] w-full">
-                    <div class="rounded-[50px] flex items-center justify-between">
-                        <div class="mb-2">
-                            <div class="flex gap-3 mb-6 items-end">
-                                <p class="text-4xl">{{ data.word }}</p>
-                                <p class="text-sm">اسم</p>
-                            </div>
-                            <span class="text-sm" v-if="data.pronunciation">/{{ data.pronunciation }}/</span>
-                        </div>
-                        <div v-if="storeLogin.isAdmin == false" @click="isShowCard = !isShowCard"
-                            class="bg-[#7FB77E33] p-3 cursor-pointer rounded-full flex items-center justify-center gap-2">
-                            <Flag width="22" height="22" />
-                            <p>گزارش</p>
-                        </div>
-                        <NuxtLink :to='{ path: "/edit_word", query: { word_id: data.id } }' v-if="storeLogin.isLoggedIn"
-                            class="bg-[#7FB77E33] p-3 cursor-pointer rounded-full flex items-center justify-center gap-2">
-                            <p>ویرایش</p>
-                        </NuxtLink>
-                    </div>
-                    <div>
-                        <div class="flex">
-                            <div class="bg-[#7FB77E] ml-4 md:text-base text-xs text-white py-3 px-5"
-                                style="border-top-right-radius: 25px; border-top-left-radius: 25px">
-                                ترجمه
-                            </div>
-                            <div class="bg-white py-3 px-5 md:text-base text-xs cursor-pointer"
-                                @click="goToCommentsSection"
-                                style="border-top-right-radius: 25px; border-top-left-radius: 25px">
-                                دیدگاه ها
-                            </div>
-                        </div>
-                        <div class="border-t border-[#7FB77E]">
-                            <div class="mt-10">
-                                <div class="flex items-end">
-                                    <p dir="ltr" class="md:text-2xl text-2xl">{{ data.meaning }}</p>
-                                    <!-- -<span class=""> hə'loʊ• hɛ'loʊ</span> -->
+                    class="flex section md:flex-row flex-col-reverse items-start justify-between border mt-6 md:px-8 px-2 border-[#DADDD833]">
+                    <div
+                        class="bg-[#F0F1EE] flex flex-col gap-y-6 p-8 rounded-[35px] shadow-[0px_7px_15px_-6px_#5C636940] md:w-[70%] w-full">
+                        <div class="rounded-[50px] flex items-center justify-between">
+                            <div class="mb-2">
+                                <div class="flex gap-3 mb-6 items-end">
+                                    <p class="text-4xl">{{ data?.word }}</p>
+                                    <p class="text-sm">اسم</p>
                                 </div>
-                                <!-- <div class="mt-7 md:text-base text-xs flex flex-wrap gap-6">
+                                <span class="text-sm" v-if="data.pronunciation">/{{ data?.pronunciation }}/</span>
+                            </div>
+                            <div v-if="storeLogin.isAdmin == false" @click="isShowCard = !isShowCard"
+                                class="bg-[#7FB77E33] p-3 cursor-pointer rounded-full flex items-center justify-center gap-2">
+                                <Flag width="22" height="22" />
+                                <p>گزارش</p>
+                            </div>
+                            <NuxtLink :to='{ path: "/edit_word", query: { word_id: data?.id } }'
+                                v-if="storeLogin.isLoggedIn && storeLogin.isAdmin"
+                                class="bg-[#7FB77E33] p-3 cursor-pointer rounded-full flex items-center justify-center gap-2">
+                                <p>ویرایش</p>
+                            </NuxtLink>
+                        </div>
+                        <div>
+                            <div class="flex">
+                                <div class="bg-[#7FB77E] ml-4 md:text-base text-xs text-white py-3 px-5"
+                                    style="border-top-right-radius: 25px; border-top-left-radius: 25px">
+                                    ترجمه
+                                </div>
+                                <div class="bg-white py-3 px-5 md:text-base text-xs cursor-pointer"
+                                    @click="goToCommentsSection"
+                                    style="border-top-right-radius: 25px; border-top-left-radius: 25px">
+                                    دیدگاه ها
+                                </div>
+                            </div>
+                            <div class="border-t border-[#7FB77E]">
+                                <div class="mt-10">
+                                    <div class="flex items-end">
+                                        <p dir="ltr" class="md:text-2xl text-2xl">{{ data?.meaning }}</p>
+                                        <!-- -<span class=""> hə'loʊ• hɛ'loʊ</span> -->
+                                    </div>
+                                    <!-- <div class="mt-7 md:text-base text-xs flex flex-wrap gap-6">
                                     <div>
                                         <p>سلام و احوالپرسی که هنگام ملاقات با کسی استفاده می‌شود.</p>
                                         <p dir="ltr">greeting used when meeting someone.</p>
@@ -54,53 +58,72 @@
                                         </p>
                                     </div>
                                 </div> -->
-                                <div v-if="data.synonyms.length">
-                                    <h3 class="text-xl font-medium my-4">مترادف:</h3>
-                                    <div class="bg-[#7FB77E33] w-fit rounded-2xl md:text-base text-[10px] p-4">
-                                        <span v-for="(syn, index) in data.synonyms" :key="index">{{ syn }}،
-                                        </span>
+                                    <div v-if="data?.synonyms.length">
+                                        <h3 class="text-xl font-medium my-4">مترادف:</h3>
+                                        <div class="bg-[#7FB77E33] w-fit rounded-2xl md:text-base text-[10px] p-4">
+                                            <span v-for="(syn, index) in data.synonyms" :key="index">{{ syn }}،
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div v-if="data.related_words.length">
-                                    <h3 class="text-xl font-medium my-4">هم خانواده:</h3>
-                                    <div class="bg-[#7FB77E33] w-fit rounded-2xl p-4 md:text-base text-[10px]">
-                                        <span v-for="(rlt, index) in data.related_words" :key="index">{{ rlt }} ,</span>
+                                    <div v-if="data.related_words.length">
+                                        <h3 class="text-xl font-medium my-4">هم خانواده:</h3>
+                                        <div class="bg-[#7FB77E33] w-fit rounded-2xl p-4 md:text-base text-[10px]">
+                                            <span v-for="(rlt, index) in data.related_words" :key="index">{{ rlt }}
+                                                ,</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- <div>
+                                    <div v-if="data.description">
+                                        <h3 class="text-xl font-medium my-4">توضیحات:</h3>
+                                        <div class="bg-[#7FB77E33] w-fit rounded-2xl p-4 md:text-base text-[10px]">
+                                            <span>{{ data?.description }}</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div>
                                     <h3 class="text-xl font-medium my-4">متضاد:</h3>
                                     <div class="bg-[#7FB77E33] w-fit rounded-2xl p-4 md:text-base text-[10px]">
                                         <span>خداحافظ</span>
                                     </div>
                                 </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <dictionary-list :dic-list-name="dictionaries" />
                 </div>
-                <dictionary-list :dic-list-name="dictionaries" />
+                <comments :wrod-id="data.id" />
             </div>
-            <comments :wrod-id="data.id" />
+            <transition name="popup">
+                <word-report-card v-if="isShowCard" @click="isShowCard = !isShowCard" :word-id="data.id"
+                    @close-card="closeCard" />
+            </transition>
         </div>
-        <transition name="popup">
-            <word-report-card v-if="isShowCard" @click="isShowCard = !isShowCard" :word-id="data.id" @close-card="closeCard" />
-        </transition>
     </div>
 </template>
 <script setup>
 import reportcard from "~/components/reportcard.vue";
 import Flag from "~/components/icons/flag.vue";
+import { useAuthToken } from '~/composables/useAuthCrypto'
+import useFetchSingleWord from '~/composables/useFetchSingleWord'
 const isShowCard = ref(false);
+const route = useRoute()
 const isShowReportCard = ref(false);
 const closeCard = (value) => {
     isShowCard.value = value;
 }
+const { token, isAdmin } = useAuthToken()
 const storeWord = useWordStore();
 const storeLogin = useAuthStore()
-const data = storeWord.selectedWord;
-console.log(storeLogin.isAdmin);
+const data = ref()
+const { loading, responseData, fetchSingleWord } = useFetchSingleWord()
 if (data == null) {
     navigateTo("/resultTranslate");
 }
+const loadData = async () => {
+    await fetchSingleWord(token.value, route.query.word)
+    data.value = responseData.value.data
+    console.log(data.value)
+}
+loadData()
 const dictionaries = [
     "همه",
     "معین",

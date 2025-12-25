@@ -42,8 +42,7 @@ const useSearchWords = () => {
 
       if (typeof message === "object") {
         message = JSON.stringify(message);
-      }
-
+      } 
       errMessage.value = message;
       throw new Error(message);
     } finally {

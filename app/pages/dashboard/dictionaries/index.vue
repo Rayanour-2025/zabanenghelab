@@ -39,7 +39,7 @@ definePageMeta({
 const isOpenForm = ref(false)
 const toast = useToast()
 const { loading: searchLoaing, responseData: dictionaryResult, searchDictionary } = useSearchDictionaries()
-const { isLoggedIn, token: AUTH_TOKEN } = useAuthToken()
+const { isLoggedIn, token: AUTH_TOKEN, isAdmin } = useAuthToken()
 const { loading, responseData: responeDictionay, fetchDictionaries } = useFetchDictionaries()
 const dictionaries = ref()
 const { fetchLanguages, responseData: languageData, } = useFetchLanguages()
@@ -52,7 +52,7 @@ const handleAuthError = () => {
     router.push('/login');
 };
 const loadData = async () => {
-    if (AUTH_TOKEN.value, isLoggedIn.value) {
+    if (AUTH_TOKEN.value, isLoggedIn.value, isAdmin.value) {
         await fetchDictionaries(AUTH_TOKEN.value)
         dictionaries.value = responeDictionay.value
     }

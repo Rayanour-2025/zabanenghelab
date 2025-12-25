@@ -21,13 +21,13 @@ const useUpdateDictionary = () => {
     const apiUrl = `https://ip3.ir/dictionary/api/v1/dictionaries/${commendId}`;
 
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         apiUrl,
         payload,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );

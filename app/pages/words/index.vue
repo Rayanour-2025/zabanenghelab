@@ -347,40 +347,31 @@ let searchTimer = null;
 watch(searchQuery, (newQuery) => {
   if (searchTimer) {
     clearTimeout(searchTimer);
-  }
-
-  searchResults.value = [];
-
-  // اگر طول کوئری کمتر از 2 باشد، جستجو انجام نشود
+  } 
+  searchResults.value = []; 
   if (newQuery.length < 2) {
     return;
-  }
-
+  } 
   searchTimer = setTimeout(async () => {
     try {
       if (!AUTH_TOKEN.value) {
         handleAuthError();
         return;
-      }
-
+      } 
       const response = await searchWords(
         AUTH_TOKEN.value,
         dictionaryIdForSearch,
         newQuery.trim()
-      );
-
-      // در اینجا فرض می‌کنیم پاسخ به صورت { data: [ { word } ] } است.
+      ); 
       searchResults.value = response.data || []; 
 
     } catch (error) {
       console.error('خطا در جستجوی لغت:', error);
       searchResults.value = [];
-      if (searchErrorMsg.value) {
-        // نمایش خطا در صورت لزوم، اما برای جستجو بهتر است کاربر را با پیام‌های پی در پی آزار ندهیم
-        // toast.error(`خطا در جستجو: ${searchErrorMsg.value}`);
+      if (searchErrorMsg.value) { 
       }
     }
-  }, 500); // زمان Debounce
+  }, 500); 
 });
 
 // --- Lifecycle Hook ---
