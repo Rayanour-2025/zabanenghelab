@@ -6,20 +6,40 @@
             <div class="w-full">
                 <!-- <h2 class="text-3xl mb-6">فارسی:</h2> -->
                 <div class="flex w-full gap-y-4 gap-x-8 flex-wrap">
-                    <template v-if="!searchQuery">
-                        <temp-dictionary @is-open-form="fetchData" v-for="dictionary in dictionaries?.data"
-                            :key="dictionary.id" :data="dictionary" />
-                    </template>
-                    <template v-if="searchQuery">
-                        <temp-dictionary @is-open-form="fetchData" v-for="dictionary in searchResults"
-                            :key="dictionary.id" :data="dictionary" />
+                    <div v-if="searchLoaing" class="w-full flex flex-col items-center py-12 gap-4">
+                        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-[#7FB77E]"></div>
+                        <span class="text-[#7FB77E] text-lg font-bold">در حال جستجو در لغت‌نامه‌ها...</span>
+                    </div>
+
+                    <template v-else>
+                        <template v-if="!searchQuery">
+                            <temp-dictionary @is-open-form="fetchData" v-for="dictionary in dictionaries?.data"
+                                :key="dictionary.id" :data="dictionary" />
+                        </template>
+
+                        <template v-else>
+                            <template v-if="searchResults.length > 0">
+                                <temp-dictionary @is-open-form="fetchData" v-for="dictionary in searchResults"
+                                    :key="dictionary.id" :data="dictionary" />
+                            </template>
+
+                            <div v-else-if="searchQuery.length >= 2"
+                                class="w-full flex flex-col items-center py-12 bg-gray-50 rounded-[30px] border-2 border-dashed border-gray-200">
+                                <icons-circle-x width="50" height="50" color="#cbd5e1" />
+                                <p class="text-gray-400 text-xl mt-4">لغت‌نامه‌ای با نام «{{ searchQuery }}» پیدا نشد.
+                                </p>
+                                <button @click="searchQuery = ''" class="mt-2 text-[#7FB77E] underline">نمایش همه
+                                    لغت‌نامه‌ها</button>
+                            </div>
+                        </template>
                     </template>
                 </div>
             </div>
         </div>
         <loading-animation v-if="loading" />
         <template v-if="isOpenForm">
-            <dictionary-form-modal @reload="reloadData" :lang="options" v-model:is-open="isOpenForm" :dictionary="singleDic?.dicEdit" />
+            <dictionary-form-modal @reload="reloadData" :lang="options" v-model:is-open="isOpenForm"
+                :dictionary="singleDic?.dicEdit" />
         </template>
         <template v-if="isOpenAddForm">
             <add-dictionary-form-modal :lang="options" @reload="reloadData" v-model:is-open="isOpenAddForm" />
@@ -86,10 +106,14 @@ watch(searchQuery, (newQuery) => {
     if (searchTimer) {
         clearTimeout(searchTimer);
     }
-    searchResults.value = [];
 
-    // اگر طول کوئری کمتر از 2 باشد، جستجو انجام نشود
-    if (newQuery.length < 2) {
+    // اگر فیلد خالی شد، نتایج قبلی را پاک کن
+    if (!newQuery || newQuery.length === 0) {
+        searchResults.value = [];
+        return;
+    }
+
+    if (newQuery.length < 1) {
         return;
     }
 
@@ -103,7 +127,9 @@ watch(searchQuery, (newQuery) => {
             const response = await searchDictionary(
                 AUTH_TOKEN.value, newQuery.trim()
             );
-            searchResults.value = response.data || [];
+
+            // مطمئن شویم که اگر دیتایی نبود، آرایه خالی ست شود
+            searchResults.value = response?.data || [];
 
         } catch (error) {
             console.error('خطا در جستجوی لغت:', error);

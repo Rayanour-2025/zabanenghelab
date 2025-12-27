@@ -152,14 +152,19 @@ const sendData = async () => {
   formData.append('target_language_id', addForm.value.target_language_id)
   formData.append('source_language_id', addForm.value.source_language_id)
   formData.append('description', addForm.value.description || '')
-  formData.append('authors', addForm.value.authors || '')
+  if (addForm.value.authors) {
+    const authorsArray = addForm.value.authors.split(',').map(item => item.trim());
+    authorsArray.forEach((author) => {
+      formData.append('authors[]', author);
+    });
+  }
   if (addForm.value.image) {
     formData.append('image', addForm.value.image)
   }
   if (AUTH_TOKEN.value && isAdmin.value) {
     try {
       await createDictionary(AUTH_TOKEN.value, formData)
-      emit('reload', true) 
+      emit('reload', true)
     } catch (err) {
 
     }
