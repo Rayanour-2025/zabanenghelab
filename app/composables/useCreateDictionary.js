@@ -25,7 +25,7 @@ const useCreateDictionary = () => {
       const response = await axios.post(apiUrl, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       });
 

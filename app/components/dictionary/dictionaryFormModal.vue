@@ -145,7 +145,7 @@ const props = defineProps({
 const text = ref('')
 const toast = useToast()
 const { isLoggedIn, token: AUTH_TOKEN, isAdmin } = useAuthToken()
-const emit = defineEmits(['update:isOpen', 'save']);
+const emit = defineEmits(['update:isOpen', 'save', 'reload']);
 const isExpanded = ref(false);
 const isEditorModalOpen = ref(false);
 const { loading: deleteLoading, deleteDictionary } = useDeleteDictionary()
@@ -177,13 +177,22 @@ const sendData = async () => {
     formData.append('image', editForm.value.image);
   }
   if (isAdmin.value && AUTH_TOKEN.value && isLoggedIn.value) {
-
-    await updateDictionary(AUTH_TOKEN.value, props.dictionary.id, formData)
+    try {
+      await updateDictionary(AUTH_TOKEN.value, props.dictionary.id, formData)
+      emit('reload', true)
+    } catch (error) {
+      
+    }
   }
 }
 const deleteDic = async (id) => {
-  if (isAdmin.value, AUTH_TOKEN.value) {
-    await deleteDictionary(AUTH_TOKEN.value, id)
+  try {
+    if (isAdmin.value, AUTH_TOKEN.value) {
+      await deleteDictionary(AUTH_TOKEN.value, id)
+      emit('reload', true)
+    }
+  } catch (error) {
+    
   }
 }
 </script>

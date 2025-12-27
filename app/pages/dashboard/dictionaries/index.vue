@@ -19,7 +19,7 @@
         </div>
         <loading-animation v-if="loading" />
         <template v-if="isOpenForm">
-            <dictionary-form-modal :lang="options" v-model:is-open="isOpenForm" :dictionary="singleDic?.dicEdit" />
+            <dictionary-form-modal @reload="reloadData" :lang="options" v-model:is-open="isOpenForm" :dictionary="singleDic?.dicEdit" />
         </template>
         <template v-if="isOpenAddForm">
             <add-dictionary-form-modal :lang="options" @reload="reloadData" v-model:is-open="isOpenAddForm" />

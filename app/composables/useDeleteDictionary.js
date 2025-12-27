@@ -25,7 +25,7 @@ const useDeleteDictionary = () => {
       });
 
       success.value = true;
-      toast.success(response.message)
+      toast.success(response?.data?.message || 'دیکشنری با موفقیت حذف شد.')
       return response.data;
     } catch (error) {
       console.error("خطا در حذف واژه:", error);
