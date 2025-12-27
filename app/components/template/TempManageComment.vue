@@ -8,14 +8,14 @@
                     <span class="text-[#5C636980]"> {{comment.created_at}}</span>
                 </p>
             </div>
-            <div class="relative">
+            <!-- <div class="relative">
                 <three-dot class="cursor-pointer" @click="isShowPinBox = true" height="22" width="22" />
                 <div @click="pin(comment.id); isShowPinBox = false" v-if="isShowPinBox"
                     class="cursor-pointer flex z-40 w-40 gap-2 top-5  left-5 absolute bg-white p-4 rounded-3xl">
                     <black-pin height="22" width="22" />
                     <p>سنجاق کردن</p>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="mt-5">
             <p>لغت: <span class="text-[#7FB77E]">{{ comment.word.word }}</span></p>

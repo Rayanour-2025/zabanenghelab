@@ -4,12 +4,10 @@
     <header class="w-full flex flex-row items-center justify-between px-12 py-6">
       <!-- Right buttons -->
       <div class="flex flex-row items-center gap-4">
-        <button
-          type="button"
-          class="w-[110px] h-[50px] flex justify-center items-center px-5 bg-[#F5F6F4] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl"
-        >
-          <span class="font-zain font-normal text-lg text-[#7FB77E]">حمایت</span>
-        </button>
+        <nuxt-link :to="isAdmin ? '/dashboard' : '/'"
+          class="w-[110px] max-md:hidden h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl">
+          <span class="font-zain font-normal text-lg text-[#FFFFFF]">{{ isAdmin ? 'داشبورد' : 'حمایت' }}</span>
+        </nuxt-link>
 
         <button
           v-if="isLoggedIn"
@@ -88,7 +86,7 @@ import { useAuthToken } from '@/composables/useAuthCrypto';
 import { useAuthStore } from '@/stores/auth';
 import { useRoute } from 'vue-router'; 
 
-const { isLoggedIn } = useAuthToken();
+const { isLoggedIn, isAdmin } = useAuthToken();
 const authStore = useAuthStore();
 const route = useRoute();
 

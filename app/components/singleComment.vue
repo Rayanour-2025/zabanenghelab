@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="commentData.is_pinned" class="flex items-start gap-2">
-            <pin width="23" height="23" />
+            <pinicon width="23" height="23" />
             <p class="text-[#7FB77E]">سنجاق شده</p>
         </div>
         <div class="mt-4">
@@ -12,8 +12,16 @@
                         <span class="font-semibold text-lg">{{ commentData.user.username }}</span>
                     </p>
                 </div>
-                <div>
+                <div v-if="isAdmin == 0">
                     <three-dot @click="isShowReportCard = true" class="cursor-pointer" width="26" height="26" />
+                </div>
+                <div v-if="isAdmin == 1" class="relative">
+                    <three-dot class="cursor-pointer" @click="isShowPinBox = true" height="22" width="22" />
+                    <div @click="pin(commentData?.id); isShowPinBox = false" v-if="isShowPinBox"
+                        class="cursor-pointer flex z-40 w-40 gap-2 top-5  left-5 absolute bg-white p-4 rounded-3xl">
+                        <black-pin height="22" width="22" />
+                        <p>سنجاق کردن</p>
+                    </div>
                 </div>
             </div>
             <div class="mt-4">
@@ -25,10 +33,10 @@
                     class="flex mt-4 bg-[#F0F1EE] w-fit px-5 py-2 rounded-full shadow-[0px_7px_15px_-6px_#5C636940] items-center justify-start">
                     <div class="flex items-center ml-2">
                         <p class="text-xl ml-2">{{ commentData.likes_count }}</p>
-                        <like width="26" color="#ff0000" @click="reaction('like', commentData.id)" height="26" />
+                        <like width="30" color="#ff0000" @click="reaction('like', commentData.id)" height="30" />
                     </div>
                     <div @click="reaction('dislike', commentData.id)">
-                        <dislike width="26" color="#ff0000" height="26" />
+                        <dislike width="30" color="#ff0000" height="30" />
                     </div>
                 </div>
                 <div @click="reply(commentData)"
@@ -48,8 +56,9 @@
                                 <span class="font-semibold text-lg">{{ cmd.user.username }}</span>
                             </p>
                         </div>
-                        <div>
-                            <three-dot @click="isShowReportCardForChild = true; chidlId = cmd.id" class="cursor-pointer" width="26" height="26" />
+                        <div v-if="isAdmin == 0">
+                            <three-dot @click="isShowReportCardForChild = true; chidlId = cmd.id" class="cursor-pointer"
+                                width="26" height="26" />
                         </div>
                     </div>
                     <div class="mt-4">
@@ -68,17 +77,23 @@
     </div>
     <transition name="popup">
         <comment-report-card v-if="isShowReportCard && !isAdmin" :comment-id="commentData?.id"
-            @click="isShowReportCard = !isShowReportCard" @close-card="closeCard" />
+            @click="isShowReportCard = !isShowReportCard"   />
     </transition>
     <transition name="popup">
         <comment-report-card v-if="isShowReportCardForChild && !isAdmin" :comment-id="chidlId"
-            @click="isShowReportCardForChild = !isShowReportCardForChild" @close-card="closeCard" />
+            @click="isShowReportCardForChild = !isShowReportCardForChild"   />
+    </transition>
+    <transition name="popup">
+        <reportcard @click="isShowPinBox = false" :class="!isShowPinBox ? 'hidden' : 'flex'" />
     </transition>
 </template>
 <script setup>
+import reportcard from "~/components/reportcard.vue";
 import answar from "~/components/icons/answar.vue";
-import Pin from "~/components/icons/Pin.vue";
+import blackPin from "~/components/icons/blackPin.vue";
+import Pinicon from "~/components/icons/Pin.vue";
 import Dislike from "~/components/icons/Dislike.vue";
+import usePinComment from "~/composables/usePinComment";
 import Message from "~/components/icons/Message.vue";
 import Like from "~/components/icons/Like.vue";
 import { useAuthToken } from '@/composables/useAuthCrypto';
@@ -87,7 +102,8 @@ import useLikeDislike from "@/composables/useLikeDislike";
 import { useToast } from 'vue-toastification';
 const emit = defineEmits(['sendReplyId'])
 // import profileImg from "@/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png";
-const { token: AUTH_TOKEN, isAdmin } = useAuthToken()
+const { token: AUTH_TOKEN, isAdmin, isLoggedIn } = useAuthToken()
+const { pinComment, loading } = usePinComment()
 const toast = useToast()
 const storeLogin = useAuthStore()
 const isShowReportCardForChild = ref(false)
@@ -99,6 +115,8 @@ const props = defineProps({
         type: Object
     }
 })
+console.log(props?.commentData)
+const isShowPinBox = ref(false)
 const chidlId = ref()
 const reply = (comment) => {
     emit('sendReplyId', comment)
@@ -107,10 +125,10 @@ const {
     likeDislike,
     loading: likeDislikeLoading,
 } = useLikeDislike()
-const reaction = async (reactionType, commentId) => {  
+const reaction = async (reactionType, commentId) => {
     try {
-        if (AUTH_TOKEN.value && storeLogin.isLoggedIn && storeLogin.token) { 
-            await likeDislike(AUTH_TOKEN.value, commentId, reactionType); 
+        if (AUTH_TOKEN.value && storeLogin.isLoggedIn && storeLogin.token) {
+            await likeDislike(AUTH_TOKEN.value, commentId, reactionType);
         } else {
             toast.error("ابتدا وارد حساب خود شوید.");
         }
@@ -118,4 +136,10 @@ const reaction = async (reactionType, commentId) => {
         console.error("خطا در عملیات لایک:", error);
     }
 };
+const pin = async (id) => {
+    console.log(id)
+    if (AUTH_TOKEN.value && isLoggedIn.value) {
+        await pinComment(AUTH_TOKEN.value, id)
+    }
+}
 </script>

@@ -94,7 +94,7 @@
             </div>
             <transition name="popup">
                 <word-report-card v-if="isShowCard" @click="isShowCard = !isShowCard" :word-id="data.id"
-                    @close-card="closeCard" />
+                      />
             </transition>
         </div>
     </div>

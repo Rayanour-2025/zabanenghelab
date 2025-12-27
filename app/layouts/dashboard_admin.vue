@@ -2,10 +2,10 @@
   <div dir="ltr" class="bg-[white] min-h-screen flex flex-col justify-between">
     <header class="w-full flex flex-row items-center justify-between px-12 max-md:px-8 py-6">
       <div class="flex flex-row items-center gap-4">
-        <button type="button"
+        <nuxt-link :to="isAdmin ? '/' : '/'"
           class="w-[110px] max-md:hidden h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl">
-          <span class="font-zain font-normal text-lg text-[#FFFFFF]">حمایت</span>
-        </button>
+          <span class="font-zain font-normal text-lg text-[#FFFFFF]">{{ isAdmin ? 'خانه' : 'حمایت' }}</span>
+        </nuxt-link>
 
         <div class="max-md:block hidden" @click="isMenuOpen = true">
           <menu-icon width="22" height="22" />
@@ -94,7 +94,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useRoute } from 'vue-router';
 import MenuIcon from '~/components/icons/menuIcon.vue';
 
-const { isLoggedIn } = useAuthToken();
+const { isLoggedIn, isAdmin } = useAuthToken();
 const authStore = useAuthStore();
 const route = useRoute();
 const isMenuOpen = ref(false)
