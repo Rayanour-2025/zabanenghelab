@@ -1,124 +1,84 @@
 <template>
+
   <div
-    class="w-full flex flex-row-reverse items-start justify-end gap-5 pr-7"
-  >
-    <DictionarySidebar />
+    class="w-full flex flex-col justify-center items-end gap-[30px] px-[40px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
+    <div class="w-full font-zain flex flex-col items-end gap-8">
+      <div class="flex flex-row justify-between items-center w-full h-[50px]">
+        <button @click="openCreateWordModal" type="button"
+          class="flex flex-row justify-center items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] hover:bg-green-700 transition-colors duration-300">
+          <span class="text-white font-bold text-[13px] leading-[24px]">اضافه کردن لغت</span>
+          <icons-add-or-create class="w-5 h-5" />
+        </button>
 
-    <div
-      class="w-full flex flex-col justify-center items-end gap-[30px] px-[40px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]"
-    >
-      <div class="w-full font-zain flex flex-col items-end gap-8">
-        <div class="flex flex-row justify-between items-center w-full h-[50px]">
-          <button
-            @click="openCreateWordModal"
-            type="button"
-            class="flex flex-row justify-center items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] hover:bg-green-700 transition-colors duration-300"
-          >
-            <span class="text-white font-bold text-[13px] leading-[24px]"
-              >اضافه کردن لغت</span
-            >
-            <icons-add-or-create class="w-5 h-5" />
-          </button>
+        <UiSearchInput v-model:query="searchQuery" :search-results="searchResults" :searching="searchingWord"
+          @delete-word="confirmDeleteWord" @edit-word="editWord" />
+      </div>
 
-          <UiSearchInput
-            v-model:query="searchQuery"
-            :search-results="searchResults"
-            :searching="searchingWord"
-            @delete-word="confirmDeleteWord"
-            @edit-word="editWord"
-          />
-        </div>
+      <div class="w-full h-px border border-[#DADDD8]"></div>
 
-        <div class="w-full h-px border border-[#DADDD8]"></div>
-
-        <div class="w-full flex flex-col items-start justify-center gap-10">
-          <div class="w-full flex flex-col items-end gap-[12px]">
-            <span
-              class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]"
-              >:فارسی</span
-            >
-            <div
-              class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]"
-            >
-              <DictionaryTag title="فرهنگ موضوعی فارسی" />
-              <DictionaryTag title="فرهنگ جامع زبان فارسی" />
-              <DictionaryTag title="عمید" />
-              <DictionaryTag title="معین" />
-              <DictionaryTag title="دهخدا" />
-              <DictionaryTag title="زبان انقلاب" />
-              <DictionaryTag
-                title="فرهنگ اصطلاحات مالی و سرمایه‌گذاری"
-              />
-              <DictionaryTag title="فرهنگ زبان‌آموز فارسی" />
-              <DictionaryTag title="لغت‌نامه بزرگ فارسی" />
-              <DictionaryTag title="فرهنگ سخن" />
-            </div>
+      <div class="w-full flex flex-col items-start justify-center gap-10">
+        <div class="w-full flex flex-col items-end gap-[12px]">
+          <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:فارسی</span>
+          <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
+            <DictionaryTag title="فرهنگ موضوعی فارسی" />
+            <DictionaryTag title="فرهنگ جامع زبان فارسی" />
+            <DictionaryTag title="عمید" />
+            <DictionaryTag title="معین" />
+            <DictionaryTag title="دهخدا" />
+            <DictionaryTag title="زبان انقلاب" />
+            <DictionaryTag title="فرهنگ اصطلاحات مالی و سرمایه‌گذاری" />
+            <DictionaryTag title="فرهنگ زبان‌آموز فارسی" />
+            <DictionaryTag title="لغت‌نامه بزرگ فارسی" />
+            <DictionaryTag title="فرهنگ سخن" />
           </div>
-          <div class="w-full flex flex-col items-end gap-[12px]">
-            <span
-              class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]"
-              >:انگلیسی</span
-            >
-            <div
-              class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]"
-            >
-              <DictionaryTag title="مک میلن" />
-              <DictionaryTag title="آکسفورد" />
-              <DictionaryTag title="لانگمن" />
-              <DictionaryTag title="کمبریج" />
-              <DictionaryTag title="کالینز" />
-              <DictionaryTag title="گوگل ترنسلیت" />
-              <DictionaryTag title="مریام-وبستر" />
-            </div>
+        </div>
+        <div class="w-full flex flex-col items-end gap-[12px]">
+          <span class="font-zain font-bold text-lg leading-[30px] text-[#2B2B2B]">:انگلیسی</span>
+          <div class="w-full flex flex-row flex-wrap justify-end items-center gap-[16px]">
+            <DictionaryTag title="مک میلن" />
+            <DictionaryTag title="آکسفورد" />
+            <DictionaryTag title="لانگمن" />
+            <DictionaryTag title="کمبریج" />
+            <DictionaryTag title="کالینز" />
+            <DictionaryTag title="گوگل ترنسلیت" />
+            <DictionaryTag title="مریام-وبستر" />
           </div>
         </div>
       </div>
     </div>
-
-    <DictionaryWordFormModal
-      v-model:is-open="isModalOpen"
-      :dictionaries="dictionaries"
-      :loading-dictionaries="loadingDictionaries"
-      :initial-data="initialWordData"
-      :is-edit-mode="isEditMode"
-      :is-processing="creatingWord || updatingWord"
-      @save="saveWordHandler"
-    />
+    <DictionaryWordFormModal v-model:is-open="isModalOpen" :dictionaries="dictionaries"
+      :loading-dictionaries="loadingDictionaries" :initial-data="initialWordData" :is-edit-mode="isEditMode"
+      :is-processing="creatingWord || updatingWord" @save="saveWordHandler" />
   </div>
+
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
-// فرض بر این است که این دو از Nuxt/Vue می‌آیند
+  definePageMeta({layout: 'dashboard-admin'})
+import { ref, onMounted, watch } from 'vue'; 
 import { useToast } from 'vue-toastification/dist/index.mjs';
-import { useRouter } from 'vue-router';
-// استفاده از کامپوزبل‌ها (باید در مسیر `composables` ایجاد شوند)
+import { useRouter } from 'vue-router'; 
 import { useAuthToken } from '@/composables/useAuthCrypto';
 import useSearchWords from '@/composables/useSearchWords';
 import useUpdateWord from '@/composables/useUpdateWord';
 import useCreateWord from '@/composables/useCreateWord';
 import useFetchDictionaries from '@/composables/useFetchDictionaries';
-import useDeleteWord from '@/composables/useDeleteWord';
-// تابع کمکی
+import useDeleteWord from '@/composables/useDeleteWord'; 
 import { arrayToFormattedString, parseToArray } from '@/utils/formatters';
-
-// --- مدیریت حالت‌های عمومی ---
+ 
 const { token: AUTH_TOKEN } = useAuthToken();
 const toast = useToast();
 const router = useRouter();
-
-// حالت‌های مدال
+ 
 const isModalOpen = ref(false);
 const isEditMode = ref(false);
 const currentWordId = ref(null);
-const initialWordData = ref({}); // داده‌های اولیه برای مدال (پر شدن فرم در حالت ویرایش)
-
-// حالت‌های جستجو
+const initialWordData = ref({});  
+ 
 const searchQuery = ref('');
 const searchResults = ref([]);
-const dictionaryIdForSearch = 1; // فرض بر این است که جستجو در یک دیکشنری خاص انجام می‌شود
-
-// --- فراخوانی کامپوزبل‌ها ---
+const dictionaryIdForSearch = 1; 
+ 
 const {
   fetchDictionaries,
   responseData: dictionariesResponse,
@@ -143,42 +103,33 @@ const {
   loading: updatingWord,
   errMessage: updateWordErrorMsg,
 }
- = useUpdateWord();
+  = useUpdateWord();
 
 const {
   deleteWord,
   loading: deletingWord,
   errMessage: deleteErrorMsg,
 } = useDeleteWord();
-
-// --- متغیرهای واکشی شده ---
+ 
 const dictionaries = ref([]);
-
-// --- توابع کمکی ---
+ 
 
 const handleAuthError = () => {
-  toast.error('مشکلی در شناسایی شما پیش آمده. لطفاً دوباره وارد شوید.'); 
-  router.push('/login'); 
+  toast.error('مشکلی در شناسایی شما پیش آمده. لطفاً دوباره وارد شوید.');
+  router.push('/login');
 };
-
-/**
- * پاک کردن فیلدهای فرم و تنظیم مجدد حالت.
- */
+ 
 const clearWordFields = () => {
   isEditMode.value = false;
   currentWordId.value = null;
-  initialWordData.value = {};
-  // تنظیم دیکشنری پیش فرض (اگر لیست وجود داشته باشد)
+  initialWordData.value = {}; 
   if (dictionaries.value.length > 0) {
     initialWordData.value.selectedDictionary = dictionaries.value[0].id;
   } else {
     initialWordData.value.selectedDictionary = null;
   }
 };
-
-/**
- * باز کردن مدال برای ایجاد لغت جدید.
- */
+ 
 const openCreateWordModal = () => {
   clearWordFields();
   isModalOpen.value = true;
@@ -190,7 +141,7 @@ const openCreateWordModal = () => {
  */
 const editWord = (word) => {
   // پاکسازی و تنظیم حالت ویرایش
-  clearWordFields(); 
+  clearWordFields();
   isEditMode.value = true;
   currentWordId.value = word.id;
 
@@ -329,7 +280,7 @@ const confirmDeleteWord = async (wordId, wordName) => {
     searchResults.value = searchResults.value.filter((word) => word.id !== wordId);
 
     // اگر لغت حذف شده در حال ویرایش بود، مدال را ببند.
-    if(isEditMode.value && currentWordId.value === wordId) {
+    if (isEditMode.value && currentWordId.value === wordId) {
       clearWordFields();
       isModalOpen.value = false;
     }
@@ -347,31 +298,31 @@ let searchTimer = null;
 watch(searchQuery, (newQuery) => {
   if (searchTimer) {
     clearTimeout(searchTimer);
-  } 
-  searchResults.value = []; 
+  }
+  searchResults.value = [];
   if (newQuery.length < 2) {
     return;
-  } 
+  }
   searchTimer = setTimeout(async () => {
     try {
       if (!AUTH_TOKEN.value) {
         handleAuthError();
         return;
-      } 
+      }
       const response = await searchWords(
         AUTH_TOKEN.value,
         dictionaryIdForSearch,
         newQuery.trim()
-      ); 
-      searchResults.value = response.data || []; 
+      );
+      searchResults.value = response.data || [];
 
     } catch (error) {
       console.error('خطا در جستجوی لغت:', error);
       searchResults.value = [];
-      if (searchErrorMsg.value) { 
+      if (searchErrorMsg.value) {
       }
     }
-  }, 500); 
+  }, 500);
 });
 
 // --- Lifecycle Hook ---
@@ -389,6 +340,7 @@ onMounted(() => {
 .modal-slide-leave-to {
   opacity: 0;
 }
+
 .modal-slide-enter-active,
 .modal-slide-leave-active {
   transition: opacity 0.4s ease;

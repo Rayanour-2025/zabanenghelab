@@ -1,7 +1,7 @@
 <template>
     <div
         class="w-full flex flex-col justify-center items-end gap-[30px] px-[20px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
-        <search-box-of-dictionary   v-model="searchQuery" />
+        <search-box-of-dictionary @open-form="openAddForm" v-model="searchQuery" />
         <div dir="rtl" class="w-full p-5">
             <div class="w-full">
                 <!-- <h2 class="text-3xl mb-6">فارسی:</h2> -->
@@ -21,6 +21,9 @@
         <template v-if="isOpenForm">
             <dictionary-form-modal :lang="options" v-model:is-open="isOpenForm" :dictionary="singleDic?.dicEdit" />
         </template>
+        <template v-if="isOpenAddForm">
+            <add-dictionary-form-modal :lang="options" @reload="reloadData" v-model:is-open="isOpenAddForm" />
+        </template>
     </div>
 </template>
 <script setup>
@@ -31,11 +34,13 @@ import { useAuthToken } from '~/composables/useAuthCrypto'
 import loadingAnimation from '~/components/loadingAnimation.vue';
 import useSearchDictionaries from '~/composables/useSearchDictionaries'
 import useFetchLanguages from '~/composables/useFetchLanguages'
+import addDictionaryFormModal from '~/components/dictionary/addDictionaryFormModal.vue';
 import { useToast } from 'vue-toastification'
-import dictionaryFormModal from '~/components/dictionary/dictionaryFormModal.vue'; 
+import dictionaryFormModal from '~/components/dictionary/dictionaryFormModal.vue';
 definePageMeta({
     layout: "dashboard-admin"
 })
+const isOpenAddForm = ref(false)
 const isOpenForm = ref(false)
 const toast = useToast()
 const { loading: searchLoaing, responseData: dictionaryResult, searchDictionary } = useSearchDictionaries()
@@ -43,7 +48,7 @@ const { isLoggedIn, token: AUTH_TOKEN, isAdmin } = useAuthToken()
 const { loading, responseData: responeDictionay, fetchDictionaries } = useFetchDictionaries()
 const dictionaries = ref()
 const { fetchLanguages, responseData: languageData, } = useFetchLanguages()
-const options = ref([]) 
+const options = ref([])
 let searchTimer = null;
 const searchQuery = ref('')
 const searchResults = ref([])
@@ -58,6 +63,11 @@ const loadData = async () => {
     }
 }
 loadData()
+const reloadData = (flag) => {
+    if (flag) {
+        loadData()
+    }
+}
 const loadLang = async () => {
     if (isLoggedIn.value, AUTH_TOKEN.value) {
         await fetchLanguages(AUTH_TOKEN.value)
@@ -105,5 +115,8 @@ const singleDic = ref()
 const fetchData = (data) => {
     singleDic.value = data
     isOpenForm.value = data.form
-} 
+}
+const openAddForm = (flag) => {
+    isOpenAddForm.value = flag
+}
 </script>

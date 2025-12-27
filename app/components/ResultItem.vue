@@ -22,6 +22,6 @@ const props = defineProps({
 const store = useWordStore()
 const goToTranslate = (item) => {
     store.selectedWord = item
-    navigateTo({ path: 'translate', query: { word: props.result.id } })
+    navigateTo({ path: '/translate', query: { word: props.result.id } })
 }
 </script>

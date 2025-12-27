@@ -36,7 +36,7 @@ const {
   searchWords,
   loading: searchingWord,
   errMessage: searchErrorMsg,
-} = useSearchWords(); 
+} = useSearchWords();
 const router = useRouter()
 const dictionaries = [
   "همه",
@@ -48,45 +48,31 @@ const dictionaries = [
   "فرهنگ سخن",
   "فرهنگ موضوعی فارسی",
 ]
-
+const route = useRoute()
 const searchQuery = ref("")
+searchQuery.value = route.params.word
 const searchResults = ref([])
 let searchTimer = null
+const performSearch = async (query) => {
+  if (!query || query.length < 2) return;
+  try {
+    const response = await searchWords(
+      AUTH_TOKEN.value,
+      query.trim(),
+      1, 2
+    );
+    searchResults.value = response.data || [];
+  } catch (error) {
+    console.error('خطا در جستجوی لغت:', error);
+    searchResults.value = [];
+  }
+};
 watch(searchQuery, (newQuery) => {
-  // console.log(newQuery)
-  searchResults.value = []
-  if (searchTimer) {
-    clearTimeout(searchTimer);
-  }
-  searchResults.value = [];
-
-  // اگر طول کوئری کمتر از 2 باشد، جستجو انجام نشود
-  if (newQuery.length < 2) {
-    return;
-  }
-
-  searchTimer = setTimeout(async () => {
-    try {
-
-      const response = await searchWords(
-        AUTH_TOKEN.value,
-        newQuery.trim(),
-        1, 2
-      );
-      // در اینجا فرض می‌کنیم پاسخ به صورت { data: [ { word } ] } است.
-      searchResults.value = response.data || [];
-      console.log(searchResults.value)
-
-    } catch (error) {
-      console.error('خطا در جستجوی لغت:', error);
-      searchResults.value = [];
-      if (searchErrorMsg.value) {
-        // نمایش خطا در صورت لزوم، اما برای جستجو بهتر است کاربر را با پیام‌های پی در پی آزار ندهیم
-        // toast.error(`خطا در جستجو: ${searchErrorMsg.value}`);
-      }
-    }
-  }, 500); // زمان De
-})
+  if (searchTimer) clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    performSearch(newQuery);
+  }, 500);
+}, { immediate: true })
 </script>
 <style>
 .result::-webkit-scrollbar {

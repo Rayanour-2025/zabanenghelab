@@ -10,35 +10,32 @@
           class="absolute top-5 left-5 p-2 rounded-full hover:bg-gray-100 transition duration-150">
           <icons-circle-x width="35" height="35" color="#7FB77E" />
         </button>
-        <div class="flex items-center gap-4">
-          <h3>{{ dictionary.name }}</h3> <red-trash :width="22" :height="22" />
-        </div>
-        <form @submit.prevent="sendData()" class="w-full flex flex-col items-end gap-5">
+        <form class="w-full flex flex-col items-end gap-5">
           <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
             <div class="w-full flex flex-col items-start gap-3">
               <label class="text-base leading-6 text-[#2B2B2B]">نام لغت نامه: <span
                   class="text-red-500">*</span></label>
               <div class="relative w-full">
-                <input type="text" v-model="dictionary.name" placeholder="نام لغت نامه را وارد کنید"
+                <input type="text" v-model="addForm.name" placeholder="نام لغت نامه را وارد کنید"
                   class="w-full px-4 py-3 h-11 text-sm text-[#2B2B2B] leading-5 text-right bg-[rgba(127,183,126,0.2)] rounded-xl focus:outline-none" />
               </div>
             </div>
             <div class="w-full flex flex-col items-start gap-3">
               <label class="text-base leading-6 text-[#2B2B2B]">توضیح:</label>
-              <input type="text" placeholder="توضیح لغت نامه" v-model="dictionary.description"
+              <input type="text" v-model="addForm.description" placeholder="توضیح لغت نامه"
                 class="w-full px-4 py-3 h-11 bg-[rgba(127,183,126,0.2)] rounded-xl text-sm text-[#2B2B2B] leading-5 text-right focus:outline-none" />
             </div>
           </div>
           <div class="w-full flex flex-col sm:flex-row justify-center items-start gap-5 sm:gap-8">
             <div class="w-full flex flex-col items-start gap-3">
               <div class="relative w-full">
-                <custom-select :required="true" :options="lang" v-model="dictionary.source_language.id"
+                <custom-select :required="true" :options="lang" v-model="addForm.source_language_id"
                   label="زبان مبدا" />
               </div>
             </div>
             <div class="w-full flex flex-col items-start gap-3">
               <div class="relative w-full">
-                <custom-select :required="true" :options="lang" v-model="dictionary.target_language.id"
+                <custom-select :required="true" :options="lang" v-model="addForm.target_language_id"
                   label="زبان مقصد" />
               </div>
             </div>
@@ -47,7 +44,7 @@
             <div class="w-full flex flex-col items-start gap-3">
               <label class="text-base leading-6 text-[#2B2B2B]">نویسنده: </label>
               <div class="relative w-full">
-                <input type="text" placeholder="نویسنده را وارد کنید" v-model="dictionary.authors"
+                <input type="text" v-model="addForm.authors" placeholder="نویسنده را وارد کنید"
                   class="w-full px-4 py-3 h-11 text-sm text-[#2B2B2B] leading-5 text-right bg-[rgba(127,183,126,0.2)] rounded-xl focus:outline-none" />
               </div>
             </div>
@@ -97,7 +94,7 @@
         <div
           class="w-full min-h-[200px] border-2 border-dashed border-gray-200 rounded-2xl flex items-center justify-center text-gray-400">
           <ClientOnly>
-            <rich-text-editor v-model="text" />
+            <rich-text-editor />
           </ClientOnly>
         </div>
         <div class="flex justify-end gap-3">
@@ -117,27 +114,23 @@ import customSelect from '~/components/customSelect.vue';
 import { useAuthToken } from '~/composables/useAuthCrypto'
 import { useToast } from 'vue-toastification'
 import RichTextEditor from '~/components/dictionary/RichTextEditor.vue';
-import useUpdateDictionary from '~/composables/useUpdateDictionary'; 
+import useCreateDictionary from '~/composables/useCreateDictionary'
 const props = defineProps({
   isOpen: Boolean,
-  dictionary: {
-    type: [Array, Object]
-  },
   lang: {
     required: true
   }
 });
+const { loading, createDictionary } = useCreateDictionary()
 const text = ref('')
 const toast = useToast()
-const { isLoggedIn, token: AUTH_TOKEN } = useAuthToken()
-const emit = defineEmits(['update:isOpen', 'save']);
+const { isLoggedIn, token: AUTH_TOKEN, isAdmin } = useAuthToken()
+const emit = defineEmits(['update:isOpen', 'save', 'reload']);
 const isExpanded = ref(false);
 const isEditorModalOpen = ref(false);
-const { loading, updateDictionary } = useUpdateDictionary()
 
 
-const editForm = ref({
-  _method: 'PUT',
+const addForm = ref({
   name: '',
   target_language_id: '',
   source_language_id: '',
@@ -146,24 +139,31 @@ const editForm = ref({
   authors: ''
 })
 const onImageChange = (e) => {
-  editForm.value.image = e.target.files[0]
+  addForm.value.image = e.target.files[0]
 }
 
 const sendData = async () => {
+  if (!addForm.value.name || !addForm.value.source_language_id || !addForm.value.target_language_id) {
+    toast.error('لطفاً فیلدهای ستاره‌دار را پر کنید');
+    return;
+  }
   const formData = new FormData()
-  editForm.value.name = props.dictionary.name,
-    editForm.value.source_language_id = props.dictionary.source_language.id
-  editForm.value.target_language_id = props.dictionary.target_language.id
-  editForm.value.description = props.dictionary.description
-  editForm.value.authors = props.dictionary.authors
-  Object.keys(editForm.value).forEach(key => {
-    if (editForm.value[key] !== null) {
-      formData.append(key, editForm.value[key])
-    }
-  })
-  console.log(editForm.value)
+  formData.append('name', addForm.value.name)
+  formData.append('target_language_id', addForm.value.target_language_id)
+  formData.append('source_language_id', addForm.value.source_language_id)
+  formData.append('description', addForm.value.description || '')
+  formData.append('authors', addForm.value.authors || '')
+  if (addForm.value.image) {
+    formData.append('image', addForm.value.image)
+  }
+  if (AUTH_TOKEN.value && isAdmin.value) {
+    try {
+      await createDictionary(AUTH_TOKEN.value, formData)
+      emit('reload', true) 
+    } catch (err) {
 
-  await updateDictionary(AUTH_TOKEN.value, props.dictionary.id, formData)
+    }
+  }
 }
 </script>
 

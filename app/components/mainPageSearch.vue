@@ -39,7 +39,7 @@
 </template>
 <script setup>
 import useSearchWordsWithoutToken from '~/composables/useSearchWordsWithoutToken';
-import { useAuthToken } from '~/composables/useAuthCrypto'; 
+import { useAuthToken } from '~/composables/useAuthCrypto';
 const prop = defineProps({
     source_language: {
         default: 1,
@@ -84,7 +84,7 @@ const selectItem = (item) => {
     searchQuery.value = item.word;
     searchResults.value = [];
     activeIndex.value = -1;
-    navigateTo({ path: '/translate', query: { word: item.id } });
+    navigateTo(`/resultTranslate/${encodeURIComponent(item?.word)}`);
 };
 
 const selectCurrentItem = () => {
@@ -92,10 +92,7 @@ const selectCurrentItem = () => {
         selectItem(searchResults.value[activeIndex.value]);
     }
     else if (searchQuery.value.trim()) {
-        navigateTo({
-            path: '/translate',
-            query: { word: searchQuery.value.trim() }
-        });
+        navigateTo(`resultTranslate/${encodeURIComponent(searchQuery.value.trim())}`);
     }
 };
 
@@ -110,7 +107,7 @@ watch(searchQuery, (newQuery) => {
 
     searchTimer = setTimeout(async () => {
         try {
-            const response = await searchWords(AUTH_TOKEN.value, newQuery.trim(), prop.source_language, prop.target_language); 
+            const response = await searchWords(AUTH_TOKEN.value, newQuery.trim(), prop.source_language, prop.target_language);
             searchResults.value = response?.data || response || [];
             activeIndex.value = -1;
         } catch (error) {

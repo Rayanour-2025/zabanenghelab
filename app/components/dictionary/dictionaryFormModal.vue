@@ -12,7 +12,8 @@
         </button>
         <div class="flex items-center gap-4">
           <h3>{{ dictionary.name }}</h3>
-          <red-trash class="cursor-pointer" v-if="!deleteLoading" @click="deleteDic(dictionary?.id)" width="22" height="22" />
+          <red-trash class="cursor-pointer" v-if="!deleteLoading" @click="deleteDic(dictionary?.id)" width="22"
+            height="22" />
           <div dir="rtl" v-if="deleteLoading" class="flex items-center justify-center gap-2">
             <svg class="animate-spin h-4 w-4 text-[#7FB77E]" xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 24 24">
@@ -175,7 +176,10 @@ const sendData = async () => {
   if (editForm.value.image) {
     formData.append('image', editForm.value.image);
   }
-  await updateDictionary(AUTH_TOKEN.value, props.dictionary.id, formData)
+  if (isAdmin.value && AUTH_TOKEN.value && isLoggedIn.value) {
+
+    await updateDictionary(AUTH_TOKEN.value, props.dictionary.id, formData)
+  }
 }
 const deleteDic = async (id) => {
   if (isAdmin.value, AUTH_TOKEN.value) {

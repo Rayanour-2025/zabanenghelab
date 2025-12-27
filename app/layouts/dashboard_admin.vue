@@ -36,8 +36,7 @@
         </div>
       </div>
 
-      <div v-if="isMenuOpen" @click="isMenuOpen = false"
-        class="h-full w-full  fixed items-center flex justify-end bg-black/30 top-0 left-0">
+      <div v-if="isMenuOpen" @click="isMenuOpen = false" class="h-full w-full  fixed items-center flex justify-end bg-black/30 top-0 left-0">
         <transition name="menu">
           <div @click.stop class="h-full pr-3 w-1/2 bg-white">
             <nav class="flex flex-col items-end mt-4 gap-8">
@@ -55,7 +54,7 @@
         </transition>
       </div>
 
-    </header>
+    </header> 
     <main class="flex-grow ">
       <div class="w-full flex flex-col md:flex-row-reverse items-start justify-end gap-5 md:pr-7">
         <dictionary-sidebar />

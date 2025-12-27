@@ -1,9 +1,9 @@
 <template>
     <div class="w-full font-zain flex flex-col items-end gap-8">
         <div class="flex flex-row justify-between items-center w-full h-[50px]">
-            <button type="button"
+            <button type="button" @click="$emit('openForm', true)"
                 class="flex flex-row justify-center items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] hover:bg-green-700 transition-colors duration-300">
-                <span class="text-white font-bold text-[13px] leading-[24px]">اضافه کردن لغت    </span>
+                <span class="text-white font-bold text-[13px] leading-[24px]">اضافه کردن لغت نامه    </span>
                 <icons-add-or-create class="w-5 h-5" />
             </button>
 
@@ -24,6 +24,7 @@
 <script setup>
 const query = defineModel()
 const text = "افزودن لغت"
+const emit = defineEmits(['openForm'])
 </script>
 
 <style scoped>
