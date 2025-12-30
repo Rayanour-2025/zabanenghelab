@@ -1,24 +1,19 @@
 <template>
-    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-
-    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
-    <svg :width="width" :height="height" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-        transform="rotate(180)">
-
-        <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
-        <g id="SVGRepo_iconCarrier">
-            <path
-                d="M20.2699 16.265L20.9754 12.1852C21.1516 11.1662 20.368 10.2342 19.335 10.2342H14.1539C13.6404 10.2342 13.2494 9.77328 13.3325 9.26598L13.9952 5.22142C14.1028 4.56435 14.0721 3.892 13.9049 3.24752C13.7664 2.71364 13.3545 2.28495 12.8128 2.11093L12.6678 2.06435C12.3404 1.95918 11.9831 1.98365 11.6744 2.13239C11.3347 2.29611 11.0861 2.59473 10.994 2.94989L10.5183 4.78374C10.3669 5.36723 10.1465 5.93045 9.86218 6.46262C9.44683 7.24017 8.80465 7.86246 8.13711 8.43769L6.69838 9.67749C6.29272 10.0271 6.07968 10.5506 6.12584 11.0844L6.93801 20.4771C7.0125 21.3386 7.7328 22 8.59658 22H13.2452C16.7265 22 19.6975 19.5744 20.2699 16.265Z"
-                :fill="color" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M2.96767 9.48508C3.36893 9.46777 3.71261 9.76963 3.74721 10.1698L4.71881 21.4063C4.78122 22.1281 4.21268 22.7502 3.48671 22.7502C2.80289 22.7502 2.25 22.1954 2.25 21.5129V10.2344C2.25 9.83275 2.5664 9.5024 2.96767 9.48508Z"
-                :fill="color" />
-        </g>
-
+    <svg :width="width" :height="height" viewBox="0 0 18 18" fill="none"  
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M0.864567 8.58325C0.4479 9.74991 1.1979 10.7499 2.4479 10.7499L5.78123 10.7499C6.28123 10.7499 6.6979 11.1666 6.61457 11.7499L6.1979 14.4166C6.03123 15.1666 6.53123 15.9999 7.28123 16.2499C7.9479 16.4999 8.78123 16.1666 9.11457 15.6666L12.5312 10.5833"
+             :stroke="color" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path
+            d="M12.5312 3.24994L9.9479 1.24994C9.61457 0.916602 8.86457 0.749935 8.36457 0.749935L5.1979 0.749936C4.1979 0.749936 3.11457 1.49994 2.86457 2.49994L1.83123 5.6416"
+             :stroke="color" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path
+            d="M16.7812 3.24999L16.7812 11.4167C16.7812 12.5833 16.2812 13 15.1146 13L14.2813 13C13.1146 13 12.6146 12.5833 12.6146 11.4167L12.6146 3.24999C12.6146 2.08333 13.1146 1.66666 14.2812 1.66666L15.1146 1.66666C16.2812 1.66666 16.7812 2.08333 16.7812 3.24999Z"
+             :stroke="color" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
+
 </template>
 <script setup>
 const props = defineProps({

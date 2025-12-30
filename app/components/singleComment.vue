@@ -33,10 +33,10 @@
                     class="flex mt-4 bg-[#F0F1EE] w-fit px-5 py-2 rounded-full shadow-[0px_7px_15px_-6px_#5C636940] items-center justify-start">
                     <div class="flex items-center ml-2">
                         <p class="text-xl ml-2">{{ commentData.likes_count }}</p>
-                        <like width="30" color="#ff0000" @click="reaction('like', commentData.id)" height="30" />
+                        <like width="30" :color="commentData?.user_like_status == 'liked' ? '#f00' : '#2B2B2B' " @click="reaction('like', commentData.id)" height="30" />
                     </div>
                     <div @click="reaction('dislike', commentData.id)">
-                        <dislike width="30" color="#ff0000" height="30" />
+                        <dislike width="30" :color="commentData?.user_like_status == 'disliked' ? '#f00' : '#2B2B2B'" @click="reaction('dislike', commentData?.id)" height="30" />
                     </div>
                 </div>
                 <div @click="reply(commentData)"

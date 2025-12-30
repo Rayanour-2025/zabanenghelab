@@ -56,8 +56,11 @@ export function useLogin({ toast, generateNewCaptcha, captchaText }) {
       ) {
         authStore.setLoginData(responseData.value);
         toast.success("ورود موفقیت‌آمیز بود. در حال هدایت...");
-
-        await navigateTo("/words");
+        if (responseData?.value?.user?.is_admin) {
+          await navigateTo("/words");
+        } else {
+          await navigateTo("/");
+        }
       } else {
         toast.error("ورود موفق بود، اما ساختار پاسخ سرور صحیح نیست.");
         generateNewCaptcha();

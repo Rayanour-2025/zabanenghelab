@@ -1,25 +1,24 @@
 <template>
-  <div>
-
-    <div class="w-full flex flex-col items-center justify-center gap-8 mt-24 mb-32">
-      <div class="flex flex-col items-center justify-center gap-1">
-        <div class="font-zain font-black text-4xl leading-[70px] text-[#7FB77E]">
+  <div class="overflow-x-hidden">
+    <div class="w-full flex flex-col items-center justify-center gap-8 mt-12 md:mt-24 mb-16 md:mb-32 px-4">
+      <div class="flex flex-col items-center justify-center gap-1 text-center">
+        <div class="font-zain font-black text-2xl md:text-4xl leading-tight md:leading-[70px] text-[#7FB77E]">
           دنبال واژه نباش، دنبال معنا باش
         </div>
 
-        <div class="font-zain font-normal text-xl leading-10 text-[#5A6E5A]">
-          .با جستجوی هر واژه، می‌توانید معنای دقیق، تلفظ و کاربرد آن را ببینید
+        <div class="font-zain font-normal text-lg md:text-xl leading-relaxed md:leading-10 text-[#5A6E5A] max-w-2xl">
+          با جستجوی هر واژه، می‌توانید معنای دقیق، تلفظ و کاربرد آن را ببینید.
         </div>
       </div>
 
-      <div class="flex flex-col items-center justify-center gap-5">
+      <div class="flex flex-col items-center justify-center gap-5 w-full">
         <main-page-search :source_language="sourceLang" :target_language="targetLang" />
 
         <div dir="rtl"
-          class="flex flex-row w-[40%] items-center justify-between p-[12px_25px] gap-5 bg-[rgba(245,246,244,0.2)] border border-[#7FB77E] shadow-[0_5px_12px_-5px_rgba(92,99,105,0.2)] rounded-[40px] box-border">
-          <custom-select :required="false" v-model="sourceLang" :options="options" />
-          <icons-displacement @click="swapLanguages()" class="w-10 h-10" />
-          <custom-select :required="false" v-model="targetLang" :options="options" />
+          class="flex p-5 flex-row w-full max-w-[90%] md:w-[40%] items-center justify-between   md:p-[12px_25px] gap-2 md:gap-5 bg-[rgba(245,246,244,0.2)] border border-[#7FB77E] shadow-[0_5px_12px_-5px_rgba(92,99,105,0.2)] rounded-[40px] box-border">
+          <custom-select :required="false" v-model="sourceLang" :options="options" class="flex-1" />
+          <icons-displacement @click="swapLanguages()"   class=" w-8 h-8 flex-shrink-0 cursor-pointer" />
+          <custom-select :required="false" v-model="targetLang" :options="options" class="flex-1" />
         </div>
       </div>
     </div>
@@ -27,126 +26,70 @@
     <hr class="w-full border-t border-gray-100" />
 
     <div
-      class="relative w-full max-w-[calc(100%-50px)] h-[550px] bg-[#7FB77E] shadow-[5px_5px_12px_-5px_rgba(92,99,105,0.2)] rounded-[0_30px_30px_0] flex flex-col items-end justify-center p-[50px] box-border overflow-visible">
-      <h2 class="font-zain font-black text-3xl leading-[55px] text-white text-right max-w-[655px]">
+      class="relative w-full md:max-w-[calc(100%-50px)] min-h-[450px] md:h-[550px] bg-[#7FB77E] shadow-[5px_5px_12px_-5px_rgba(92,99,105,0.2)] rounded-none md:rounded-[0_30px_30px_0] flex flex-col items-center md:items-end justify-center p-8 md:p-[50px] box-border overflow-hidden md:overflow-visible">
+
+      <h2
+        class="font-zain font-black text-2xl md:text-3xl leading-snug md:leading-[55px] text-white text-center md:text-right max-w-[655px] z-10">
         جایی که کلمات فقط معنی نمی‌گیرن، بلکه معنا می‌سازن.
       </h2>
 
       <p
-        class="mt-8 flex flex-col items-end justify-center font-zain font-normal text-xl text-nowrap leading-9 text-white text-right max-w-[690px]">
+        class="mt-6 md:mt-8 flex flex-col items-center md:items-end justify-center font-zain font-normal text-lg md:text-xl leading-relaxed md:leading-9 text-white text-center md:text-right max-w-[690px] z-10">
         <span>ما یک دیکشنری آنلاین هستیم</span>
-        <span>که تلاش می‌کنیم هر واژه را نه‌فقط ترجمه، بلکه با معن،</span>
-        <span>کاربرد و درک واقعی آن به شما ارائه دهیم. </span>
-        <span>هدف ما این است که جستجوی یک کلمه، به فهم عمیق‌تری</span>
-        <span> از زبان تبدیل شود.</span>
-        <span>اینجا می‌توانید معانی، مترادف‌ها، تلفظ و مثال‌های کاربردی</span>
-        <span>را به‌سادگی و در کوتاه‌ترین زمان پیدا کنید.</span>
+        <span>که تلاش می‌کنیم هر واژه را نه‌فقط ترجمه، بلکه با معنی، کاربرد و درک واقعی آن به شما ارائه دهیم.</span>
+        <span>هدف ما این است که جستجوی یک کلمه، به فهم عمیق‌تری از زبان تبدیل شود.</span>
       </p>
 
       <div
-        class="absolute top-[50px] left-[50px] w-[450px] h-[650px] bg-white/10 backdrop-blur-sm shadow-[0_5px_12px_-5px_rgba(92,99,105,0.2)] rounded-[300px] border border-white/20 lens-inner">
+        class="absolute top-[20px] left-[-100px] md:left-[50px] w-[300px] md:w-[450px] h-[500px] md:h-[650px] bg-white/10 backdrop-blur-sm rounded-[300px] border border-white/20 lens-inner opacity-50 md:opacity-100">
       </div>
     </div>
 
-    <hr class="w-full border-t border-gray-100" />
-
-    <div class="w-full flex flex-row justify-end items-center gap-10 px-[100px] py-[40px]">
+    <div class="w-full flex   md:flex-row justify-center items-center gap-8 md:gap-10 px-6 py-10 md:px-[100px]">
       <div class="flex flex-col items-center justify-center">
-        <div
-          class="flex items-center justify-center gap-1 font-zain font-black text-4xl text-nowrap leading-[75px] text-[#7FB77E] text-center">
-          <span>هزار</span>
-          <span>32+</span>
-        </div>
-        <div class="font-zain font-black text-2xl text-nowrap leading-10 text-[#7FB77E] text-center">
-          واژگان
-        </div>
+        <div class="font-zain font-black text-3xl md:text-4xl text-[#7FB77E]">32K+</div>
+        <div class="font-zain font-black text-xl md:text-2xl text-[#7FB77E]">واژگان</div>
       </div>
-      <div class="w-[2px] h-[90px] bg-[#DADDD8] rounded-full"></div>
+      <div class="hidden md:block w-[2px] h-[70px] bg-[#DADDD8] rounded-full"></div>
 
       <div class="flex flex-col items-center justify-center">
-        <div class="font-zain font-black text-4xl text-nowrap leading-[75px] text-[#7FB77E] text-center">
-          324+
-        </div>
-        <div class="font-zain font-black text-2xl text-nowrap leading-10 text-[#7FB77E] text-center">
-          بازدید
-        </div>
+        <div class="font-zain font-black text-3xl md:text-4xl text-[#7FB77E]">324+</div>
+        <div class="font-zain font-black text-xl md:text-2xl text-[#7FB77E]">بازدید</div>
       </div>
-      <div class="w-[2px] h-[90px] bg-[#DADDD8] rounded-full"></div>
+      <div class="hidden md:block w-[2px] h-[70px] bg-[#DADDD8] rounded-full"></div>
 
       <div class="flex flex-col justify-center items-center">
-        <div class="font-zain font-black text-4xl text-nowrap leading-[75px] text-[#7FB77E] text-center">
-          12+
-        </div>
-        <div class="font-zain font-black text-2xl text-nowrap leading-10 text-[#7FB77E] text-center">
-          زبان‌ها
-        </div>
+        <div class="font-zain font-black text-3xl md:text-4xl text-[#7FB77E]">12+</div>
+        <div class="font-zain font-black text-xl md:text-2xl text-[#7FB77E]">زبان‌ها</div>
       </div>
     </div>
 
     <hr class="w-full border-t border-gray-100" />
 
-    <div class="w-full flex flex-col items-center justify-center gap-1 mt-24 mb-16">
-      <div class="flex flex-row justify-center items-center gap-3">
-        <icons-left-quote class="w-7 h-7" />
-
-        <h2 class="font-zain font-black text-3xl leading-[50px] text-[#7FB77E] text-center">
-          دیکشنری‌ای ساخته‌شده برای ذهن امروز
-        </h2>
-
-        <icons-right-quote class="w-7 h-7" />
+    <div
+      class="w-full flex flex-col md:flex-row flex-wrap justify-center items-start gap-12 md:gap-20 mt-16 mb-20 px-6">
+      <div class="flex flex-col items-center md:items-end gap-4 max-w-full md:max-w-xs text-center md:text-right">
+        <icons-advanced-search class="w-10 h-10 text-[#7FB77E]" />
+        <h3 class="font-zain font-extrabold text-xl text-[#7FB77E]">جست‌وجوی هوشمند</h3>
+        <p class="font-zain font-normal text-base text-[#5A6E5A] leading-7">با چند حرف اول، پیشنهادهای دقیق و مرتبط
+          بگیر.</p>
       </div>
 
-      <p class="font-zain font-normal text-xl leading-10 text-[#5A6E5A] text-center">
-        ما ترجمه را ساده کردیم تا تمرکزت روی یادگیری بماند، نه جست‌وجو.
-      </p>
-    </div>
-
-    <hr class="w-full border-t border-gray-100" />
-
-    <div class="w-full flex flex-row justify-around items-start mt-20 mb-20">
-      <div class="flex flex-col items-end gap-5 max-w-sm">
-        <icons-advanced-search class="w-10 h-10" />
-
-        <div class="flex flex-col items-end gap-3">
-          <h3 class="font-zain font-extrabold text-xl leading-9 text-[#7FB77E] text-right">
-            جست‌وجوی هوشمند
-          </h3>
-          <p class="font-zain font-normal text-base leading-7 text-[#5A6E5A] text-right w-full">
-            با چند حرف اول، پیشنهادهای دقیق و مرتبط بگیر؛ چون وقتت باارزش‌تر از تایپ کامل
-            کلمه است.
-          </p>
-        </div>
+      <div class="flex flex-col items-center md:items-end gap-4 max-w-full md:max-w-xs text-center md:text-right">
+        <icons-notebook class="w-10 h-10 text-[#7FB77E]" />
+        <h3 class="font-zain font-extrabold text-xl text-[#7FB77E]">یادگیری در کنار ترجمه</h3>
+        <p class="font-zain font-normal text-base text-[#5A6E5A] leading-7">با هر جست‌وجو، مترادف و کاربرد واقعی واژه را
+          یاد بگیر.</p>
       </div>
 
-      <div class="flex flex-col items-end gap-5 max-w-sm">
-        <icons-notebook class="w-10 h-10" />
-
-        <div class="flex flex-col items-end gap-3">
-          <h3 class="font-zain font-extrabold text-xl leading-9 text-[#7FB77E] text-right">
-            یادگیری در کنار ترجمه
-          </h3>
-          <p class="font-zain font-normal text-base leading-7 text-[#5A6E5A] text-right w-full">
-            با هر جست‌وجو، نه‌تنها معنی بلکه مترادف، توضیح و کاربرد واقعی واژه رو یاد
-            می‌گیری.
-          </p>
-        </div>
-      </div>
-
-      <div class="flex flex-col items-end gap-5 max-w-sm">
-        <icons-lightning class="w-10 h-10" />
-
-        <div class="flex flex-col items-end gap-3">
-          <h3 class="font-zain font-extrabold text-xl leading-9 text-[#7FB77E] text-right">
-            رابط کاربری سریع و ساده
-          </h3>
-          <p class="font-zain font-normal text-base leading-7 text-[#5A6E5A] text-right w-full">
-            طوری طراحی شده که بدون حواس‌پرتی فقط دنبال معنی باشی — سریع، سبک و تمیز.
-          </p>
-        </div>
+      <div class="flex flex-col items-center md:items-end gap-4 max-w-full md:max-w-xs text-center md:text-right">
+        <icons-lightning class="w-10 h-10 text-[#7FB77E]" />
+        <h3 class="font-zain font-extrabold text-xl text-[#7FB77E]">رابط کاربری سریع</h3>
+        <p class="font-zain font-normal text-base text-[#5A6E5A] leading-7">طوری طراحی شده که بدون حواس‌پرتی فقط دنبال
+          معنی باشی.</p>
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup>

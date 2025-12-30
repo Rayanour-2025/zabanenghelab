@@ -1,8 +1,8 @@
 // /home/hamyar/Desktop/My_Folder/zaban-enghelab/app/composables/useUpdateWord.js
 import axios from "axios";
 import { ref } from "vue";
-
-
+import { useToast } from 'vue-toastification'
+const toast = useToast()
 const useUpdateWord = () => {
   const responseData = ref(null);  
   const loading = ref(false);     
@@ -34,19 +34,21 @@ const useUpdateWord = () => {
 
       responseData.value = response.data;
       success.value = true;
+      toast.success(response.data.message || 'بروزرسانی کلمه با موفقیت انجام شد.')
       return response.data;
     } catch (error) {
       err.value = true;
       let message =
-        error.response?.data?.message ||
-        error.response?.data ||
-        error.message ||
-        "خطا در به‌روزرسانی واژه";
-
+      error.response?.data?.message ||
+      error.response?.data ||
+      error.message ||
+      "خطا در به‌روزرسانی واژه";
+      
       if (typeof message === "object") {
         message = JSON.stringify(message);
       }
-
+      
+      toast.error(message)
       errMessage.value = message;
       throw new Error(message);
     } finally {

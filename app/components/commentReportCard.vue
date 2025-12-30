@@ -83,7 +83,7 @@ const url = `https://ip3.ir/dictionary/api/v1/comments/${props.commentId}/report
 const submitReport = async () => {
     if (!selectedReportId.value) return;
 
-    if (!AUTH_TOKEN) return toast.error("ابتدا وارد شوید");
+    if (!AUTH_TOKEN.value) return toast.error("ابتدا وارد شوید");
 
     const bodyData = {
         reason: selectedReportId.value,

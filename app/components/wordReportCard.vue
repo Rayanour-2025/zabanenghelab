@@ -50,7 +50,7 @@ const props = defineProps({
     }
 })
 const isSubmiting = ref(false)
-const { token: AUTH_TOKEN } = useAuthToken()
+const { token: AUTH_TOKEN, isAdmin, isLoggedIn } = useAuthToken()
 const selectedReportId = ref(null);
 const description = ref("");
 const showInput = ref(false);
@@ -78,7 +78,7 @@ const url = `https://ip3.ir/dictionary/api/v1/words/${props.wordId}/reports`
 const submitReport = async () => {
     if (!selectedReportId.value) return;
 
-    if (!AUTH_TOKEN) return toast.error("ابتدا وارد شوید");
+    if (!AUTH_TOKEN.value) return toast.error("ابتدا وارد شوید");
 
     const bodyData = {
         reason: selectedReportId.value,

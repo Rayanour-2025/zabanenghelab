@@ -1,6 +1,6 @@
 <template>
   <div dir="rtl" class="container  bg-white mx-auto">
-    <search-word-box dir="rtl" v-model="searchQuery" />
+    <search-word-box dir="rtl" v-model:s-lang="sourceLang" v-model:t-lang="targetLang" v-model="searchQuery" />
     <div class="flex md:flex-row flex-col-reverse items-start justify-between mt-6 px-2 md:px-8">
       <div
         class="bg-[#F0F1EE] flex result flex-col gap-y-6 md:p-8 p-3 rounded-[35px] overflow-y-scroll shadow-[0px_7px_15px_-6px_#5C636940] w-full md:w-[70%] max-h-[700px] h-auto">
@@ -8,7 +8,7 @@
           <result-item v-for="(result, index) in searchResults" :result="result" :key="index" />
         </template>
         <div v-if="searchingWord" class=" mt-2 w-full   px-4 py-3 text-center text-sm text-[#7FB77E]  ">
-          <div class="flex items-center justify-center gap-2">
+          <div class="fleیx items-center justify-center gap-2">
             <svg class="animate-spin h-4 w-4 text-[#7FB77E]" xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -29,15 +29,15 @@ import ResultItem from '~/components/ResultItem.vue';
 import Toastification from "vue-toastification"
 import { useAuthToken } from '~/composables/useAuthCrypto';
 import useSearchWords from '~/composables/useSearchWordsWithoutToken';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { ref, watch } from "vue"
-const { token: AUTH_TOKEN } = await useAuthToken()
+const { token: AUTH_TOKEN } = useAuthToken()
 const {
   searchWords,
   loading: searchingWord,
   errMessage: searchErrorMsg,
-} = useSearchWords();
-const router = useRouter()
+} = useSearchWords(); 
+const router = useRouter() 
 const dictionaries = [
   "همه",
   "معین",
@@ -49,6 +49,8 @@ const dictionaries = [
   "فرهنگ موضوعی فارسی",
 ]
 const route = useRoute()
+const sourceLang = ref(Number(route.query.sourceLang))
+const targetLang = ref(Number(route.query.targetlang)) 
 const searchQuery = ref("")
 searchQuery.value = route.params.word
 const searchResults = ref([])
@@ -59,7 +61,7 @@ const performSearch = async (query) => {
     const response = await searchWords(
       AUTH_TOKEN.value,
       query.trim(),
-      1, 2
+      sourceLang.value, targetLang.value
     );
     searchResults.value = response.data || [];
   } catch (error) {

@@ -1,46 +1,61 @@
 <template>
   <div dir="ltr" class="bg-[#F5F6F4] min-h-screen flex flex-col justify-between">
     <!-- Header -->
-    <header class="w-full flex flex-row items-center justify-between px-12 py-6">
-      <!-- Right buttons -->
+    <header class="w-full flex flex-row items-center justify-between px-12 max-md:px-8 py-6">
       <div class="flex flex-row items-center gap-4">
         <nuxt-link :to="isAdmin ? '/dashboard' : '/'"
           class="w-[110px] max-md:hidden h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl">
           <span class="font-zain font-normal text-lg text-[#FFFFFF]">{{ isAdmin ? 'داشبورد' : 'حمایت' }}</span>
         </nuxt-link>
 
-        <button
-          v-if="isLoggedIn"
-          @click="handleLogout"
-          type="button"
-          class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-red-500 border border-red-500 shadow-[0_4px_8px_-5px_rgba(239,68,68,0.25)] rounded-2xl"
-        >
-          <span class="font-zain font-normal text-lg text-[#FFFFFF]">خروج</span>
+        <div class="max-md:block hidden" @click="isMenuOpen = true">
+          <menu-icon width="22" height="22" />
+        </div>
+        <button v-if="isLoggedIn" @click="handleLogout" type="button"
+          class="w-[90px] max-md:w-[70px] max-md:h-[30px] h-[50px] flex justify-center items-center px-5 bg-red-500 border border-red-500 shadow-[0_4px_8px_-5px_rgba(239,68,68,0.25)] rounded-2xl">
+          <span class="font-zain font-normal text-lg max-md:text-sm text-[#FFFFFF]">خروج</span>
         </button>
-
-        <button
-          v-else
-          @click="handleLogin"
-          type="button"
-          class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-[#F5F6F4] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl"
-        >
-          <span class="font-zain font-normal text-lg text-[#7FB77E]">ورود</span>
+        <button v-else @click="handleLogin" type="button"
+          class="w-[90px] h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl">
+          <span class="font-zain font-normal text-lg text-[#FFFFFF]">ورود</span>
         </button>
       </div>
-
-      <!-- Center navigation -->
       <div class="flex flex-row items-center gap-10">
-        <nav class="flex flex-row items-center gap-8">
-          <span class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">درباره ما</span>
-          <span class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">قوانین</span>
-          <span class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">راهنما</span>
-          <span class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">دیکشنری</span>
+        <nav class="flex max-md:hidden flex-row items-center gap-8">
+          <span
+            class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">درباره
+            ما</span>
+          <span
+            class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">قوانین</span>
+          <span
+            class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">راهنما</span>
+          <span
+            class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">دیکشنری</span>
         </nav>
         <div class="font-zain font-black text-2xl text-[#7FB77E]">
           لوگو
         </div>
       </div>
-    </header>
+
+      <div v-if="isMenuOpen" @click="isMenuOpen = false" class="h-full w-full  fixed items-center flex justify-end bg-black/30 top-0 left-0">
+        <transition name="menu">
+          <div @click.stop class="h-full pr-3 w-1/2 bg-white">
+            <nav class="flex flex-col items-end mt-4 gap-8">
+              <span
+                class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">درباره
+                ما</span>
+              <span
+                class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">قوانین</span>
+              <span
+                class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">راهنما</span>
+              <span
+                class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">دیکشنری</span>
+            </nav>
+          </div>
+        </transition>
+      </div>
+
+    </header> 
 
     <!-- Main Content -->
     <main class="flex-grow">
@@ -85,9 +100,10 @@
 import { useAuthToken } from '@/composables/useAuthCrypto';
 import { useAuthStore } from '@/stores/auth';
 import { useRoute } from 'vue-router'; 
-
+import menuIcon from '~/components/icons/menuIcon.vue';
 const { isLoggedIn, isAdmin } = useAuthToken();
 const authStore = useAuthStore();
+const isMenuOpen = ref(false)
 const route = useRoute();
 
 const handleLogout = () => {

@@ -1,10 +1,10 @@
 <template>
-    <div class="relative w-[1000px] mx-auto group">
+    <div class="relative w-full max-w-[95%] md:max-w-[1000px] mx-auto group px-4">
         <div dir="rtl"
-            class="w-full h-[65px] flex flex-row justify-between items-center p-[10px_20px] bg-[rgba(245,246,244,0.2)] border border-[#7FB77E] shadow-[0_5px_12px_-5px_rgba(92,99,105,0.2)] rounded-[500px] box-border lens-inner2">
-            <input v-model="searchQuery" @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp"
+            class="w-full h-[55px] md:h-[65px]  flex flex-row justify-between items-center p-[10px_20px] bg-[rgba(245,246,244,0.2)] border border-[#7FB77E] shadow-[0_5px_12px_-5px_rgba(92,99,105,0.2)] rounded-[500px] box-border lens-inner2">
+            <input v-model="searchQuery"  @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp"
                 @keydown.enter.prevent="selectCurrentItem" type="text" placeholder="هرچی میخوای اینجا بنویس"
-                class="w-full h-full font-zain font-normal text-base bg-transparent leading-7 text-[#7FB77E] placeholder:text-[#7FB77E] text-center outline-none">
+                class="w-full text-sm md:text-base h-full font-zain font-normal   bg-transparent leading-7 text-[#7FB77E] placeholder:text-[#7FB77E] text-center outline-none">
         </div>
 
         <transition name="fade">
@@ -68,7 +68,7 @@ const scrollToActive = () => {
 
 const moveDown = () => {
     if (activeIndex.value < searchResults.value.length - 1) {
-        activeIndex.value++;
+        activeIndex.value++; 
         nextTick(scrollToActive);
     }
 };
@@ -84,7 +84,7 @@ const selectItem = (item) => {
     searchQuery.value = item.word;
     searchResults.value = [];
     activeIndex.value = -1;
-    navigateTo(`/resultTranslate/${encodeURIComponent(item?.word)}`);
+    navigateTo(`/resultTranslate/${encodeURIComponent(item?.word)}?sourceLang=${prop.source_language}&&targetlang=${prop.target_language}`);
 };
 
 const selectCurrentItem = () => {
@@ -92,7 +92,7 @@ const selectCurrentItem = () => {
         selectItem(searchResults.value[activeIndex.value]);
     }
     else if (searchQuery.value.trim()) {
-        navigateTo(`resultTranslate/${encodeURIComponent(searchQuery.value.trim())}`);
+        navigateTo(`resultTranslate/${encodeURIComponent(searchQuery.value.trim())}?sourceLang=${prop.source_language}&&targetlang=${prop.target_language}`);
     }
 };
 
