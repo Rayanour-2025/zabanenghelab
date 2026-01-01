@@ -51,8 +51,7 @@
                                 <div class="flex gap-x-3 items-center">
                                     <message-icon width="22" height="22" />
                                     <p class="text-xl font-normal">4 دیدگاه اخیر</p>
-                                </div>
-                                <div class="border p-3 rounded-3xl">نمایش همه</div>
+                                </div> 
                             </div>
                             <div class="flex flex-col gap-y-5">
                                 <recent-comment v-for="(com, index) in comments?.data" :key="index" :comment="com" />

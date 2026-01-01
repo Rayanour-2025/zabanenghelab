@@ -37,7 +37,8 @@
         </div>
       </div>
 
-      <div v-if="isMenuOpen" @click="isMenuOpen = false" class="h-full w-full  fixed items-center flex justify-end bg-black/30 top-0 left-0">
+      <div v-if="isMenuOpen" @click="isMenuOpen = false"
+        class="h-full w-full  fixed items-center flex justify-end bg-black/30 top-0 left-0">
         <transition name="menu">
           <div @click.stop class="h-full pr-3 w-1/2 bg-white">
             <nav class="flex flex-col items-end mt-4 gap-8">
@@ -50,12 +51,15 @@
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">راهنما</span>
               <span
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">دیکشنری</span>
+              <nuxt-link to="/questions"
+                class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها
+                و پیشنهادها</nuxt-link>
             </nav>
           </div>
         </transition>
       </div>
 
-    </header> 
+    </header>
 
     <!-- Main Content -->
     <main class="flex-grow">
@@ -99,7 +103,7 @@
 <script setup>
 import { useAuthToken } from '@/composables/useAuthCrypto';
 import { useAuthStore } from '@/stores/auth';
-import { useRoute } from 'vue-router'; 
+import { useRoute } from 'vue-router';
 import menuIcon from '~/components/icons/menuIcon.vue';
 const { isLoggedIn, isAdmin } = useAuthToken();
 const authStore = useAuthStore();
@@ -118,6 +122,4 @@ const handleLogin = () => {
 </script>
 
 
-<style>
-
-</style>
+<style></style>

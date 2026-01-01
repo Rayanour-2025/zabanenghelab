@@ -87,6 +87,7 @@
                     </div>
                 </div>
             </div>
+            <loading-animation v-if="loading || langLoading" />
         </div>
     </div>
 </template>
@@ -97,6 +98,7 @@ import photo from "~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png"
 import { useAuthToken } from '~/composables/useAuthCrypto'
 import useFetchLanguages from '~/composables/useFetchLanguages'
 import { useSendQuestion } from "#imports";
+import loadingAnimation from "~/components/loadingAnimation.vue";
 import useFetchQuestions from '~/composables/useFetchQuestions'
 const Qtypes = ref([
     { value: 1, label: 'گزارش مشکل' },

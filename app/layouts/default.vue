@@ -28,6 +28,8 @@
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">قوانین</span>
           <span
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">راهنما</span>
+          <nuxt-link to="/questions"
+            class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها و پیشنهادها</nuxt-link>
           <span
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">دیکشنری</span>
         </nav>
