@@ -16,14 +16,14 @@
             <div class="flex gap-4">
                 <div class="text-[#5C636980]">جنسیت:</div>
                 <div>
-                    <input type="radio" id="man" name="gender" class="peer hidden" />
+                    <input type="radio" value="male" v-model="personalInfo.gender" id="man" name="gender" class="peer hidden" />
                     <label for="man" class="cursor-pointer peer-checked:text-red-500">
                         مرد
                     </label>
                 </div>
 
                 <div>
-                    <input type="radio" id="woman" name="gender" class="peer hidden" />
+                    <input type="radio" value="female" v-model="personalInfo.gender" id="woman" name="gender" class="peer hidden" />
                     <label for="woman" class="cursor-pointer peer-checked:text-red-500">
                         زن
                     </label>
@@ -110,6 +110,7 @@ const sendData = async () => {
     try {
         if (AUTH_TOKEN.value && isLoggedIn.value) {
             await sendPersonal(AUTH_TOKEN.value, 'personal-info', personalInfo.value)
+            console.log(personalInfo.value)
         } else {
             toast.error('ابتدا وارد سایت شوید')
             await navigateTo('/login')

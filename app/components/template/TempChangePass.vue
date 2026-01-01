@@ -54,7 +54,7 @@ const passObj = ref({
     current_password: ''
 })
 const sendData = async () => {
-    if (!passObj.value.current_password || !passObj.value.password || !passObj.value.password_confirmation) {
+    if (!passObj.value.current_password || !passObj.value.password || !passObj.value.confirm_password) {
         toast.error('فیلد ها را پر کنید')
         return
     }
