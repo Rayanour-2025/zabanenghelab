@@ -18,8 +18,7 @@ export const useAuthStore = defineStore("auth", {
   },
 
   actions: {
-    setLoginData(loginResponse) {
-      console.log(loginResponse);
+    setLoginData(loginResponse) { 
       this.user = loginResponse.user;
       this.token = loginResponse.token;
       this.isLoggedIn = true;

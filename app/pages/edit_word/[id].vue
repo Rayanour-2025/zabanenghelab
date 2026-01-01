@@ -138,8 +138,8 @@ const saveEditorContent = () => {
     }
     isEditorModalOpen.value = false;
 };
+let wordId = ''
 const submitChange = async () => {
-    let wordId = ''
     delete data?.value?.data?.dictionary
     delete data?.value?.data?.dictionary_id
     wordId = data?.value?.data?.id

@@ -1,9 +1,9 @@
 <template>
   <div class="w-[195px] hidden font-zain md:flex flex-col items-end pr-6">
-    <h2 to="/words" class="text-[#7FB77E] w-[80%] text-right text-lg leading-[38px] font-normal py-[25px]"> 
+    <h2 to="/words" class="text-[#7FB77E] w-[80%] text-right text-lg leading-[38px] font-normal py-[25px]">
 
-        لغات
- 
+      لغات
+
     </h2>
     <div class="w-full border-t border-[#DADDD8]"></div>
 
@@ -17,7 +17,7 @@
       <div
         class="w-full flex flex-row items-center justify-end gap-[10px] py-[25px] cursor-pointer hover:bg-gray-50 pr-6 rounded-lg transition-colors duration-200">
         <!-- <icons-pop-up-flash class="w-[18px] h-[18px]" /> -->
-        <span class="text-[#2B2B2B] text-right text-base leading-[30px]">لغات در خواستی</span>
+        <span class="text-[#2B2B2B] text-right text-base leading-[30px]">پرسش ها و پیشنهاد ها</span>
       </div>
     </NuxtLink>
     <div class="w-full border-t border-[#DADDD8]"></div>
@@ -56,7 +56,7 @@
     </NuxtLink>
     <NuxtLink
       class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">
-      لغات درخواستی
+      پرسش ها و پیشنهاد ها
     </NuxtLink>
     <NuxtLink
       class="px-4 text-[#8B968B] py-2 bg-[#F0F1EE] shadow-[0px_2px_7px_0px_#A7A7A740] rounded-full inline-block">

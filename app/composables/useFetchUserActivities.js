@@ -3,14 +3,14 @@ import axios from "axios";
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
 const toast = useToast()
-const useFetchSingleWord = () => {
+const useFetchUserActivities = () => {
   const responseData = ref(null);
   const loading = ref(false);
   const err = ref(false);
   const errMessage = ref("");
   const success = ref(false);
 
-  const fetchSingleWord = async (token, wordId) => {
+  const fetchUserActivities = async (token) => {
     loading.value = true;
     err.value = false;
     success.value = false;
@@ -19,10 +19,12 @@ const useFetchSingleWord = () => {
     const headers = {};
     if (token) {
       headers.Authorization = `Bearer ${token}`;
+    } else {
+        headers.Authorization = ``
     } 
     try {
       const response = await axios.get(
-        `https://ip3.ir/dictionary/api/v1/words/${wordId}`,
+        `https://ip3.ir/dictionary/api/v1/profile/activities`,
         { headers }
       );
 
@@ -55,8 +57,8 @@ const useFetchSingleWord = () => {
     err,
     errMessage,
     success,
-    fetchSingleWord,
+    fetchUserActivities,
   };
 };
 
-export default useFetchSingleWord;
+export default useFetchUserActivities;

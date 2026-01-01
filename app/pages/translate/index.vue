@@ -122,8 +122,7 @@ if (data == null) {
 }
 const loadData = async () => {
     await fetchSingleWord(token.value, route.query.word)
-    data.value = responseData.value.data
-    console.log(data.value)
+    data.value = responseData.value.data 
 }
 loadData()
 const dictionaries = [

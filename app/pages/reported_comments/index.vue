@@ -26,10 +26,8 @@ const {
   loading: reportCommentLoading
 } = useFetchDashboardData()
 const loadData = async () => {
-  if (loginStore.token && loginStore.isLoggedIn) {
-    console.log(AUTH_TOKEN.value)
-    await fetchDashboardData(AUTH_TOKEN.value, "comment-reports")
-    console.log(reportCommentData?.value?.data)
+  if (loginStore.token && loginStore.isLoggedIn) { 
+    await fetchDashboardData(AUTH_TOKEN.value, "comment-reports") 
   }
 }
 const reload = (flag) => {

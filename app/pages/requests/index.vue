@@ -1,8 +1,49 @@
 <template>
-
-
   <div
-    class="w-full  flex flex-col justify-center items-end gap-[30px] px-[20px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
+    class="w-full  flex flex-col justify-center items-end  px-[20px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
+    <div dir="rtl" class="md:p-5 p-2 w-full flex flex-col  gap-y-6">
+      <div class="w-full">
+        <div class="flex w-full mb-4 items-center gap-3">
+          <div v-for="item in filters" :key="item.id" @click="activeFilter = item.id" :class="[
+            'p-4 rounded-[100px] cursor-pointer transition-all duration-300 ease-in-out',
+            activeFilter === item.id
+              ? 'bg-[#7FB77E] text-white'
+              : 'bg-[#DDE8D6] text-[#7FB77E]'
+          ]" style="box-shadow: 0px 2px 10px -6px #8B968B40;">
+            {{ item.title }}
+          </div>
+        </div>
+        <div class="flex w-full items-center gap-3">
+          <template v-if="activeFilter == 1">
+            <div class="flex flex-wrap gap-2">
+              <div v-for="item in questionFilters" :key="item.id" @click="questionSearch = item.id" :class="[
+                'p-3 sm:p-4 rounded-[15px] cursor-pointer border-[0.5px] border-[#7FB77E] transition-all duration-300 ease-in-out text-center text-xs sm:text-base',
+                questionSearch === item.id
+                  ? 'bg-[#7FB77E] text-white'
+                  : 'bg-[#F5F6F4] text-[#7FB77E]'
+              ]" style="box-shadow: 0px 2px 10px -6px #8B968B40;">
+                {{ item.title }}
+              </div>
+            </div>
+          </template>
+          <template v-if="activeFilter == 2">
+            <div class="flex w-full items-center justify-between">
+              <div class="flex gap-3 items-center">
+                <div class="bg-[#DDE8D6] text-[#7FB77E] px-4 py-4 rounded-xl" @click="sd">عمومی: </div>
+                <div class="w-[40%]">
+                  <PersianDatePicker v-model="myDate" format="jYYYY-jMM-jDD" display-format="jDD jMMMM jYYYY" />
+                </div>
+              </div>
+              <div>
+                <input type="text"
+                  class="border-[0.5px] border-[#7FB77E] bg-[#F5F6F4] outline-none p-3 rounded-lg w-full"
+                  placeholder="نام کاربری را وارد کنید">
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
     <div class="md:p-5 p-2 w-full flex flex-col items-center gap-y-6">
       <div dir="rtl" class="bg-[#F5F6F4] w-full p-8 rounded-[55px]">
         <div class="flex items-center gap-3">
@@ -36,9 +77,28 @@
 <script setup>
 import photo from "~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png"
 import plus from "~/components/icons/plus.vue"
+import PersianDatePicker from "~/components/PersianDatePicker.vue"
 definePageMeta({
   layout: 'dashboard-admin'
 })
+const filters = [
+  { id: 1, title: 'پرسش ها' },
+  { id: 2, title: 'پاسخ ها' },
+  { id: 3, title: 'لغات ثبت شده' },
+]
+const questionFilters = [
+  { id: 1, title: 'عمومی' },
+  { id: 2, title: 'گزارش مشکل' },
+  { id: 3, title: 'مشکل فنی' },
+  { id: 4, title: 'حساب کاربری' },
+  { id: 5, title: 'پیشنهاد' },
+]
+const activeFilter = ref('')
+const questionSearch = ref('')
+const myDate = ref('')
+const sd = () => {
+  console.log(myDate.value)
+}
 </script>
 
 <style scoped>

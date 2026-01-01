@@ -36,7 +36,7 @@
                         <like width="30" :color="commentData?.user_like_status == 'liked' ? '#f00' : '#2B2B2B' " @click="reaction('like', commentData.id)" height="30" />
                     </div>
                     <div @click="reaction('dislike', commentData.id)">
-                        <dislike width="30" :color="commentData?.user_like_status == 'disliked' ? '#f00' : '#2B2B2B'" @click="reaction('dislike', commentData?.id)" height="30" />
+                        <dislike width="30" :color="commentData?.user_like_status == 'disliked' ? '#f00' : '#2B2B2B'"   height="30" />
                     </div>
                 </div>
                 <div @click="reply(commentData)"

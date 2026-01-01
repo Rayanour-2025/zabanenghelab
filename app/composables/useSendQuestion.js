@@ -1,47 +1,46 @@
-// composable/useFetchDictionaries.js
+// /home/hamyar/Desktop/My_Folder/zaban-enghelab/app/composables/useUpdateWord.js
 import axios from "axios";
 import { ref } from "vue";
 import { useToast } from "vue-toastification";
-const toast = useToast()
-const useFetchSingleWord = () => {
+const toast = useToast();
+const useSendQuestion = () => {
   const responseData = ref(null);
   const loading = ref(false);
   const err = ref(false);
   const errMessage = ref("");
   const success = ref(false);
 
-  const fetchSingleWord = async (token, wordId) => {
+  const sendQuestion = async (token, payload) => {
     loading.value = true;
     err.value = false;
     success.value = false;
     errMessage.value = "";
-    responseData.value = null; 
-    const headers = {};
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    } 
+    responseData.value = null;
+
+    const apiUrl = `https://ip3.ir/dictionary/api/v1/questions`;
+
     try {
-      const response = await axios.get(
-        `https://ip3.ir/dictionary/api/v1/words/${wordId}`,
-        { headers }
-      );
+      const response = await axios.post(apiUrl, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       responseData.value = response.data;
       success.value = true;
+      toast.success(responseData.value.message || 'سوال با موفقیت ارسال شد');
       return response.data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       err.value = true;
       let message =
-        error.response?.data?.message ||
-        error.response?.data ||
-        error.message ||
-        "خطا در واکشی لغت‌نامه‌ها";
+        error.response?.data?.message || error.response?.data || error.message;
 
       if (typeof message === "object") {
         message = JSON.stringify(message);
       }
-      toast.error(message)
+      toast.error(message);
       errMessage.value = message;
       throw new Error(message);
     } finally {
@@ -55,8 +54,8 @@ const useFetchSingleWord = () => {
     err,
     errMessage,
     success,
-    fetchSingleWord,
+    sendQuestion,
   };
 };
 
-export default useFetchSingleWord;
+export default useSendQuestion;

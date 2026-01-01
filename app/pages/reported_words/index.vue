@@ -25,16 +25,13 @@ const {
   responseData: reportWordData,
   loading: reportWordLoading
 } = useFetchDashboardData()
-const loadData = async () => {
-  console.log(loginStore.isLoggedIn)
+const loadData = async () => { 
   if (loginStore.token && loginStore.isLoggedIn) {
-    await fetchDashboardData(AUTH_TOKEN.value, "word-reports")
-    console.log(reportWordData.value)
+    await fetchDashboardData(AUTH_TOKEN.value, "word-reports") 
   }
 }
 loadData()
-const reload = async (flag) => {
-  console.log(flag)
+const reload = async (flag) => { 
   if (flag) {
     await loadData()
   }
