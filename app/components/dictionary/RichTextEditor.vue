@@ -235,7 +235,11 @@
       </div>
     </div>
 
-    <editor-content :editor="editor" class="prose max-w-none p-4 min-h-[300px] focus:outline-none transition-shadow" />
+    <!-- Editor -->
+    <editor-content
+      :editor="editor"
+      class="prose max-w-none p-4 min-h-[300px] max-h-[380px] overflow-y-auto custom-scrollbar focus:outline-none transition-shadow flex-1"
+    />
   </div>
 </template>
 
@@ -243,172 +247,82 @@
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import { watch, onBeforeUnmount } from 'vue';
-
 import Underline from '@tiptap/extension-underline';
 import Color from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Highlight from '@tiptap/extension-highlight';
 import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
-import FontFamily from '@tiptap/extension-font-family'; 
+import FontFamily from '@tiptap/extension-font-family';
 
-
-const props = defineProps({
-  modelValue: {
-    type: String, 
-    default: '',
-  },
-});
-
+const props = defineProps({ modelValue: { type: String, default: '' } });
 const emit = defineEmits(['update:modelValue', 'change']);
-
-
-const setLink = () => {
-  const previousUrl = editor.value.getAttributes('link').href;
-  const url = window.prompt('URL وارد کنید:', previousUrl);
-
-  if (url === null) {
-    return;
-  }
-
-  if (url === '') {
-    editor.value.chain().focus().extendMarkRange('link').unsetLink().run();
-    return;
-  }
-
-  editor.value.chain().focus().extendMarkRange('link').setLink({ href: url, target: '_blank' }).run();
-};
 
 const editor = useEditor({
   content: props.modelValue,
   extensions: [
-    StarterKit.configure({
-      blockquote: false,
-      codeBlock: false,
-    }),
+    StarterKit.configure({ blockquote: false, codeBlock: false }),
     Underline,
     TextStyle,
-    FontFamily.configure({
-      types: ['textStyle'],
-    }),
+    FontFamily.configure({ types: ['textStyle'] }),
     Color,
-    Highlight.configure({
-        multicolor: true,
-        HTMLAttributes: {
-            class: 'bg-yellow-200/70 rounded px-0.5', 
-        },
-    }),
-    Link.configure({
-      openOnClick: false,
-      HTMLAttributes: {
-        target: '_blank',
-        rel: 'noopener noreferrer nofollow',
-      },
-    }),
-    TextAlign.configure({
-      types: ['heading', 'paragraph'],
-    }),
+    Highlight.configure({ multicolor: true, HTMLAttributes: { class: 'bg-yellow-200/70 rounded px-0.5' } }),
+    Link.configure({ openOnClick: false, HTMLAttributes: { target: '_blank', rel: 'noopener noreferrer nofollow' } }),
+    TextAlign.configure({ types: ['heading', 'paragraph'] }),
   ],
-  onUpdate: ({ editor }) => {
-    const html = editor.getHTML();
-    emit('update:modelValue', html); 
-  },
+  onUpdate: ({ editor }) => emit('update:modelValue', editor.getHTML()),
 });
 
-watch(
-  () => props.modelValue,
-  (value) => {
-    if (editor.value && editor.value.getHTML() !== value) {
-      editor.value.commands.setContent(value, false);
-    }
-  }
-);
-
-onBeforeUnmount(() => {
-  editor.value.destroy();
+watch(() => props.modelValue, (value) => {
+  if (editor.value && editor.value.getHTML() !== value) editor.value.commands.setContent(value, false);
 });
 
+onBeforeUnmount(() => { editor.value.destroy(); });
 
-
-onBeforeUnmount(() => {
-  editor.value.destroy();
-});
-
-const getHtmlContent = () => {
-    return editor.value ? editor.value.getHTML() : '';
-};
-
+const getHtmlContent = () => editor.value ? editor.value.getHTML() : '';
 defineExpose({ getHtmlContent });
+
+const setLink = () => {
+  const previousUrl = editor.value.getAttributes('link').href;
+  const url = window.prompt('URL وارد کنید:', previousUrl);
+  if (url === null) return;
+  if (url === '') editor.value.chain().focus().extendMarkRange('link').unsetLink().run();
+  else editor.value.chain().focus().extendMarkRange('link').setLink({ href: url, target: '_blank' }).run();
+};
 </script>
 
 <style>
 .toolbar-button {
-  @apply p-1.5 rounded-lg text-gray-600 hover:bg-gray-200 transition-all duration-150;
-  @apply flex justify-center items-center; 
+  @apply p-1.5 rounded-lg text-gray-600 hover:bg-gray-200 transition-all duration-150 flex justify-center items-center;
 }
 
-.toolbar-divider {
-  @apply border-l border-gray-200 h-6 mx-1;
+.toolbar-divider { @apply border-l border-gray-200 h-6 mx-1; }
+
+.color-input-overlay {
+  @apply absolute top-0 right-0 h-full w-full opacity-0 cursor-pointer z-20;
+  padding: 0; margin: 0;
 }
 
-.color-input-override::-webkit-color-swatch-wrapper {
-  padding: 0;
+.custom-scrollbar {
+  overflow-y: auto;
 }
-.color-input-override::-webkit-color-swatch {
-  border: none;
+
+.custom-scrollbar::-webkit-scrollbar { width: 8px; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
   border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
 }
 
-
-.prose :where(ul) {
-    list-style-type: disc;
-    margin-left: 1.5em;
-    padding-left: 0.5em;
-}
-.prose :where(ol) {
-    list-style-type: decimal;
-    margin-left: 1.5em;
-    padding-left: 0.5em;
-}
-
+/* پروسه محتوای مقاله */
+.prose :where(ul) { list-style-type: disc; margin-left: 1.5em; padding-left: 0.5em; }
+.prose :where(ol) { list-style-type: decimal; margin-left: 1.5em; padding-left: 0.5em; }
 .prose :where(h1) { @apply text-3xl font-extrabold my-4 border-b pb-2 border-gray-200; }
 .prose :where(h2) { @apply text-2xl font-bold my-3; }
 .prose :where(h3) { @apply text-xl font-semibold my-2; }
 .prose :where(p) { @apply my-2 leading-relaxed; }
-
-.prose :where(code) {
-    @apply bg-gray-100 text-red-600 px-1 py-0.5 rounded text-sm;
-}
-.prose :where(blockquote) {
-    @apply border-l-4 border-blue-500 pl-4 py-2 my-4 bg-blue-50 text-blue-800 italic;
-}
-
-.prose a {
-  @apply text-blue-600 hover:text-blue-800 underline transition-colors cursor-pointer;
-}
-
-.prose mark {
-    background-color: var(--color);
-    color: inherit;
-    @apply rounded px-0.5;
-}
-
-.prose :where(hr) {
-    @apply border-gray-300 my-4;
-}
-
-.color-input-overlay {
-    @apply absolute top-0 right-0 h-full w-full opacity-0 cursor-pointer; 
-    z-index: 20; 
-    padding: 0;
-    margin: 0;
-}
-
-.color-input-overlay::-webkit-color-swatch-wrapper {
-  padding: 0;
-}
-.color-input-overlay::-webkit-color-swatch {
-  border: none;
-  border-radius: 4px;
-}
+.prose :where(code) { @apply bg-gray-100 text-red-600 px-1 py-0.5 rounded text-sm; }
+.prose :where(blockquote) { @apply border-l-4 border-blue-500 pl-4 py-2 my-4 bg-blue-50 text-blue-800 italic; }
+.prose a { @apply text-blue-600 hover:text-blue-800 underline transition-colors cursor-pointer; }
+.prose mark { background-color: var(--color); color: inherit; @apply rounded px-0.5; }
+.prose :where(hr) { @apply border-gray-300 my-4; }
 </style>
