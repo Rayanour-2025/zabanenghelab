@@ -35,7 +35,7 @@
 import moment from 'moment-jalaali';
 
 // تنظیم فارسی‌سازی کل کتابخانه moment
-moment.loadPersian({ usePersianDigits: true, dialect: 'persian-modern' });
+moment.loadPersian({ usePersianDigits: false, dialect: 'persian-modern' });
 
 export default {
   props: {

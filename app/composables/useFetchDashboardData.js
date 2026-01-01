@@ -9,7 +9,7 @@ const useFetchDashboardData = () => {
   const errMessage = ref("");
   const success = ref(false);
 
-  const fetchDashboardData = async (token, route) => {
+  const fetchDashboardData = async (token, route, params) => {
     loading.value = true;
     err.value = false;
     success.value = false;
@@ -23,8 +23,8 @@ const useFetchDashboardData = () => {
 
     try {
       const response = await axios.get(
-        `https://ip3.ir/dictionary/api/v1/${route}/pending`,
-        { headers }
+        `https://ip3.ir/dictionary/api/v1/${route}`,
+        { headers, params }
       );
 
       responseData.value = response.data;
