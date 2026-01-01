@@ -14,7 +14,7 @@
                     class="outline-none border p-3 rounded-full border-[#7FB77E] ">
             </div>
             <div>
-                <base-button>
+                <base-button @click="sendData">
                     <span class="text-white" v-if="!loading">
                         ثبت تغییرات
                     </span>
@@ -63,7 +63,7 @@ const sendData = async () => {
         return
     }
     try {
-        await sendPersonal(AUTH_TOKEN.value, 'password', contact.value)
+        await sendPersonal(AUTH_TOKEN.value, 'contact-info', contact.value)
     } catch (error) {
 
     }

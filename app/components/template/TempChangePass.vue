@@ -15,7 +15,7 @@
             </div>
             <div class="flex gap-y-3 flex-col">
                 <label for="repeat_pass" class=" text-[#5C636980]">تکرار رمز عبور جدید:</label>
-                <input type="password" v-model="passObj.password_confirmation" name="repeat_pass" id="repeat_pass"
+                <input type="password" v-model="passObj.confirm_password" name="repeat_pass" id="repeat_pass"
                     placeholder="تکرار رمز عبور جدید" class="outline-none border p-3 rounded-full border-[#7FB77E] ">
             </div>
             <div>
@@ -50,7 +50,7 @@ const toast = useToast()
 const passObj = ref({
     _method: 'PUT',
     password: '',
-    password_confirmation: '',
+    confirm_password: '',
     current_password: ''
 })
 const sendData = async () => {

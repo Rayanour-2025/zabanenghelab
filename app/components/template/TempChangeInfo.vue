@@ -92,6 +92,7 @@ const { token: AUTH_TOKEN, isLoggedIn } = useAuthToken()
 const { loading, sendPersonal, responseData } = useSendPersonal()
 const toast = useToast()
 const personalInfo = ref({
+    _method: 'PUT',
     last_name: prop?.lastName,
     first_name: prop?.firstName,
     gender: prop?.gender,
