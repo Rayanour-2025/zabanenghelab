@@ -8,7 +8,7 @@
             <div dir="rtl" class="w-full flex md:flex-row flex-col items-start justify-start gap-8 px-7">
                 <TempChangeInfo v-if="responseData?.data" :lastName="data?.last_name" :firstName="data?.first_name" :gender="data?.gender"
                     :birthDate="data?.birth_date" :aboutMe="data?.about_me" />
-                <TempChangeNumber v-if="responseData?.data" :phone_number="responseData?.data?.phone_number"
+                <TempChangeNumber v-if="responseData?.data" :phone_number="responseData?.data?.mobile"
                     :email="responseData?.data?.email" />
                 <TempChangePass />
             </div>

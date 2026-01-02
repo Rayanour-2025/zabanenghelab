@@ -6,14 +6,14 @@
                     <p class="ml-3">گزارش توسط: </p>
                     <img :src="photo" class="w-12 ml-2 h-12 rounded-full" alt="profile" />
                     <p class="text-xs md:text-base font-semibold">
-                        {{ reportData.user.first_name }} {{ reportData.user.last_name }}
+                        {{ reportData.user.username }} 
                     </p>
                 </div>
                 <div class="flex  items-center">
                     <p class="ml-3">گزارش شده: </p>
                     <img :src="photo" class="w-12 ml-2 h-12 rounded-full" alt="profile" />
                     <p class="text-xs md:text-base font-semibold">
-                        {{ reportData?.comment?.user?.first_name }} {{ reportData?.comment?.user?.last_name }}
+                        {{ reportData?.comment?.user?.username }}
                     </p>
                 </div>
             </div>

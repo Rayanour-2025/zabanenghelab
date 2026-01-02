@@ -101,10 +101,10 @@ import { useSendQuestion } from "#imports";
 import loadingAnimation from "~/components/loadingAnimation.vue";
 import useFetchQuestions from '~/composables/useFetchQuestions'
 const Qtypes = ref([
-    { value: 1, label: 'گزارش مشکل' },
-    { value: 2, label: 'مشکل فنی' },
-    { value: 3, label: 'حساب کاربری' },
     { value: 4, label: 'سایر' },
+    { value: 2, label: 'مشکل فنی' },
+    { value: 1, label: 'گزارش مشکل' },
+    { value: 3, label: 'حساب کاربری' },
     { value: 5, label: 'پیشنهاد لغت' },
 ])
 const { fetchQuestions, loading, responseData } = useFetchQuestions()

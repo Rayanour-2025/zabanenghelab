@@ -1,5 +1,5 @@
 <template>
-    <div dir="rtl" class="bg-[#F5F6F4] p-8 w-full rounded-[55px]">
+    <div dir="rtl" class="bg-[#F5F6F4] md:p-8 p-4 w-full rounded-[55px]">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <img :src="photo" class="w-12 h-12 rounded-full" alt="profile" />
