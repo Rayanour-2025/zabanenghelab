@@ -34,7 +34,7 @@ const useSendAnswer = () => {
 
       responseData.value = response.data;
       success.value = true;
-      toast.success(responseData.value.message)
+      toast.success(responseData.value.message || 'ارسال پیام با موفقیت انجام شد')
       return response.data;
     } catch (error) {
     console.log(error)
