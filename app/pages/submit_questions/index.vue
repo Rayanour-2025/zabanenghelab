@@ -141,16 +141,16 @@ const sendData = async () => {
     try {
         await sendQuestion(AUTH_TOKEN.value, qObj.value)
         qObj.value.description = ''
-        qObj.value.word = ''
-        qObj.value.language_id = ''
+        delete qObj.value.word
+        delete qObj.value.language_id
         qObj.value.type = ''
         selectedLang.value = 1
         selectedQType.value = 1
     } catch (error) {
         console.log(qObj.value)
         qObj.value.description = ''
-        qObj.value.word = ''
-        qObj.value.language_id = ''
+        delete qObj.value.word
+        delete qObj.value.language_id
         qObj.value.type = ''
         selectedLang.value = 1
         description.value = ''
