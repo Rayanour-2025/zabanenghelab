@@ -8,7 +8,7 @@
         </div>
         <div class="md:mt-5 mt-2">
             <p class="md:text-base text-xs" v-if="item?.word">لغت درخواستی: <span class="text-[#7FB77E]">{{ item?.word
-            }}</span></p>
+                    }}</span></p>
         </div>
         <div class="mt-2 text-xs md:text-base" v-if="!item?.word">نوع: <span class="text-[#7FB77E]">{{
             questionFilters.find(q => q.id === item?.type)?.title }}
@@ -24,7 +24,7 @@
             <p class="mt-3 md:text-sm text-xs">{{ item?.answer?.body }}
             </p>
         </div>
-        <div class="mt-3" v-if="!item?.answer">
+        <div class="mt-3" v-if="filterId != 3 && filterId != 2">
             <button @click="sendAnswer(item?.word ? 1 : 2, item.id)"
                 class="flex items-center gap-2 bg-[#7FB77E33] p-2 md:p-3 rounded-full">
                 <plus width="12" height="12" />
@@ -66,18 +66,22 @@ import baseButtom from '~/components/ui/BaseButton.vue'
 import photo from '~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png'
 import plus from '~/components/icons/plus.vue'
 import reportcard from '~/components/reportcard.vue'
-import { useSendAnswer } from '#imports'
+import { useSendAnswer, useApproveSuggest } from '#imports'
 import { useAuthToken } from '~/composables/useAuthCrypto'
 import { useToast } from 'vue-toastification'
 const prop = defineProps({
     item: {
         required: true,
         type: [Object, Array]
+    },
+    filterId: {
+        required: true, 
     }
 })
 const answerObj = ref({
     body: ''
 })
+const { approveSuggest, loading: sugestLoading } = useApproveSuggest()
 const {
     loading,
     sendAnswer: sendAnswerfunc,
@@ -97,7 +101,12 @@ const questionFilters = [
 const isOpenAnswerBox = ref(false)
 const sendAnswer = async (id, QId) => {
     if (id == 1) {
-        navigateTo('/words')
+        try {
+            await approveSuggest(AUTH_TOKEN.value, QId)
+            await navigateTo('/words')
+        } catch (error) {
+            toast.error('دوباره امتحان کنید.')
+        }
     }
     if (id == 2) {
         isOpenAnswerBox.value = true
@@ -115,8 +124,10 @@ const submitAnswer = async (QId) => {
             answerObj.value.body = ''
             isOpenAnswerBox.value = false
         }
+        refresh()
     } catch (error) {
         console.log(error)
+        refresh()
     }
 }
 </script>

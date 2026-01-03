@@ -46,15 +46,13 @@
       </div>
     </div>
     <div class="md:p-5 p-2 w-full flex flex-col items-center gap-y-6">
-      <temp-request v-for="item in data?.data" :item="item" :key="item.id" />
+      <temp-request v-for="item in data?.data" :filter-id="activeFilter"  :item="item" :key="item.id" />
       <loadingTemp v-if="loading" />
     </div>
   </div>
 </template>
 
-<script setup>
-import photo from "~/assets/images/edd4b661b231cb76d474e6223e74a43f88aab978.png"
-import plus from "~/components/icons/plus.vue"
+<script setup> 
 import loadingTemp from "~/components/loadingTemp.vue"
 import TempRequest from "~/components/template/TempRequest.vue"
 import { useFetchDashboardData } from "#imports"
@@ -77,7 +75,7 @@ const questionFilters = [
   { id: 3, title: 'حساب کاربری' },
   { id: 5, title: 'پیشنهاد لغت' },
 ]
-const activeFilter = ref('')
+const activeFilter = ref(2)
 const questionSearch = ref('')
 const myDate = ref('')
 const params = ref({})
@@ -85,9 +83,11 @@ const filterData = async (item) => {
   if (item.id == 2) {
     await fetchDashboardData(AUTH_TOKEN.value, 'admin/questions/answered')
     console.log(data.value)
-  }
-  if (item.id == 1) {
+  } else if (item.id == 1) {
     await fetchDashboardData(AUTH_TOKEN.value, 'admin/questions/unanswered')
+  } else if (item.id = 3) {
+    await fetchDashboardData(AUTH_TOKEN.value, 'admin/questions/suggestions/approved')
+    console.log(data.value.data)
   }
 }
 const filterQ = async (item) => {
