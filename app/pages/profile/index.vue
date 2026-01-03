@@ -54,7 +54,7 @@
                                 </div> 
                             </div>
                             <div class="flex flex-col gap-y-5">
-                                <recent-comment v-for="(com, index) in comments?.data" :key="index" :comment="com" />
+                                <recent-comment v-for="(com, index) in comments?.data.slice(0,4)" :key="index" :comment="com" />
                             </div>
                         </div>
                     </div>

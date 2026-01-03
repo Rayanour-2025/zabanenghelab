@@ -34,6 +34,8 @@
           <nuxt-link to="/questions" v-if="isAdmin == 0"
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها
             و پیشنهادها</nuxt-link>
+          <nuxt-link to="/profile"
+            class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پروفایل</nuxt-link>
         </nav>
         <div class="font-zain font-black text-2xl text-[#7FB77E]">
           لوگو
@@ -57,6 +59,8 @@
               <nuxt-link to="/questions" v-if="isAdmin == 0"
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها
                 و پیشنهادها</nuxt-link>
+              <nuxt-link to="/profile"
+                class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پروفایل</nuxt-link>
             </nav>
           </div>
         </transition>
