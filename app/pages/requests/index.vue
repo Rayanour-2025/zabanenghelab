@@ -28,16 +28,21 @@
             </div>
           </template>
           <template v-if="activeFilter == 2">
-            <div class="flex w-full items-center justify-between">
-              <div class="flex gap-3 items-center">
-                <div class="bg-[#DDE8D6] text-[#7FB77E] px-4 py-4 rounded-xl" @click="sd">عمومی: </div>
-                <div class="w-[40%]">
-                  <PersianDatePicker v-model="myDate" format="jYYYY-jMM-jDD" display-format="jDD jMMMM jYYYY" />
+            <div class="flex flex-col lg:flex-row w-full items-start lg:items-center justify-between gap-4">
+              <div class="flex flex-col md:flex-row gap-3 items-start md:items-center w-full lg:w-auto">
+                <div class="flex items-center flex-wrap gap-2 w-full md:w-auto justify-between md:justify-start">
+                  <div class="w-full md:w-auto">
+                    <PersianDatePicker v-model="fromDate" format="jYYYY-jMM-jDD" display-format="jDD jMMMM jYYYY" />
+                  </div>
+                  <span class="text-[#7FB77E] md:block hidden font-bold">-</span>
+                  <div class="w-full md:w-auto">
+                    <PersianDatePicker v-model="toDate" format="jYYYY-jMM-jDD" display-format="jDD jMMMM jYYYY" />
+                  </div>
                 </div>
               </div>
-              <div>
-                <input type="text"
-                  class="border-[0.5px] border-[#7FB77E] bg-[#F5F6F4] outline-none p-3 rounded-lg w-full"
+              <div class="w-full lg:w-[300px]">
+                <input type="text" v-model="searchQuery"
+                  class="border-[0.5px] border-[#7FB77E] bg-[#F5F6F4] outline-none p-3 rounded-lg w-full placeholder:text-sm"
                   placeholder="نام کاربری را وارد کنید">
               </div>
             </div>
@@ -46,18 +51,17 @@
       </div>
     </div>
     <div class="md:p-5 p-2 w-full flex flex-col items-center gap-y-6">
-      <temp-request v-for="item in data?.data" :filter-id="activeFilter"  :item="item" :key="item.id" />
+      <temp-request v-for="item in data?.data" :filter-id="activeFilter" :item="item" :key="item.id" />
       <loadingTemp v-if="loading" />
     </div>
   </div>
 </template>
 
-<script setup> 
+<script setup>
 import loadingTemp from "~/components/loadingTemp.vue"
 import TempRequest from "~/components/template/TempRequest.vue"
 import { useFetchDashboardData } from "#imports"
 import { useAuthToken } from '~/composables/useAuthCrypto'
-import PersianDatePicker from "~/components/PersianDatePicker.vue"
 definePageMeta({
   layout: 'dashboard-admin'
 })
@@ -76,9 +80,15 @@ const questionFilters = [
   { id: 5, title: 'پیشنهاد لغت' },
 ]
 const activeFilter = ref(2)
-const questionSearch = ref('')
-const myDate = ref('')
+const questionSearch = ref('') 
 const params = ref({})
+const loadData = async () => {
+  try {
+    await fetchDashboardData(AUTH_TOKEN.value, 'admin/questions/answered')
+  } catch (err) {
+    
+  }
+}
 const filterData = async (item) => {
   if (item.id == 2) {
     await fetchDashboardData(AUTH_TOKEN.value, 'admin/questions/answered')
@@ -99,6 +109,46 @@ const filterQ = async (item) => {
     await fetchDashboardData(AUTH_TOKEN.value, 'admin/questions/unanswered', params.value)
   }
 }
+const searchQuery = ref('')
+let searchTimeout = null
+let dateTimeout = null
+const fromDate = ref('')
+const toDate = ref('')
+watch(searchQuery, (newVal) => {
+  clearTimeout(searchTimeout)
+  if (newVal.length >= 2 || newVal.length === 0) {
+    searchTimeout = setTimeout(async () => {
+      if (newVal.length >= 2) {
+        params.value.username = newVal
+        await fetchDashboardData(AUTH_TOKEN.value, "admin/questions/answered", params.value)
+      } else {
+        delete params.value.username
+        delete params.value.type
+        await fetchDashboardData(AUTH_TOKEN.value, 'admin/questions/answered')
+      }
+    }, 500)
+  }
+})
+watch([fromDate, toDate], ([newFrom, newTo]) => {
+  clearTimeout(dateTimeout)
+  console.log(newFrom)
+  dateTimeout = setTimeout(async () => {
+    if (newFrom) {
+      params.value.from_date = newFrom
+    } else {
+      delete params.value.from_date
+    }
+
+    if (newTo) {
+      params.value.to_date = newTo
+    } else {
+      delete params.value.to_date
+    }
+
+    await fetchDashboardData(AUTH_TOKEN.value, "admin/questions/answered", params.value)
+
+  }, 500)
+})
 </script>
 
 <style scoped>

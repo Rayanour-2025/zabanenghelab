@@ -7,7 +7,7 @@
                 <h2 class="font-extrabold text-3xl">{{ data?.data?.word }}</h2>
                 <div>
                     <h3 class="text-xl font-medium my-4">تعریف:</h3>
-                    <div class="bg-[#7FB77E33] flex items-center w-fit rounded-2xl p-4" >
+                    <div class="bg-[#7FB77E33] flex items-center w-fit rounded-2xl p-4">
                         {{ data?.data?.meaning }}
                         <div @click="openEditorModal('ویرایش تعریف', 'meaning', data?.data?.meaning)"
                             class="w-fit mr-3 p-2 bg-white rounded-full shadow hover:bg-gray-100 transition-colors">
@@ -15,35 +15,23 @@
                         </div>
                     </div>
                 </div>
-                <div  >
+                <div>
                     <h3 class="text-xl font-medium my-4">مترادف‌ها (با کاما جدا کنید):</h3>
-                    <input 
-                        type="text" 
-                        :value="data?.data?.synonyms?.join('، ')"
-                        @input="e => updateListField('synonyms', e.target.value)"
+                    <input type="text" v-model="textInputs.synonyms"
                         class="w-full md:w-[600px] p-4 bg-[#7FB77E15] border border-[#7FB77E33] rounded-2xl outline-none focus:border-[#7FB77E] transition-all"
-                        placeholder="مثلاً: کلمه اول، کلمه دوم"
-                    />
+                        placeholder="مثلاً: کلمه اول، کلمه دوم" />
                 </div>
                 <div class=" ">
                     <h3 class="text-xl font-medium my-4">هم‌خانواده (با کاما جدا کنید):</h3>
-                    <input 
-                        type="text" 
-                        :value="data?.data?.related_words?.join('، ')"
-                        @input="e => updateListField('related_words', e.target.value)"
+                    <input type="text" v-model="textInputs.related_words"
                         class="w-full md:w-[600px] p-4 bg-[#7FB77E15] border border-[#7FB77E33] rounded-2xl outline-none focus:border-[#7FB77E] transition-all"
-                        placeholder="مثلاً: کلمه اول، کلمه دوم"
-                    />
+                        placeholder="مثلاً: کلمه اول، کلمه دوم" />
                 </div>
-               <div>
+                <div>
                     <h3 class="text-xl font-medium my-4">متضادها (با کاما جدا کنید):</h3>
-                    <input 
-                        type="text" 
-                        :value="data?.data?.antonyms?.join('، ')"
-                        @input="e => updateListField('antonyms', e.target.value)"
+                    <input type="text" v-model="textInputs.antonyms"
                         class="w-full md:w-[600px] p-4 bg-[#7FB77E15] border border-[#7FB77E33] rounded-2xl outline-none focus:border-[#7FB77E] transition-all"
-                        placeholder="مثلاً: کلمه اول، کلمه دوم"
-                    />
+                        placeholder="مثلاً: کلمه اول، کلمه دوم" />
                 </div>
                 <div>
                     <h3 class="text-xl font-medium my-4">توضیحات:</h3>
@@ -106,6 +94,11 @@ import useUpdateWord from '~/composables/useUpdateWord';
 definePageMeta({ layout: 'dashboard-admin' })
 const { loading: updateLoading, updateWord } = useUpdateWord()
 const isEditorModalOpen = ref(false)
+const textInputs = reactive({
+    synonyms: '',
+    related_words: '',
+    antonyms: ''
+})
 const editorContent = ref('')
 const route = useRoute()
 const editorTitle = ref(null)
@@ -128,10 +121,17 @@ const loadData = async () => {
     }
 }
 loadData()
-const updateListField = (field, value) => {
-    // تبدیل متن اینپوت به آرایه (جدا کردن با کامای فارسی یا انگلیسی)
-    data.value.data[field] = value.split(/[،,]/).map(item => item.trim()).filter(item => item !== "");
-};
+const parseStringToArray = (str) => {
+    if (!str) return []
+    return str.split(/[،,]/).map(item => item.trim()).filter(item => item !== "")
+}
+watch(() => data.value, (newData) => {
+    if (newData?.data) {
+        textInputs.synonyms = newData.data.synonyms?.join('، ') || ''
+        textInputs.related_words = newData.data.related_words?.join('، ') || ''
+        textInputs.antonyms = newData.data.antonyms?.join('، ') || ''
+    }
+}, { immediate: true }) 
 const saveEditorContent = () => {
     if (currentFieldToEdit.value) {
         data.value.data[currentFieldToEdit.value] = editorContent.value;
@@ -139,16 +139,22 @@ const saveEditorContent = () => {
     isEditorModalOpen.value = false;
 };
 let wordId = ''
-const submitChange = async () => {
+const submitChange = async () => { 
+    if (data.value?.data) {
+        data.value.data.synonyms = parseStringToArray(textInputs.synonyms)
+        data.value.data.related_words = parseStringToArray(textInputs.related_words)
+        data.value.data.antonyms = parseStringToArray(textInputs.antonyms)
+    }
+ 
     delete data?.value?.data?.dictionary
     delete data?.value?.data?.dictionary_id
-    wordId = data?.value?.data?.id
     delete data?.value?.data?.id
+ 
     console.log(data?.value.data)
     try {
         await updateWord(AUTH_TOKEN.value, wordId, data?.value?.data)
     } catch (error) {
-
+        console.error(error)
     }
 }
 </script>

@@ -28,7 +28,7 @@
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">قوانین</span>
           <span
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">راهنما</span>
-          <nuxt-link to="/questions"
+          <nuxt-link v-if="isAdmin == 0" to="/questions"
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها
             و پیشنهادها</nuxt-link>
           <span
@@ -40,7 +40,7 @@
       </div>
 
       <div v-if="isMenuOpen" @click="isMenuOpen = false"
-        class="h-full w-full  fixed items-center flex justify-end bg-black/30 top-0 left-0">
+        class="h-full w-full z-[9999999] fixed items-center flex justify-end bg-black/30 top-0 left-0">
         <transition name="menu">
           <div @click.stop class="h-full pr-3 w-1/2 bg-white">
             <nav class="flex flex-col items-end mt-4 gap-8">
@@ -51,9 +51,9 @@
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">قوانین</span>
               <span
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">راهنما</span>
-              <span
+              <nuxt-link to="/question" v-if="isAdmin == 0"
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها
-                و پیشنهادها</span>
+                و پیشنهادها</nuxt-link>
               <span
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">دیکشنری</span>
             </nav>

@@ -2,10 +2,10 @@
 
   <div
     class="w-full flex flex-col justify-center items-end gap-[30px] px-[40px] py-[35px] bg-white shadow-[7px_-4px_37.4px_-15px_rgba(92,99,105,0.25)] rounded-r-[90px] rounded-br-[90px]">
-    <div class="w-full font-zain flex flex-col items-end gap-8">
-      <div class="flex flex-row justify-between items-center w-full h-[50px]">
+    <div class="w-full md:mt-2 mt-11 font-zain flex flex-col items-end gap-8">
+      <div class="flex flex-col-reverse md:flex-row justify-between md:items-center w-full h-[50px]">
         <button @click="openCreateWordModal" type="button"
-          class="flex flex-row justify-center items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] hover:bg-green-700 transition-colors duration-300">
+          class="flex flex-row justify-center md:mt-0 mt-4 items-center gap-[5px] px-[18px] py-[11px] bg-[#7FB77E] rounded-full shadow-[0px_7px_15px_-15px_rgba(92,99,105,0.25)] hover:bg-green-700 transition-colors duration-300">
           <span class="text-white font-bold text-[13px] leading-[24px]">اضافه کردن لغت</span>
           <icons-add-or-create class="w-5 h-5" />
         </button>

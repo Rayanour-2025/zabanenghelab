@@ -26,7 +26,7 @@
             ما</span>
           <span
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">قوانین</span>
-          <nuxt-link to="/questions"
+          <nuxt-link to="/questions" v-if="isAdmin == 0"
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها
             و پیشنهادها</nuxt-link>
           <span
@@ -40,14 +40,14 @@
       </div>
 
       <div v-if="isMenuOpen" @click="isMenuOpen = false"
-        class="h-full w-full  fixed items-center flex justify-end bg-black/30 top-0 left-0">
+        class="h-full w-full z-[9999999]  fixed items-center flex justify-end bg-black/30 top-0 left-0">
         <transition name="menu">
           <div @click.stop class="h-full pr-3 w-1/2 bg-white">
             <nav class="flex flex-col items-end mt-4 gap-8">
               <span
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">درباره
                 ما</span>
-              <nuxt-link to="/questions"
+              <nuxt-link to="/questions" v-if="isAdmin == 0"
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها
                 و پیشنهادها</nuxt-link>
               <span
