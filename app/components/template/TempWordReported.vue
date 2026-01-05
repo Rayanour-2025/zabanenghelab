@@ -1,11 +1,15 @@
 <template>
     <div dir="rtl" class="bg-[#F5F6F4] w-full md:p-8 p-4  rounded-[55px]">
-        <div class="flex items-center gap-3">
-            <img :src="photo" class="md:w-12 w-8 md:h-12 h-8 rounded-full" alt="profile" />
-            <p class="text-xs md:text-base">
-                {{ reportData?.user?.username }}-
+        <div class="flex items-center justify-between  gap-3">
+            <div class="flex items-center gap-3">
+                <img :src="photo" class="md:w-12 w-8 md:h-12 h-8 rounded-full" alt="profile" />
+                <p class="text-xs md:text-base">
+                    {{ reportData?.user?.username }}
+                </p>
+            </div>
+            <div>
                 <span class="text-[#5C636980]"> {{ reportData?.created_at }}</span>
-            </p>
+            </div>
         </div>
         <div class="md:mt-5 mt-2 text-xs md:text-base">
             <p>علت: <span class="font-semibold">{{ selectedText }}</span></p>

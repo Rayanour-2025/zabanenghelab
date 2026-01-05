@@ -1,21 +1,15 @@
 <template>
     <div dir="rtl" class="bg-[#F5F6F4] md:p-8 p-4 w-full rounded-[55px]">
-        <div class="flex items-center justify-between">
+         <div class="flex items-center justify-between  gap-3">
             <div class="flex items-center gap-3">
-                <img :src="photo" class="w-12 h-12 rounded-full" alt="profile" />
-                <p>
-                    {{comment.user.username}} -
-                    <span class="text-[#5C636980]"> {{comment.created_at}}</span>
+                <img :src="photo" class="md:w-12 w-8 md:h-12 h-8 rounded-full" alt="profile" />
+                <p class="text-xs md:text-base">
+                    {{ comment?.user?.username }}
                 </p>
             </div>
-            <!-- <div class="relative">
-                <three-dot class="cursor-pointer" @click="isShowPinBox = true" height="22" width="22" />
-                <div @click="pin(comment.id); isShowPinBox = false" v-if="isShowPinBox"
-                    class="cursor-pointer flex z-40 w-40 gap-2 top-5  left-5 absolute bg-white p-4 rounded-3xl">
-                    <black-pin height="22" width="22" />
-                    <p>سنجاق کردن</p>
-                </div>
-            </div> -->
+            <div>
+                <span class="text-[#5C636980]"> {{ comment?.created_at }}</span>
+            </div>
         </div>
         <div class="mt-5">
             <p>لغت: <span class="text-[#7FB77E]">{{ comment.word.word }}</span></p>

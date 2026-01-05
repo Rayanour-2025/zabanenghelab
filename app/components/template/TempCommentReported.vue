@@ -4,7 +4,7 @@
             <div class="flex items-center gap-3">
                 <div class="flex  items-center">
                     <p class="ml-3">گزارش توسط: </p>
-                    <img :src="photo" class="w-12 ml-2 h-12 rounded-full" alt="profile" />
+                    <img v-if="reportData?.comment?.user?.image" :src="reportData.comment.user.image" class="w-12 ml-2 h-12 rounded-full" alt="profile" />
                     <p class="text-xs md:text-base font-semibold">
                         {{ reportData.user.username }} 
                     </p>

@@ -1,14 +1,19 @@
 <template>
     <div dir="rtl" class="bg-[#F5F6F4] w-full p-8 rounded-[55px]">
-        <div class="flex items-center gap-3">
-            <img :src="photo" class="md:w-12 w-10  md:h-12 h-10  rounded-full" alt="profile">
-            <p class="md:text-base text-xs"> {{ item?.user?.username }} -
-                <span class="text-[#5C636980]">{{ item?.created_at }}</span>
-            </p>
+        <div class="flex items-center justify-between  gap-3">
+            <div class="flex items-center gap-3">
+                <img :src="photo" class="md:w-12 w-8 md:h-12 h-8 rounded-full" alt="profile" />
+                <p class="text-xs md:text-base">
+                    {{ item?.user?.username }}
+                </p>
+            </div>
+            <div>
+                <span class="text-[#5C636980]"> {{ item?.created_at }}</span>
+            </div>
         </div>
         <div class="md:mt-5 mt-2">
             <p class="md:text-base text-xs" v-if="item?.word">لغت درخواستی: <span class="text-[#7FB77E]">{{ item?.word
-                    }}</span></p>
+            }}</span></p>
         </div>
         <div class="mt-2 text-xs md:text-base" v-if="!item?.word">نوع: <span class="text-[#7FB77E]">{{
             questionFilters.find(q => q.id === item?.type)?.title }}
@@ -75,7 +80,7 @@ const prop = defineProps({
         type: [Object, Array]
     },
     filterId: {
-        required: true, 
+        required: true,
     }
 })
 const answerObj = ref({
