@@ -14,9 +14,9 @@
             <div class="md:w-[60%] w-full mt-8">
                 <user-activity-cart :activity="activity?.data"/>
                 <div class="mt-20" dir="rtl">
-                    <div>
+                    <div v-if="isAdmin == 0">
                         <div>
-                            <div class="flex justify-between">
+                            <div  class="flex justify-between">
                                 <div class="flex gap-x-3 items-center">
                                     <lamp width="25" height="25" />
                                     <p class="text-xl font-normal">لغات پیشنهاد اخیر</p>
@@ -76,7 +76,7 @@ import userActivityCart from '~/components/userActivityCart.vue';
 import useFechRecentSuggestions from '~/composables/useFechRecentSuggestions'
 import useFetchRecentComment from '~/composables/useFetchRecentComment'
 import useFetchUserActivities from '~/composables/useFetchUserActivities'
-const { token: AUTH_TOKEN, isLoggedIn } = useAuthToken()
+const { token: AUTH_TOKEN, isLoggedIn, isAdmin } = useAuthToken()
 const { loading: activityLoading, fetchUserActivities, responseData: activity  } = useFetchUserActivities()
 const { loading: recentSugLoading, responseData: recentSug, fechRecentSuggestions } = useFechRecentSuggestions()
 const { fetchPersonalInfo, responseData: info, loading } = useFetchPersonalInfo()
@@ -87,7 +87,9 @@ const loadData = async () => {
             await fetchPersonalInfo(AUTH_TOKEN.value)
             await fetchUserActivities(AUTH_TOKEN.value)
             await fetchRecentComment(AUTH_TOKEN.value)
-            await fechRecentSuggestions(AUTH_TOKEN.value)
+            if (isAdmin.value == 0) {
+                await fechRecentSuggestions(AUTH_TOKEN.value)
+            }
         }
         console.log(recentSug.value.data)
     } catch (error) {

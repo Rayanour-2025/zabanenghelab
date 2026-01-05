@@ -40,7 +40,7 @@
             <div class="  cursor-pointer  text-[#7FB77E] bg-[#7FB77E33] px-5 py-2 rounded-full" @click="approve(reportData.id, 'approve')">
                 تایید
             </div>
-            <div style="background-color: #e5737333; color:#E57373" @click="reject(reportData.id, 'reject')"
+            <div v-if="filterId == 2" style="background-color: #e5737333; color:#E57373" @click="reject(reportData.id, 'reject')"
                 class=" cursor-pointer  text-[#E57373] py-2 px-5 flex items-center rounded-full">
                 رد
             </div>
@@ -57,6 +57,10 @@ const prop = defineProps({
     reportData: {
         type: Object,
         required: true
+    },
+    filterId: {
+        default: 1, 
+        type: [String, Number]
     }
 })
 const emit = defineEmits(['send'])

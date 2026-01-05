@@ -18,7 +18,7 @@ export const useAuthStore = defineStore("auth", {
   },
 
   actions: {
-    setLoginData(loginResponse) { 
+    setLoginData(loginResponse) {
       this.user = loginResponse.user;
       this.token = loginResponse.token;
       this.isLoggedIn = true;
@@ -32,7 +32,7 @@ export const useAuthStore = defineStore("auth", {
 
       if (encryptedToken) {
         const tokenCookie = useCookie(TOKEN_COOKIE_NAME, {
-          maxAge: 60 * 60 * 24 * 7,
+          maxAge: 8 * 60 * 60,
           secure: process.env.NODE_ENV === "production",
           httpOnly: false,
           sameSite: "lax",
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore("auth", {
       }
       if (encryptedAdmin) {
         const adminCookie = useCookie(ADMIN_COOKIE_NAME, {
-          maxAge: 60 * 60 * 24 * 7,
+          maxAge: 8 * 60 * 60,
           secure: process.env.NODE_ENV === "production",
           httpOnly: false,
           sameSite: "lax",

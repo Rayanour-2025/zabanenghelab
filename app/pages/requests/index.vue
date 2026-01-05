@@ -89,6 +89,7 @@ const loadData = async () => {
     
   }
 }
+loadData()
 const filterData = async (item) => {
   if (item.id == 2) {
     await fetchDashboardData(AUTH_TOKEN.value, 'admin/questions/answered')

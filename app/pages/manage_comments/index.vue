@@ -40,7 +40,7 @@
       </div>
       <div class="p-5 w-full flex flex-col items-center gap-y-6">
         <template v-if="commentData">
-          <template-temp-manage-comment v-for="comment in commentData.data" :key="comment.id" :comment="comment" />
+          <template-temp-manage-comment :filter-id="selectedFilter" v-for="comment in commentData.data" :key="comment.id" :comment="comment" />
         </template>
       </div>
       <loading-temp v-if="commentLoading" />

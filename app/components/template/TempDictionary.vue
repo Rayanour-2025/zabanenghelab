@@ -2,6 +2,7 @@
     <div
         class="bg-[#F5F6F4] p-4 border-[#DADDD8] border rounded-3xl md:w-[22%] w-full shadow-[0px_7px_15px_-6px_#5C636940] ">
         <div class="border border-[#DADDD8] rounded-3xl bg-[#FFFFFF1A] h-24 w-full">
+            <img v-if="data.image" :src="data?.image" alt="تصویر لغت نامه" class="w-full h-full">
         </div>
         <div class="mt-6 text-sm">
             <p v-if="data?.authors">{{ data.authors }}</p>

@@ -102,10 +102,11 @@ const submitReport = async () => {
         toast.success(res.message || 'گزارش با موفقیت ثبت شد.')
 
         emit('closeCard', false);
-
+        
     } catch (error) {
         console.error(error);
         toast.error(error.data?.message || 'خطایی رخ داد');
+        emit('closeCard', false);
     } finally {
         isSubmiting.value = false
     }

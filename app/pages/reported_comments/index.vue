@@ -39,7 +39,7 @@
     </div>
     <div class="p-5 flex w-full flex-col items-center gap-y-6">
       <template v-if="reportCommentData?.data.length">
-        <temp-comment-reported @send="reload" v-for="data in reportCommentData?.data" :report-data="data"
+        <temp-comment-reported :filter-id="selectedFilter" @send="reload" v-for="data in reportCommentData?.data" :report-data="data"
           :key="data.id" />
       </template>
     </div>

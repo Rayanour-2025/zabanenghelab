@@ -2,6 +2,7 @@
   <div dir="ltr" class="bg-[white] min-h-screen flex flex-col justify-between">
     <header class="w-full flex flex-row items-center justify-between px-12 max-md:px-8 py-6">
       <div class="flex flex-row items-center gap-4">
+        <language-select />
         <nuxt-link :to="isAdmin ? '/dashboard' : '/'"
           class="w-[110px] max-md:hidden h-[50px] flex justify-center items-center px-5 bg-[#7FB77E] border border-[#7FB77E] shadow-[0_4px_8px_-5px_rgba(139,150,139,0.25)] rounded-2xl">
           <span class="font-zain font-normal text-lg text-[#FFFFFF]">{{ isAdmin ? 'داشبورد' : 'حمایت' }}</span>
@@ -28,17 +29,18 @@
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">قوانین</span>
           <span
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">راهنما</span>
-          <nuxt-link v-if="isAdmin == 0" to="/questions"
+          <span @click="toQuestionPage" v-if="isAdmin == 0"
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها
-            و پیشنهادها</nuxt-link>
-          <nuxt-link to="/profile"
+            و پیشنهادها</span>
+          <nuxt-link to="/profile" v-if="isLoggedIn"
             class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پروفایل</nuxt-link>
-          <span
-            class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">دیکشنری</span>
+ 
         </nav>
-        <div class="font-zain font-black text-2xl text-[#7FB77E]">
-          لوگو
-        </div>
+        <nuxt-link to="/" class="cursor-pointer">
+          <div class="font-zain font-black text-2xl text-[#7FB77E]">
+            لوگو
+          </div>
+        </nuxt-link>
       </div>
 
       <div v-if="isMenuOpen" @click="isMenuOpen = false"
@@ -53,13 +55,12 @@
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">قوانین</span>
               <span
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">راهنما</span>
-              <nuxt-link to="/question" v-if="isAdmin == 0"
+              <span @click="toQuestionPage" v-if="isAdmin == 0"
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پرسش‌ها
-                و پیشنهادها</nuxt-link>
-              <nuxt-link to="/profile"
+                و پیشنهادها</span>
+              <nuxt-link to="/profile" v-if="isLoggedIn"
                 class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">پروفایل</nuxt-link>
-              <span
-                class="font-zain font-normal text-base text-[#2B2B2B] cursor-pointer hover:text-[#5A6E5A] transition">دیکشنری</span>
+             
             </nav>
           </div>
         </transition>
@@ -100,8 +101,11 @@
 import { useAuthToken } from '@/composables/useAuthCrypto';
 import { useAuthStore } from '@/stores/auth';
 import { useRoute } from 'vue-router';
+import { useToast } from 'vue-toastification'
+import languageSelect from '~/components/languageSelect.vue';
 import MenuIcon from '~/components/icons/menuIcon.vue';
 
+const toast = useToast()
 const { isLoggedIn, isAdmin } = useAuthToken();
 const authStore = useAuthStore();
 const route = useRoute();
@@ -115,9 +119,12 @@ const handleLogout = () => {
 const handleLogin = () => {
   navigateTo('/login');
 };
-
-const sibebar = () => {
-  console.log("e")
+const toQuestionPage = () => {
+  if (isLoggedIn.value) {
+    navigateTo('/questions')
+  } else {
+    toast.error('ابتدا وارد شوید.')
+  }
 }
 </script>
 

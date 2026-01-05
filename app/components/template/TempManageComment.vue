@@ -28,7 +28,7 @@
             </p>
         </div>
         <div class="mt-5 flex gap-2">
-            <div @click="reject(comment.id, 'reject')" style="background-color: #e5737333"
+            <div v-if="filterId == 1" @click="reject(comment.id, 'reject')" style="background-color: #e5737333"
                 class="flex items-center gap-2 p-3 rounded-full">
                 <red-trash width="22" height="22" />
             </div>
@@ -59,13 +59,16 @@ const props = defineProps({
     comment: {
         required: true,
         type: Object
+    },
+    filterId:{
+        default: 1,
+        type: [Number, String]
     }
 })
 const emit = defineEmits(['sendData'])
 const { loading: pinLoading, pinComment } = usePinComment()
 const { token: AUTH_TOKEN, isLoggedIn } = useAuthToken()
-const { loading, evaluateItem } = useEvaluateDashboardItem()
- 
+const { loading, evaluateItem } = useEvaluateDashboardItem() 
 const approve = async (id, status) => {
     try {
         console.log("Token:", AUTH_TOKEN.value); // چک کنید توکن خالی نباشد

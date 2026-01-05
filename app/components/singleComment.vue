@@ -76,15 +76,15 @@
         </div>
     </div>
     <transition name="popup">
-        <comment-report-card v-if="isShowReportCard && !isAdmin" :comment-id="commentData?.id"
+        <comment-report-card @close-card="close" v-if="isShowReportCard && !isAdmin" :comment-id="commentData?.id"
             @click="isShowReportCard = !isShowReportCard"   />
     </transition>
     <transition name="popup">
-        <comment-report-card v-if="isShowReportCardForChild && !isAdmin" :comment-id="chidlId"
+        <comment-report-card @close-card="close" v-if="isShowReportCardForChild && !isAdmin" :comment-id="chidlId"
             @click="isShowReportCardForChild = !isShowReportCardForChild"   />
     </transition>
     <transition name="popup">
-        <reportcard @click="isShowPinBox = false" :class="!isShowPinBox ? 'hidden' : 'flex'" />
+        <reportcard @click="isShowPinBox = false"  :class="!isShowPinBox ? 'hidden' : 'flex'" />
     </transition>
 </template>
 <script setup>
@@ -136,6 +136,9 @@ const reaction = async (reactionType, commentId) => {
         console.error("خطا در عملیات لایک:", error);
     }
 };
+const close = (flag) => {
+    isShowReportCard.value = flag
+}
 const pin = async (id) => {
     console.log(id)
     if (AUTH_TOKEN.value && isLoggedIn.value) {

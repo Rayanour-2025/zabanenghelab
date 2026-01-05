@@ -29,7 +29,7 @@
                         </div>
                         <div class="w-full">
                             <base-button @click="sendData" class="w-full"><span class="text-white" v-if="!qLoading">
-                                    ثبت تغییرات
+                                    ارسال سوال
                                 </span>
                                 <div v-if="qLoading" class="flex items-center justify-center gap-2">
                                     <svg class="animate-spin h-5 w-5 text-[#7FB77E]" xmlns="http://www.w3.org/2000/svg"

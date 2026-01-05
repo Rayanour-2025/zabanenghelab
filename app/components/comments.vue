@@ -43,7 +43,7 @@
                 </ul>
             </div>
             <div class="mt-9 flex px-5 flex-col gap-y-20">
-                <single-comment v-for="comment in comments" :key="comment?.id" @send-reply-id="setReply"
+                <single-comment v-for="comment in comments"  :key="comment?.id" @send-reply-id="setReply"
                     :comment-data="comment" />
             </div>
         </div>

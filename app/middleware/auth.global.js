@@ -14,6 +14,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     "/submit_question",
     "/user_dashboard",
   ];
+  const adminForbiddenRoutes = ["/question", "/submit_question"];
   const adminRoutes = [
     "/requestedWords",
     "/dashboard",
@@ -29,20 +30,27 @@ export default defineNuxtRouteMiddleware((to, from) => {
     to.path.startsWith(route)
   );
   const isAdminRoute = adminRoutes.some((route) => to.path.startsWith(route));
-
+  const isAdminForbidden = adminForbiddenRoutes.some((route) =>
+    to.path.startsWith(route)
+  );
   if (isAdminRoute) {
     if (!authStore.isAuthenticated || authStore.isAdmin !== 1) {
-      return navigateTo("/login"); // یا هدایت به یک صفحه "عدم دسترسی"
+      return navigateTo("/login");
     }
   }
 
-  // بررسی دسترسی کاربر عادی: اگر صفحه محافظت شده است ولی کاربر لاگین نیست
   if (isUserRoute && !authStore.isAuthenticated) {
     return navigateTo("/login");
   }
 
-  // جلوگیری از ورود مجدد به صفحه لاگین در صورت احراز هویت
   if (to.path === "/login" && authStore.isAuthenticated) {
     return navigateTo("/");
+  }
+  if (
+    isAdminForbidden &&
+    authStore.isAuthenticated &&
+    authStore.isAdmin === 1
+  ) {
+    return navigateTo("/dashboard");
   }
 });

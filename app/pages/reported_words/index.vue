@@ -37,7 +37,7 @@
         </div>
       </div>
       <template v-if="reportWordData?.data?.length">
-        <temp-word-reported @send="reload" v-for="reportData in reportWordData?.data" :key="reportData.id"
+        <temp-word-reported :filter-id="activeFilter" @send="reload" v-for="reportData in reportWordData?.data" :key="reportData.id"
           :report-data="reportData" />
       </template>
     </div>

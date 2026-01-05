@@ -21,7 +21,7 @@
             </p>
         </div>
         <div class="md:mt-5 mt-2 flex gap-2">
-            <div @click="reject(reportData?.id, 'reject')" style="background-color: #e5737333"
+            <div v-if="filterId == 2" @click="reject(reportData?.id, 'reject')" style="background-color: #e5737333"
                 class="flex items-center gap-2 p-3 rounded-full">
                 <red-trash width="22" height="22" />
             </div>
@@ -47,6 +47,11 @@ const props = defineProps({
     reportData: {
         required: true,
         type: Object
+    },
+    filterId: {
+        required: false,
+        type: [String, Number],
+        default: 1
     }
 })
 const emit = defineEmits(['send'])
