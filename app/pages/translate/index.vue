@@ -94,7 +94,7 @@
                 <comments :word-loading="loading" :wrod-id="data.id" />
             </div>
             <transition name="popup">
-                <word-report-card v-if="isShowCard" @click="isShowCard = !isShowCard" :word-id="data.id" />
+                <word-report-card v-if="isShowCard" @close-card="close" @click="isShowCard = !isShowCard" :word-id="data.id" />
             </transition>
         </div>
         <loadingAnimation v-if="loading" />
@@ -143,6 +143,9 @@ const goToCommentsSection = () => {
 };
 const toEditPage = (id) => {
     navigateTo(`/edit_word/${id}`)
+}
+const close = (flag) => {
+    isShowCard.value = flag
 }
 </script>
 <style>

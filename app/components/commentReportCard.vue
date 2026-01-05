@@ -105,7 +105,7 @@ const submitReport = async () => {
         
     } catch (error) {
         console.error(error);
-        toast.error(error.data?.message || 'خطایی رخ داد');
+        toast.error(error.data?.message || 'خطایی رخ داد'); 
         emit('closeCard', false);
     } finally {
         isSubmiting.value = false
