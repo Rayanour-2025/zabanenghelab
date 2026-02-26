@@ -64,6 +64,7 @@
                     class="modal-box absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-3xl bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[40px] flex flex-col items-center px-8 py-10 gap-8 font-zain"
                     dir="rtl">
 
+
                     <h3 class="text-xl font-bold">{{ editorTitle }}</h3>
                     <ClientOnly>
                         <RichTextEditor v-model="editorContent" />

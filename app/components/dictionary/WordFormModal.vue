@@ -131,7 +131,7 @@
   
   <transition name="modal-slide" appear>
     <div v-if="isEditorModalOpen" @click="isEditorModalOpen = false" class="fixed inset-0 z-[10000000] bottom-0 flex justify-center items-center w-full bg-black/70" >
-      <div @click.stop class="modal-box absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-3xl bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[40px] flex flex-col items-center px-8 py-10 gap-8 font-zain" dir="rtl" >
+      <div @click.stop class="modal-box absolute left-1/2 top-5 -translate-x-1/2 w-full max-w-3xl bg-white shadow-[0_5px_12px_-5px_rgba(92,99,105,0.25)] rounded-[40px] flex flex-col items-center py-10 gap-8 font-zain" dir="rtl" >
         
         <h3 class="text-xl font-bold">{{ editorTitle }}</h3>
         <ClientOnly>
@@ -140,7 +140,7 @@
               <div class="p-4 text-center text-gray-500">در حال بارگذاری ویرایشگر...</div>
           </template>
         </ClientOnly>
-        <div class="w-full flex justify-end gap-3 mt-4">
+        <div class="w-full flex justify-end gap-3 mt-4 px-8">
           <button type="button" @click="saveEditorContent(editorContent)" class="px-7 py-3 bg-[#7FB77E] text-white rounded-full hover:bg-green-700 transition-colors">ذخیره</button>
           <button type="button" @click="isEditorModalOpen = false" class="px-7 py-3 bg-gray-200 text-[#2B2B2B] rounded-full hover:bg-gray-300 transition-colors">انصراف</button>
         </div>

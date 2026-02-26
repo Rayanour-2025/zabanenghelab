@@ -5,6 +5,10 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
+  vue: {
+    runtimeCompiler: true
+  },
+
   build: {
     transpile: ["vue-toastification"],
   },
@@ -37,6 +41,13 @@ export default defineNuxtConfig({
         changeOrigin: true,
         prependPath: true,
       },
+// برای production (روی سرور)
+routeRules: {
+  "/api/**": {
+    proxy: "https://ip3.ir/dictionary/api/v1/**",
+  },
+},
+
     },
   },
 
