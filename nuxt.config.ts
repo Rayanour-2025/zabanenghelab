@@ -1,4 +1,4 @@
-// /home/hamyar/Desktop/My_Folder/zaban-enghelab/nuxt.config.ts
+// nuxt.config.ts
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
@@ -6,12 +6,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   vue: {
-    runtimeCompiler: true
+    runtimeCompiler: true,
   },
 
   build: {
     transpile: ["vue-toastification"],
   },
+
   modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "nuxt-tiptap-editor"],
 
   tiptap: {
@@ -30,24 +31,28 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      // NOTE: این مقدار در کلاینت قابل دسترسی است (public).
+      // اگر واقعاً "secret" است، بهتر است در runtimeConfig (private) باشد
+      // و در کلاینت استفاده نشود.
       authSecretKey: process.env.AUTH_SECRET_KEY,
     },
   },
 
   nitro: {
+    // برای dev: درخواست‌های /api را به بک‌اند پروکسی می‌کند
     devProxy: {
       "/api": {
         target: "https://ip3.ir/dictionary/api/v1",
         changeOrigin: true,
         prependPath: true,
       },
-// برای production (روی سرور)
-routeRules: {
-  "/api/**": {
-    proxy: "https://ip3.ir/dictionary/api/v1/**",
-  },
-},
+    },
 
+    // برای production (روی سرور): روت‌های /api را پروکسی می‌کند
+    routeRules: {
+      "/api/**": {
+        proxy: "https://ip3.ir/dictionary/api/v1/**",
+      },
     },
   },
 

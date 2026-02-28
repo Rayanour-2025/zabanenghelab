@@ -73,3 +73,28 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## Deploy (Docker Compose)
+
+1) فایل `.env` را بسازید (یا از `.env.example` کپی کنید) و مقادیر را تنظیم کنید:
+
+- `APP_PORT`: پورتی که روی سرور باز می‌کنید (مثلاً 3015)
+- `AUTH_SECRET_KEY`: یک کلید قوی و تصادفی (حداقل 32 کاراکتر)
+
+2) اجرا:
+
+```bash
+docker compose up -d --build
+```
+
+3) بررسی وضعیت:
+
+```bash
+docker compose ps
+docker compose logs -f
+```
+
+اپ روی آدرس زیر در دسترس است:
+
+`http://SERVER_IP:APP_PORT`
+
